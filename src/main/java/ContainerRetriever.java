@@ -1,7 +1,9 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Info;
+import com.github.dockerjava.core.DockerClientBuilder;
+import com.github.dockerjava.core.DockerClientConfig;
+
 import java.util.List;
 
 /**
@@ -9,16 +11,24 @@ import java.util.List;
  */
 public class ContainerRetriever {
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) {
 
-        String urlSwarm = "http://192.168.99.101:3376/containers/json?all=1";
+        DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
+                .withUri("https://192.168.99.101:3376")
+                .withDockerCertPath("/home/riccardo/.docker/machine/certs")
+                .build();
 
-        HttpRequest con = new HttpRequest();
-        List list = con.connect(urlSwarm, "");
+        DockerClient docker = DockerClientBuilder.getInstance(config).build();
 
-        for (Object o : list) {
-            System.out.println(o);
+        //Info info = docker.infoCmd().exec();
+        List<Container> containers = docker.listContainersCmd().withShowAll(true).exec();
+
+        for (Container c : containers) {
+            System.out.println(c.getImage());
         }
+
+        //System.out.println(info.getImages());
+
 
     }
 

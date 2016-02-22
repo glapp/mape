@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.HashMap;
 
 /**
  * Created by riccardo on 16.02.16.
