@@ -1,8 +1,8 @@
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.Info;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import java.util.List;
  * Created by riccardo on 16.02.16.
  */
 public class ContainerRetriever {
+
+    final static Logger logger = Logger.getLogger(ContainerRetriever.class);
 
     public static void main (String[] args) {
 
@@ -20,15 +22,12 @@ public class ContainerRetriever {
 
         DockerClient docker = DockerClientBuilder.getInstance(config).build();
 
-        //Info info = docker.infoCmd().exec();
         List<Container> containers = docker.listContainersCmd().withShowAll(true).exec();
 
         for (Container c : containers) {
-            System.out.println(c.getImage());
+            logger.info("listContainer: id=" + c.getId() + " image=" + c.getImage());
+            //System.out.println("listContainer: id=" + c.getId() + " image=" + c.getImage());
         }
-
-        //System.out.println(info.getImages());
-
 
     }
 
