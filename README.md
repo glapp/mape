@@ -1,10 +1,8 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
 ### What is this repository for? ###
 
-Example output:
+Example output of ContainerRetriever class:
 
 
 Node URI: https://192.168.99.101:3376
