@@ -45,14 +45,3 @@ Process finished with exit code 0
 3. Change IP and Port to your Swarm.
 4. Run the ContainerRetriever class.
 5. Enjoy the output. :-)
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
