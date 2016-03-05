@@ -4,15 +4,15 @@ import java.util.List;
 /**
  * Created by riccardo on 16.02.16.
  */
-public class NodeRetriever {
+public class PrometheusRetriever {
 
     public static void main (String[] args) throws IOException {
 
-        String urlConsul = "http://192.168.99.100:8500";
-        String paramConsul = "/v1/kv/docker?recursive&keys&pretty";
+        String urlPrometheus = "http://localhost:9090";
+        String paramPrometheus = "/api/v1/query?query=process_cpu_seconds_total&time=2016-02-27T23:52:00.000Z";
 
         HttpRequest con = new HttpRequest();
-        List list = con.connect(urlConsul, paramConsul);
+        List list = con.connect(urlPrometheus, paramPrometheus);
 
         for (Object o : list) {
             System.out.println(o);

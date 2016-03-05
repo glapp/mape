@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Created by riccardo on 16.02.16.
  */
-public class ContainerRetriever {
+public class DockerRetriever {
 
-    final static Logger logger = Logger.getLogger(ContainerRetriever.class);
+    final static Logger logger = Logger.getLogger(DockerRetriever.class);
 
     public static void main (String[] args) {
 
