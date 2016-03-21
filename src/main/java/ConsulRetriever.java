@@ -4,11 +4,11 @@ import java.util.List;
 /**
  * Created by riccardo on 16.02.16.
  */
-public class NodeRetriever {
+public class ConsulRetriever {
 
     public static void main (String[] args) throws IOException {
 
-        String urlConsul = "http://192.168.99.100:8500";
+        String urlConsul = "http://82.196.15.58:8500";
         String paramConsul = "/v1/kv/docker?recursive&keys&pretty";
 
         HttpRequest con = new HttpRequest();

@@ -26,7 +26,7 @@ public class Metrics {
 		Metrics getMetrics = new Metrics();
 		long startTime = System.currentTimeMillis();
 
-		getMetrics.query("node_memory_MemFree");
+		getMetrics.query("process_cpu_seconds_total");
 		try {
 			getMetrics.receive();
 		}
@@ -47,7 +47,7 @@ public class Metrics {
 //		OffsetDateTime queryTime = new OffsetDateTime();
 		
 		try {
-			URL url = new URL("http://" + promethesURL + "/api/v1/query?query=" + metric + "&time=2016-02-03T12:00:00.000Z");
+			URL url = new URL("http://" + promethesURL + "/api/v1/query?query=" + metric + "&time=2016-02-27T23:52:00.000Z");
 
 			con = (HttpURLConnection)url.openConnection();
 

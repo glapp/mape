@@ -19,8 +19,9 @@ public class HttpRequest {
         String inputLine;
         List list = new ArrayList();
 
-        while ((inputLine = in.readLine()) != null)
+        while ((inputLine = in.readLine()) != null) {
             list.add(inputLine);
+        }
         in.close();
 
         return list;
