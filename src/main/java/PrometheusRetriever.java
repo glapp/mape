@@ -1,4 +1,6 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializer;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,10 +14,11 @@ public class PrometheusRetriever {
 
         String host = "localhost";
         int port = 9090;
-        long currTime = System.currentTimeMillis()/1000;
-        long startTime = currTime - 3600;
-        String step = "600s";
         String query = "rate(process_cpu_seconds_total[30s])";
+        long currTime = System.currentTimeMillis()/1000;
+        long startTime = currTime - 3600; // 1 hour
+        String step = "600s"; // 10 minutes
+
 
 
         String urlPrometheus = "http://" + host + ":" + port;
@@ -31,8 +34,16 @@ public class PrometheusRetriever {
         HttpRequest con = new HttpRequest();
         List list = con.connect(urlPrometheus, paramPrometheus);
 
+        String jsonString;
+        PrometheusDataObject jobj;
+        String result;
         for (Object o : list) {
-            System.out.println(o);
+            jsonString = o.toString();
+            System.out.println(jsonString);
+            jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
+            result = jobj.getData().getResult().get(0).getValues().get(0).get(1);
+            System.out.println(result);
+
         }
 
     }
