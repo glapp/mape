@@ -1,8 +1,5 @@
 import java.util.List;
 
-/**
- * Created by riccardo on 21.03.16.
- */
 public class PrometheusDataObject {
     private String status;
     private Data data;

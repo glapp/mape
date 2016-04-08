@@ -11,9 +11,6 @@ import org.apache.log4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by riccardo on 16.02.16.
- */
 public class DockerRetriever {
 
     final static Logger logger = Logger.getLogger(DockerRetriever.class);

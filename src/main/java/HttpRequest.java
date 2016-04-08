@@ -5,9 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by riccardo on 22.02.16.
- */
 public class HttpRequest {
 
     public List connect (String address, String parameter) throws IOException {

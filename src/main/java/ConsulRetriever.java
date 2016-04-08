@@ -1,9 +1,6 @@
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by riccardo on 16.02.16.
- */
 public class ConsulRetriever {
 
     public static void main (String[] args) throws IOException {

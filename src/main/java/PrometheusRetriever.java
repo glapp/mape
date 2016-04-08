@@ -1,16 +1,11 @@
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializer;
-
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by riccardo on 16.02.16.
- */
+
 public class PrometheusRetriever {
 
-    public static void main (String[] args) throws IOException {
+    public static void main (String[] args) {
 
         String host = "localhost";
         int port = 9090;
@@ -18,8 +13,6 @@ public class PrometheusRetriever {
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - 3600; // 1 hour
         String step = "600s"; // 10 minutes
-
-
 
         String urlPrometheus = "http://" + host + ":" + port;
 
@@ -31,8 +24,14 @@ public class PrometheusRetriever {
 
         System.out.println(paramPrometheus);
 
+
         HttpRequest con = new HttpRequest();
-        List list = con.connect(urlPrometheus, paramPrometheus);
+        List list = null;
+        try {
+            list = con.connect(urlPrometheus, paramPrometheus);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String jsonString;
         PrometheusDataObject jobj;

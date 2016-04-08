@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-
 public class Metrics {
 	private String promethesURL = "localhost:9090";
 	private URL url = null;
