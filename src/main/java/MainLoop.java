@@ -11,6 +11,7 @@ public class MainLoop {
         int appId = 0;
 
 
+        // TODO: Gson object for policies.
 
         PolicyRetriever policyRetriever = new PolicyRetriever();
 
