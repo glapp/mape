@@ -32,8 +32,8 @@ public class MapeUtils {
     }
 
 
-    // metric is an array with the values of the last time period
-    public boolean compareInt (int value, int metric, int function) {
+    // metric is an Integer
+    public boolean compareInt (int value, float metric, int function) {
 
         switch (function) {
 
