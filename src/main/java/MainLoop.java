@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 import java.io.IOException;
 
 public class MainLoop {
@@ -11,13 +13,12 @@ public class MainLoop {
         int appId = 0;
 
 
-        // TODO: Gson object for policies.
 
-        PolicyRetriever policyRetriever = new PolicyRetriever();
-
-        int value = 100;
-        //int value = policyRetriever.retrieveValue(appId);
+        double value = 0.017;
         int function = 1;
+        PolicyRetriever policyRetriever = new PolicyRetriever();
+        //value = policyRetriever.retrieveValue(appId); // TODO : set up docker and sails and retrieve policy
+
         //int function = policyRetriever.retrieveFunction(appId);
 
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
@@ -29,7 +30,8 @@ public class MainLoop {
 
 
         MapeUtils mapeUtils = new MapeUtils();
-        mapeUtils.compareInt(value, metric, function);
+        String compare = mapeUtils.compareInt(value, metric, function);
+        System.out.println("compare: "+metric+ " is "+compare+" "+value);
 
     }
 

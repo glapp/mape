@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -12,12 +14,19 @@ public class PolicyRetriever {
         HttpRequest con = new HttpRequest();
         List list = con.connect(urlSails, paramSails);
 
-        int i=0;
+        String jsonString;
+        PolicyDataObject jobj;
+        String result = "";
         for (Object o : list) {
-            System.out.println(o);
-
+            jsonString = o.toString();
+            //System.out.println(jsonString);
+            jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
+            result = jobj.getRules().get(0).getValue();
+            System.out.println("Result policy"+result);
         }
 
-        return appId;
+        int value = Integer.getInteger(result);
+
+        return value;
     }
 }

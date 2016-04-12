@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class PoliciyDataObject {
+public class PolicyDataObject {
     private List<Rules> rules;
 
     public List<Rules> getRules() {
