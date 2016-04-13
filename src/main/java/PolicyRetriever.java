@@ -23,14 +23,13 @@ public class PolicyRetriever {
 
         String jsonString;
         PolicyDataObject jobj;
-        String result = "";
+        String result;
 
-        jsonString = str.toString();
+        jsonString = str;
         //System.out.println(jsonString);
         jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
         result = jobj.getRules().get(0).getValue();
-        double value = Double.parseDouble(result);
 
-        return value;
+        return Double.parseDouble(result);
     }
 }

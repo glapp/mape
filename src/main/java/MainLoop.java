@@ -19,7 +19,8 @@ public class MainLoop {
         value = policyRetriever.retrieveValue(appId); // set up docker and sails to retrieve policy!!!!!!!!!!!!!!!!
         System.out.println("Result from Sails API call (value): "+value);
 
-        int function = 1;
+        int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
+        System.out.println("Function is set to: "+function + ". 1 = greater than, 2 = smaller than, 3 = equal");
         //int function = policyRetriever.retrieveFunction(appId); // TODO: retrieve function from sails.
 
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
@@ -31,8 +32,14 @@ public class MainLoop {
 
 
         MapeUtils mapeUtils = new MapeUtils();
-        String compare = mapeUtils.compareInt(value, metric, function);
-        System.out.println("Comparison: "+metric+ " is "+compare+" "+value);
+        boolean compare = mapeUtils.compareInt(value, metric, function);
+        System.out.println("Comparison: " + compare);
+        if (!compare) {
+            System.out.println("Change something in the infrastructure. Send command to Sails!");
+        } else {
+            System.out.println("Everything OK. :-)");
+        }
+
 
     }
 

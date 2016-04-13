@@ -39,15 +39,14 @@ public class PrometheusRetriever {
         PrometheusDataObject jobj;
         String result = "";
 
-        jsonString = str.toString();
+        jsonString = str;
 //        System.out.println(jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
         int listSize = jobj.getData().getResult().get(0).getValues().size();
         result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
 
 
-        float metric = Float.parseFloat(result);
-        return metric;
+        return Float.parseFloat(result);
 
     }
 

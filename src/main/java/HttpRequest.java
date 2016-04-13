@@ -14,7 +14,6 @@ public class HttpRequest {
                 new InputStreamReader(url.openStream()));
 
         String inputLine;
-//        List list = new ArrayList();
         String result = "";
 
         while ((inputLine = in.readLine()) != null) {

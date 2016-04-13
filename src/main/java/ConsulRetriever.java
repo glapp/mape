@@ -3,6 +3,8 @@ import java.util.List;
 
 public class ConsulRetriever {
 
+    // TODO: this class is only a stub and has to be finished.
+
     public static void main (String[] args) {
 
         String urlConsul = "http://82.196.15.58:8500";
