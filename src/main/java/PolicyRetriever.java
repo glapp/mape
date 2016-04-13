@@ -5,27 +5,31 @@ import java.util.List;
 
 public class PolicyRetriever {
 
-    public int retrieveValue (int appId) throws IOException {
+    public double retrieveValue (String appId) {
 
-        String urlSails = "localhost:1337";
+        String urlSails = "http://localhost:1337";
         String paramSails = "/policy?app_id=" + appId;
+
+//        System.out.println(urlSails + paramSails);
 
 
         HttpRequest con = new HttpRequest();
-        List list = con.connect(urlSails, paramSails);
+        String str = "";
+        try {
+            str = con.connect(urlSails, paramSails);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String jsonString;
         PolicyDataObject jobj;
         String result = "";
-        for (Object o : list) {
-            jsonString = o.toString();
-            //System.out.println(jsonString);
-            jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
-            result = jobj.getRules().get(0).getValue();
-            System.out.println("Result policy"+result);
-        }
 
-        int value = Integer.getInteger(result);
+        jsonString = str.toString();
+        //System.out.println(jsonString);
+        jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
+        result = jobj.getRules().get(0).getValue();
+        double value = Double.parseDouble(result);
 
         return value;
     }

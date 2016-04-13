@@ -24,13 +24,13 @@ public class PrometheusRetriever {
                 "&end=" + currTime +
                 "&step=" + step;
 
-        System.out.println(paramPrometheus);
+//        System.out.println(urlPrometheus + paramPrometheus);
 
 
         HttpRequest con = new HttpRequest();
-        List list = null;
+        String str = "";
         try {
-            list = con.connect(urlPrometheus, paramPrometheus);
+            str = con.connect(urlPrometheus, paramPrometheus);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,13 +38,13 @@ public class PrometheusRetriever {
         String jsonString;
         PrometheusDataObject jobj;
         String result = "";
-        for (Object o : list) {
-            jsonString = o.toString();
-            System.out.println(jsonString);
-            jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
-            int listSize = jobj.getData().getResult().get(0).getValues().size();
-            result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
-        }
+
+        jsonString = str.toString();
+//        System.out.println(jsonString);
+        jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
+        int listSize = jobj.getData().getResult().get(0).getValues().size();
+        result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
+
 
         float metric = Float.parseFloat(result);
         return metric;

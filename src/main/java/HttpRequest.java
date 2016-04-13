@@ -7,21 +7,22 @@ import java.util.List;
 
 public class HttpRequest {
 
-    public List connect (String address, String parameter) throws IOException {
+    public String connect (String address, String parameter) throws IOException {
 
         URL url = new URL(address + parameter);
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(url.openStream()));
 
         String inputLine;
-        List list = new ArrayList();
+//        List list = new ArrayList();
+        String result = "";
 
         while ((inputLine = in.readLine()) != null) {
-            list.add(inputLine);
+            result += inputLine;
         }
         in.close();
 
-        return list;
+        return result;
 
     }
 

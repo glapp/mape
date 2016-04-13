@@ -10,28 +10,29 @@ public class MainLoop {
         // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
 
         // TODO: get the Application ID
-        int appId = 0;
+        String appId = "570e50852168466222b365f9";
 
 
 
         double value = 0.017;
-        int function = 1;
         PolicyRetriever policyRetriever = new PolicyRetriever();
-        //value = policyRetriever.retrieveValue(appId); // TODO : set up docker and sails and retrieve policy
+        value = policyRetriever.retrieveValue(appId); // set up docker and sails to retrieve policy!!!!!!!!!!!!!!!!
+        System.out.println("Result from Sails API call (value): "+value);
 
-        //int function = policyRetriever.retrieveFunction(appId);
+        int function = 1;
+        //int function = policyRetriever.retrieveFunction(appId); // TODO: retrieve function from sails.
 
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
         String query = "rate(process_cpu_seconds_total[30s])";
         float metric = prometheusRetriever.retrieveInt(query);
-        System.out.println("Metric: " + metric);
+        System.out.println("Result from Prometheus API call (metric): " + metric);
 
 
 
 
         MapeUtils mapeUtils = new MapeUtils();
         String compare = mapeUtils.compareInt(value, metric, function);
-        System.out.println("compare: "+metric+ " is "+compare+" "+value);
+        System.out.println("Comparison: "+metric+ " is "+compare+" "+value);
 
     }
 
