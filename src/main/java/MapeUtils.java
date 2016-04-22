@@ -1,6 +1,7 @@
 public class MapeUtils {
 
     // metric is an array with the values of the last time period
+    // 1 = greater than, 2 = smaller than, 3 = equal
     public boolean compareArray (int value, int[] metric, int function) {
 
         int count = 0;
