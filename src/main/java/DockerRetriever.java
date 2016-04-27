@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 
+// from https://github.com/docker-java/docker-java
 public class DockerRetriever {
 
     final static Logger logger = Logger.getLogger(DockerRetriever.class);
@@ -18,7 +19,7 @@ public class DockerRetriever {
     public static void main (String[] args) {
 
         DockerClientConfig config = DockerClientConfig.createDefaultConfigBuilder()
-                .withUri("https://192.168.99.101:3376") // 3376 = Swarm
+                .withUri("https://146.185.138.218:3376") // 3376 = Swarm
                 .withDockerCertPath("/home/riccardo/.docker/machine/certs")
                 .build();
 
@@ -44,8 +45,7 @@ public class DockerRetriever {
         // Image info:
         List<Image> images = dockerClient.listImagesCmd().exec();
         System.out.println("IMAGES: " + images);
-        System.out.println("Number of images: " + info.getImages());
-        // todo: number of images is incorrect! Number was 2 more than the images listed.
+		System.out.println("Number of images: " + images.size());
 
         for (Image i : images) {
             //logger.info("id=" +i.getId() + " ----- repoTags=" + Arrays.toString(i.getRepoTags()));
