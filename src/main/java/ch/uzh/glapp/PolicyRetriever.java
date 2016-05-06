@@ -3,7 +3,6 @@ package ch.uzh.glapp;
 import ch.uzh.glapp.model.PolicyDataObject;
 import ch.uzh.glapp.model.Rules;
 import com.google.gson.Gson;
-import com.sun.deploy.security.ruleset.Rule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,12 +41,32 @@ public class PolicyRetriever {
 			System.out.println(" "+ myList.get(i));
 		}
 
-
-
-
 		return myList;
 
     }
+
+	public String getUserApps () {
+
+		String appId = "";
+
+		String urlSails = "http://localhost:1337";
+		String paramSails = "/application/getUserApps";
+
+//        System.out.println(urlSails + paramSails);
+
+		HttpRequest con = new HttpRequest();
+		String str = "";
+		try {
+			str = con.connect(urlSails, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+		return string;
+	}
+
 
 //    public double retrieveValue (String appId) {
 //
@@ -76,6 +95,4 @@ public class PolicyRetriever {
 //
 //        return Double.parseDouble(result);
 //    }
-
-    public void retrieveFunction (String appId) {}
 }
