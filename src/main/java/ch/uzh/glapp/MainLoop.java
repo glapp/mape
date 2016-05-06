@@ -1,10 +1,16 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.Rules;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainLoop {
 
     public static void main (String[] args) throws IOException {
+
+        List<Rules> rulesList = new ArrayList<>();
 
         // TODO: get the structure of all Applications from Sails.
         // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
@@ -13,10 +19,18 @@ public class MainLoop {
         String appId = "572c5dafbc569c5116e1924f";
 
 
+		// Stage 1: get Data:
+		// 1. user defined policies
+		// 2. Prometheus metrics
+		// 3. infrastructure details
+		// at the end of Stage 1 we hve a list of healthiness values.
+		// overall healthiness value is between 0 and 1. It's an average of all rules. A rule has 0 or 1.
+
 
         double value = 0.017;
         PolicyRetriever policyRetriever = new PolicyRetriever();
-        //value = policyRetriever.retrieveValue(appId); // set up docker and sails to retrieve policy!!!!!!!!!!!!!!!!
+        rulesList = policyRetriever.getRules(appId);
+        value = Double.parseDouble(rulesList.get(1).getValue());
         System.out.println("ch.uzh.glapp.model.Result from Sails API call (value): "+value);
 
         int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
@@ -29,8 +43,6 @@ public class MainLoop {
         System.out.println("ch.uzh.glapp.model.Result from Prometheus API call (metric): " + metric);
 
 
-
-
         MapeUtils mapeUtils = new MapeUtils();
         boolean compare = mapeUtils.compareInt(value, metric, function);
         System.out.println("Comparison: " + compare);
@@ -39,6 +51,27 @@ public class MainLoop {
         } else {
             System.out.println("Everything OK. :-)");
         }
+
+
+		// Stage 2: MDP calculations.
+		// get state from stage 1
+		// solve MDP --> policies (policy iteration)
+
+		// 1. give a random healthiness values to the set of next states or update the value based on previous iterations.
+		// 2. choose the action that lead to the state with the highest healthiness value
+
+
+
+
+		// Stage 3: send actions to the platform.
+		// connect to sails API.
+		// pass three pieces of information:
+		// 1. action (move, delete, create container)
+		// 2. application, organ, cell information
+		// 3. Infrastructure information.
+		// store the (improved) healthiness value somewhere, after taking the action.
+		// (improved) healthiness value = value of new node.
+
 
 
 
