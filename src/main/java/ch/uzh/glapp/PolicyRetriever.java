@@ -1,7 +1,9 @@
+package ch.uzh.glapp;
+
+import ch.uzh.glapp.model.PolicyDataObject;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.List;
 
 public class PolicyRetriever {
 

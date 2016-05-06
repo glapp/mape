@@ -1,17 +1,6 @@
-import com.google.gson.Gson;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
+package ch.uzh.glapp;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainLoop {
 
@@ -21,23 +10,23 @@ public class MainLoop {
         // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
 
         // TODO: get the Application ID
-        String appId = "57189887cdd830f1244a54ea";
+        String appId = "572c5dafbc569c5116e1924f";
 
 
 
         double value = 0.017;
         PolicyRetriever policyRetriever = new PolicyRetriever();
-        value = policyRetriever.retrieveValue(appId); // set up docker and sails to retrieve policy!!!!!!!!!!!!!!!!
-        System.out.println("Result from Sails API call (value): "+value);
+        //value = policyRetriever.retrieveValue(appId); // set up docker and sails to retrieve policy!!!!!!!!!!!!!!!!
+        System.out.println("ch.uzh.glapp.model.Result from Sails API call (value): "+value);
 
         int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
         System.out.println("Function is set to: "+function + ". 1 = greater than, 2 = smaller than, 3 = equal");
-        //int function = policyRetriever.retrieveFunction(appId); // TODO: retrieve function from sails.
+        //int function = policyRetriever.retrieveFunction(appId); // TODO: retrieve function from sails policy.
 
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
         String query = "rate(process_cpu_seconds_total[30s])";
         float metric = prometheusRetriever.retrieveInt(query);
-        System.out.println("Result from Prometheus API call (metric): " + metric);
+        System.out.println("ch.uzh.glapp.model.Result from Prometheus API call (metric): " + metric);
 
 
 

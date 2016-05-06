@@ -1,3 +1,5 @@
+package ch.uzh.glapp.model;
+
 import java.util.List;
 
 public class PolicyDataObject {

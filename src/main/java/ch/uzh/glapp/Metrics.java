@@ -1,3 +1,5 @@
+package ch.uzh.glapp;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +80,7 @@ public class Metrics {
 		
 		JsonObject responeData = responseObject.get("data").getAsJsonObject();
 		
-//		System.out.println("Result: " + responeData.get("result"));
+//		System.out.println("ch.uzh.glapp.model.Result: " + responeData.get("result"));
 		
 		JsonArray result = responeData.get("result").getAsJsonArray();
 		

@@ -1,3 +1,5 @@
+package ch.uzh.glapp;
+
 public class MapeUtils {
 
     // metric is an array with the values of the last time period
@@ -89,7 +91,7 @@ public class MapeUtils {
                 // equals
             case 3:
                 if (metric == value) {
-                    System.out.println("Comparison: "+metric+ " is not equal "+value);
+                    System.out.println("Comparison: "+metric+ " is equal "+value);
                     return true;
                 } else {
                     System.out.println("Comparison: "+metric+ " is not equal "+value);

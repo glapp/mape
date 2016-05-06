@@ -1,6 +1,8 @@
+package ch.uzh.glapp;
+
+import ch.uzh.glapp.model.PrometheusDataObject;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.List;
 
 
 public class PrometheusRetriever {
@@ -9,14 +11,14 @@ public class PrometheusRetriever {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
 
-        String host = "localhost";
-        int port = 9090;
+        String prometheusHost = "37.139.8.67";
+        int prometheusPort = 19090;
 
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - 3600; // 1 hour
         String step = "600s"; // 10 minutes
 
-        String urlPrometheus = "http://" + host + ":" + port;
+        String urlPrometheus = "http://" + prometheusHost + ":" + prometheusPort;
 
         String paramPrometheus = "/api/v1/query_range" +
                 "?query=" + query +         // or query2
