@@ -1,20 +1,26 @@
 package ch.uzh.glapp;
 
 import ch.uzh.glapp.model.Rules;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainLoop {
 
     public static void main (String[] args) throws IOException {
 
-        List<Rules> rulesList = new ArrayList<>();
+        List<Rules> rulesList;
+        List<String> appList;
 
         // TODO: get the structure of all Applications from Sails.
         // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
 
+
+        appList = new SailsRetriever().getAppIds();
+
+        int appListSize = appList.size();
+        for (int i = 0; i< appListSize; i++) {
+            System.out.println("App ID: " + appList.get(i));
+        }
         // TODO: get the Application ID
         String appId = "572db263295d1ea114a74a71";
 
