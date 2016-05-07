@@ -1,5 +1,6 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.Applications;
 import ch.uzh.glapp.model.PolicyDataObject;
 import ch.uzh.glapp.model.Rules;
 import com.google.gson.Gson;
@@ -8,16 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PolicyRetriever {
+public class SailsRetriever {
+
+	private String urlSails = "http://localhost:1337";
 
     public List<Rules> getRules (String appId) {
 
+		String paramSails = "/policy?app_id=" + appId;
 		List<Rules> myList = new ArrayList<>();
-
-		String urlSails = "http://localhost:1337";
-        String paramSails = "/policy?app_id=" + appId;
-
-//        System.out.println(urlSails + paramSails);
 
         HttpRequest con = new HttpRequest();
         String str = "";
@@ -29,7 +28,6 @@ public class PolicyRetriever {
 
         String jsonString;
         PolicyDataObject jobj;
-        String result;
 
         jsonString = str;
         //System.out.println(jsonString);
@@ -45,14 +43,10 @@ public class PolicyRetriever {
 
     }
 
-	public String getUserApps () {
+	public List<String> getAppIds () {
 
-		String appId = "";
-
-		String urlSails = "http://localhost:1337";
 		String paramSails = "/application/getUserApps";
-
-//        System.out.println(urlSails + paramSails);
+		List<String> appIdList = new ArrayList<>();
 
 		HttpRequest con = new HttpRequest();
 		String str = "";
@@ -62,9 +56,21 @@ public class PolicyRetriever {
 			e.printStackTrace();
 		}
 
+		String jsonString;
+		Applications jobj;
 
+		jsonString = str;
+		//System.out.println(jsonString);
+		jobj = new Gson().fromJson(jsonString, Applications.class);
 
-		return string;
+		int sizeApplications = jobj.getApps().size();
+		System.out.println();
+		for (int i = 0; i<sizeApplications; i++) {
+			appIdList.add(jobj.getApps().get(i).getId());
+			System.out.println(" "+ appIdList.get(i));
+		}
+
+		return appIdList;
 	}
 
 

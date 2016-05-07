@@ -12,6 +12,5 @@ public class PolicyDataObject {
         this.rules = rules;
     }
 
-
 }
 

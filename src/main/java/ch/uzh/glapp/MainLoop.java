@@ -16,7 +16,7 @@ public class MainLoop {
         // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
 
         // TODO: get the Application ID
-        String appId = "572c5dafbc569c5116e1924f";
+        String appId = "572db263295d1ea114a74a71";
 
 
 		// Stage 1: get Data:
@@ -28,7 +28,7 @@ public class MainLoop {
 
 
         double value = 0.017;
-        PolicyRetriever policyRetriever = new PolicyRetriever();
+        SailsRetriever policyRetriever = new SailsRetriever();
         rulesList = policyRetriever.getRules(appId);
         value = Double.parseDouble(rulesList.get(1).getValue());
         System.out.println("ch.uzh.glapp.model.Result from Sails API call (value): "+value);

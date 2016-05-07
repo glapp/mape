@@ -1,13 +1,13 @@
 package ch.uzh.glapp.model;
 
 public class Rules {
-	String application_id;
-	String metric;
-	String createdAt;
-	String updatedAt;
-	String operator;
-	String value;
-	String id;
+	private String application_id;
+	private String metric;
+	private String createdAt;
+	private String updatedAt;
+	private String operator;
+	private String value;
+	private String id;
 
 	public String getApplication_id() {
 		return application_id;
@@ -51,4 +51,5 @@ public class Rules {
 	public void setId(String id) {
 		this.id = id;
 	}
+
 }
