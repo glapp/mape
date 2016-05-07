@@ -11,21 +11,19 @@ public class MainLoop {
         List<Rules> rulesList;
         List<String> appList;
 
-        // TODO: get the structure of all Applications from Sails.
-        // Application ID has Array of Organ IDs and every Organ has Array of Cell IDs.
-
-
         appList = new SailsRetriever().getAppIds();
 
         int appListSize = appList.size();
         for (int i = 0; i< appListSize; i++) {
             System.out.println("App ID: " + appList.get(i));
         }
-        // TODO: get the Application ID
         String appId = "572db263295d1ea114a74a71";
+//		String appId = appList.get(0);
+		// TODO apply code below on all App IDs (not only on index 0)
 
 
-		// Stage 1: get Data:
+
+		// TODO: Stage 1 get Data:
 		// 1. user defined policies
 		// 2. Prometheus metrics
 		// 3. infrastructure details
@@ -34,14 +32,15 @@ public class MainLoop {
 
 
         double value = 0.017;
-        SailsRetriever policyRetriever = new SailsRetriever();
-        rulesList = policyRetriever.getRules(appId);
-        value = Double.parseDouble(rulesList.get(1).getValue());
-        System.out.println("ch.uzh.glapp.model.Result from Sails API call (value): "+value);
+		int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
 
-        int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
-        System.out.println("Function is set to: "+function + ". 1 = greater than, 2 = smaller than, 3 = equal");
-        //int function = policyRetriever.retrieveFunction(appId); // TODO: retrieve function from sails policy.
+        SailsRetriever sailsRetriever = new SailsRetriever();
+        rulesList = sailsRetriever.getRules(appId);
+        value = Double.parseDouble(rulesList.get(0).getValue());
+		function = Integer.parseInt(rulesList.get(0).getOperator());
+
+        System.out.println("Sails API call (value): "+value +
+				", Function is set to: "+function + " ||| 1 = greater than, 2 = smaller than, 3 = equal");
 
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
         String query = "rate(process_cpu_seconds_total[30s])";
@@ -58,18 +57,15 @@ public class MainLoop {
             System.out.println("Everything OK. :-)");
         }
 
-
-		// Stage 2: MDP calculations.
+		// TODO: Stage 2 MDP calculations.
 		// get state from stage 1
 		// solve MDP --> policies (policy iteration)
-
-		// 1. give a random healthiness values to the set of next states or update the value based on previous iterations.
+		// 1. give a random healthiness values to the set of next states or update the value based
+		// 		on previous iterations.
 		// 2. choose the action that lead to the state with the highest healthiness value
 
 
-
-
-		// Stage 3: send actions to the platform.
+		// TODO: Stage 3 send actions to the platform.
 		// connect to sails API.
 		// pass three pieces of information:
 		// 1. action (move, delete, create container)
@@ -81,9 +77,8 @@ public class MainLoop {
 
 
 
-
 /*
-        // HTTP POST to Sails for infrastructure changes.
+        // TODO: HTTP POST to Sails for infrastructure changes.
         // from: http://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
         HttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("http://localhost:1337/api_v1/containers/");
@@ -107,7 +102,6 @@ public class MainLoop {
             }
         }
 */
-
 
     }
 
