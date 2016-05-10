@@ -19,7 +19,7 @@ public class MainLoop {
             System.out.println("App ID: " + appList.get(i));
         }
 //        String appId = "572f2524ebff73e916d194e2";
-		String appId = appList.get(0);
+		String appId = appList.get(1);
 		// TODO apply code below on all App IDs (not only on index 0)
 
 
@@ -30,6 +30,8 @@ public class MainLoop {
 		// 3. infrastructure details
 		// at the end of Stage 1 we hve a list of healthiness values.
 		// overall healthiness value is between 0 and 1. It's an average of all rules. A rule has 0 or 1.
+
+		// Healthiness, App ID, list of actions and transitions.
 
 
         double value = 0.017;
