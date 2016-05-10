@@ -11,7 +11,7 @@ public class PrometheusRetriever {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
 
-        String prometheusHost = "37.139.8.67";
+        String prometheusHost = "82.196.6.231";
         int prometheusPort = 19090;
 
         long currTime = System.currentTimeMillis()/1000;

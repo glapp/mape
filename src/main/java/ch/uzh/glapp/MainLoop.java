@@ -12,13 +12,14 @@ public class MainLoop {
         List<String> appList;
 
         appList = new SailsRetriever().getAppIds();
+		System.out.println(appList);
 
-        int appListSize = appList.size();
+		int appListSize = appList.size();
         for (int i = 0; i< appListSize; i++) {
             System.out.println("App ID: " + appList.get(i));
         }
-        String appId = "572db263295d1ea114a74a71";
-//		String appId = appList.get(0);
+//        String appId = "572f2524ebff73e916d194e2";
+		String appId = appList.get(0);
 		// TODO apply code below on all App IDs (not only on index 0)
 
 
@@ -45,7 +46,7 @@ public class MainLoop {
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
         String query = "rate(process_cpu_seconds_total[30s])";
         float metric = prometheusRetriever.retrieveInt(query);
-        System.out.println("ch.uzh.glapp.model.Result from Prometheus API call (metric): " + metric);
+        System.out.println("Result from Prometheus API call (metric): " + metric);
 
 
         MapeUtils mapeUtils = new MapeUtils();
@@ -60,6 +61,8 @@ public class MainLoop {
 		// TODO: Stage 2 MDP calculations.
 		// get state from stage 1
 		// solve MDP --> policies (policy iteration)
+        // Possible statuses: HEALTHY, WARNING, UNHEALTHY
+        // HEALTHY means: all rules are satisfied.
 		// 1. give a random healthiness values to the set of next states or update the value based
 		// 		on previous iterations.
 		// 2. choose the action that lead to the state with the highest healthiness value
@@ -73,35 +76,6 @@ public class MainLoop {
 		// 3. Infrastructure information.
 		// store the (improved) healthiness value somewhere, after taking the action.
 		// (improved) healthiness value = value of new node.
-
-
-
-
-/*
-        // TODO: HTTP POST to Sails for infrastructure changes.
-        // from: http://stackoverflow.com/questions/3324717/sending-http-post-request-in-java
-        HttpClient httpclient = HttpClients.createDefault();
-        HttpPost httppost = new HttpPost("http://localhost:1337/api_v1/containers/");
-
-        // Request parameters and other properties.
-        List<NameValuePair> params = new ArrayList<NameValuePair>(2);
-        params.add(new BasicNameValuePair("param-1", "12345"));
-        params.add(new BasicNameValuePair("param-2", "Hello!"));
-        httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-
-        //Execute and get the response.
-        HttpResponse response = httpclient.execute(httppost);
-        HttpEntity entity = response.getEntity();
-
-        if (entity != null) {
-            InputStream instream = entity.getContent();
-            try {
-                // do something useful
-            } finally {
-                instream.close();
-            }
-        }
-*/
 
     }
 

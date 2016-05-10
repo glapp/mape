@@ -14,8 +14,10 @@ public class SailsRetriever {
 	private String urlSails = "http://localhost:1337";
 
 	public List<String> getAppIds () {
-		String paramSails = "/application/getUserApps";
+		String paramSails = "/application/getInfo";
 		List<String> appIdList = new ArrayList<>();
+
+//		System.out.println(urlSails+paramSails);
 
 		HttpRequest con = new HttpRequest();
 		String str = "";
@@ -29,14 +31,14 @@ public class SailsRetriever {
 		Applications jobj;
 
 		jsonString = str;
-		//System.out.println(jsonString);
+//		System.out.println(jsonString);
 		jobj = new Gson().fromJson(jsonString, Applications.class);
 
 		int sizeApplications = jobj.getApps().size();
 		System.out.println();
 		for (int i = 0; i<sizeApplications; i++) {
 			appIdList.add(jobj.getApps().get(i).getId());
-			System.out.println("Get App: "+ appIdList.get(i));
+//			System.out.println("Get App: "+ appIdList.get(i));
 		}
 
 		return appIdList;
@@ -64,7 +66,7 @@ public class SailsRetriever {
 		int sizeRules = jobj.getRules().size();
 		for (int i = 0; i<sizeRules; i++) {
 			myList.add(jobj.getRules().get(i));
-			System.out.println("Get Rule: "+ myList.get(i));
+//			System.out.println("Get Rule: "+ myList.get(i));
 		}
 
 		return myList;

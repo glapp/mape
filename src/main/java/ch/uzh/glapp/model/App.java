@@ -1,39 +1,17 @@
 package ch.uzh.glapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 //import javax.annotation.Generated;
 //
 //@Generated("org.jsonschema2pojo")
 public class App {
 
-	private List<Organ> organs = new ArrayList<Organ>();
 	private String owner;
 	private String name;
 	private String gitUrl;
 	private String status;
 	private String createdAt;
 	private String updatedAt;
-	private String networkId;
 	private String id;
-
-	/**
-	 *
-	 * @return
-	 * The organs
-	 */
-	public List<Organ> getOrgans() {
-		return organs;
-	}
-
-	/**
-	 *
-	 * @param organs
-	 * The organs
-	 */
-	public void setOrgans(List<Organ> organs) {
-		this.organs = organs;
-	}
 
 	/**
 	 *
@@ -141,24 +119,6 @@ public class App {
 	 */
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	/**
-	 *
-	 * @return
-	 * The networkId
-	 */
-	public String getNetworkId() {
-		return networkId;
-	}
-
-	/**
-	 *
-	 * @param networkId
-	 * The networkId
-	 */
-	public void setNetworkId(String networkId) {
-		this.networkId = networkId;
 	}
 
 	/**
