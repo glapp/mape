@@ -7,15 +7,17 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SailsRetriever {
 
 	private String urlSails = "http://localhost:1337";
 
-	public List<String> getAppIds () {
+	public Map<String, String> getAppIds () {
 		String paramSails = "/application/getInfo";
-		List<String> appIdList = new ArrayList<>();
+		Map appIdList = new HashMap<>();
 
 //		System.out.println(urlSails+paramSails);
 
@@ -35,9 +37,9 @@ public class SailsRetriever {
 		jobj = new Gson().fromJson(jsonString, Applications.class);
 
 		int sizeApplications = jobj.getApps().size();
-		System.out.println();
+//		System.out.println();
 		for (int i = 0; i<sizeApplications; i++) {
-			appIdList.add(jobj.getApps().get(i).getId());
+			appIdList.put(jobj.getApps().get(i).getId(), jobj.getApps().get(i).getStatus());
 //			System.out.println("Get App: "+ appIdList.get(i));
 		}
 
