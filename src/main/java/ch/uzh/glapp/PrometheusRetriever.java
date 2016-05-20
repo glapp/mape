@@ -11,12 +11,12 @@ public class PrometheusRetriever {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
 
-        String prometheusHost = "198.211.119.213";
+        String prometheusHost = "146.185.169.202";
         int prometheusPort = 19090;
 
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - 3600; // 1 hour
-        String step = "600s"; // 10 minutes
+        String step = "60s"; // 10 minutes
 
         String urlPrometheus = "http://" + prometheusHost + ":" + prometheusPort;
 
@@ -42,13 +42,24 @@ public class PrometheusRetriever {
         String result = "";
 
         jsonString = str;
-//        System.out.println(jsonString);
+//        System.out.println("jsonString: "+jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
         int listSize = jobj.getData().getResult().get(0).getValues().size();
-        result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
+
+        float sum_value = 0;
+        for (int i=0; i< listSize; i++) {
+            sum_value += Float.parseFloat(jobj.getData().getResult().get(0).getValues().get(i).get(1));
+//            System.out.println("sum_value iterate: "+sum_value);
+        }
+
+        float averge = sum_value/listSize;
+//        System.out.println("average: "+averge);
+
+        return averge;
 
 
-        return Float.parseFloat(result);
+//        result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
+//        return Float.parseFloat(result);
 
     }
 

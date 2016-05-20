@@ -16,7 +16,7 @@ public class SailsRetriever {
 	private String urlSails = "http://localhost:1337";
 
 	public Map<String, String> getAppIds () {
-		String paramSails = "/application/getInfo";
+		String paramSails = "/application/getAppInfo";
 		Map appIdList = new HashMap<>();
 
 //		System.out.println(urlSails+paramSails);

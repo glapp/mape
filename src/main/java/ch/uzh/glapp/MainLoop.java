@@ -21,13 +21,13 @@ public class MainLoop {
 		for (String appKey: appMap.keySet()){
 			String value = appMap.get(appKey);
 			System.out.println(appKey + " " + value);
-			if ("ready".equals(value)) {
+			if ("deployed".equals(value)) {
 				appList.add(appKey);
 			}
 
 		}
 
-		int appListSize = appList.size();
+        int appListSize = appList.size();
         for (int i = 0; i< appListSize; i++) {
             System.out.println("App ID: " + appList.get(i));
         }
@@ -50,19 +50,21 @@ public class MainLoop {
         List<Rules> rulesList;
         double value = 0.017;
 		int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
-        String ruleName;
 
         SailsRetriever sailsRetriever = new SailsRetriever();
         rulesList = sailsRetriever.getRules(appId);
         value = Double.parseDouble(rulesList.get(RULE).getValue());
-		function = Integer.parseInt(rulesList.get(RULE).getOperator());
-		ruleName = rulesList.get(RULE).getMetric();
+        function = Integer.parseInt(rulesList.get(RULE).getOperator());
+
 
         System.out.println("Sails API call (value): "+value +
 				", Function is set to: "+function + " ||| 1 = greater than, 2 = smaller than, 3 = equal");
 
+        String ruleName = rulesList.get(RULE).getMetric();
+        String smoothed = "[30s]";
+        String query = "rate(" + ruleName + smoothed+ ")"; // rate(process_cpu_seconds_total[30s])
+
         PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
-        String query = "rate(" + ruleName + "[30s])";
         float metric = prometheusRetriever.retrieveInt(query);
         System.out.println("Result from Prometheus API call (metric): " + metric);
 
