@@ -21,7 +21,7 @@ public class MainLoop {
 		for (String appKey: appMap.keySet()){
 			String value = appMap.get(appKey);
 			System.out.println(appKey + " " + value);
-			if ("deployed".equals(value)) {
+			if ("ready".equals(value)) {
 				appList.add(appKey);
 			}
 
