@@ -4,27 +4,12 @@ import burlap.oomdp.auxiliary.DomainGenerator;
 import burlap.oomdp.core.*;
 import burlap.oomdp.core.Attribute.AttributeType;
 import burlap.oomdp.core.objects.MutableObjectInstance;
-import burlap.oomdp.core.objects.ObjectInstance;
 import burlap.oomdp.core.states.MutableState;
 import burlap.oomdp.core.states.State;
 import burlap.oomdp.singleagent.*;
-import burlap.oomdp.singleagent.common.SimpleAction;
-import burlap.oomdp.singleagent.environment.SimulatedEnvironment;
-import burlap.oomdp.singleagent.explorer.TerminalExplorer;
-import burlap.oomdp.singleagent.explorer.VisualExplorer;
-import burlap.oomdp.visualizer.ObjectPainter;
-import burlap.oomdp.visualizer.StateRenderLayer;
-import burlap.oomdp.visualizer.StaticPainter;
-import burlap.oomdp.visualizer.Visualizer;
-
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.util.*;
-import java.util.List;
 
 
-public class MAPEDomain implements DomainGenerator {
+public class MapeWorldGenerator implements DomainGenerator {
 	public static final String PROVIDER = "provider";
 	public static final String AWS = "Amazon Web Services";
 	public static final String DO = "Digital Ocean";
@@ -101,9 +86,9 @@ public class MAPEDomain implements DomainGenerator {
 		cellClass.addAttribute(numberOfCells);
 //		cellClass.addAttribute(numberOfCellsCategory);
 		
-		new MAPEAction(MAPE_ACTION_CREATE, domain);
-		new MAPEAction(MAPE_ACTION_DELETE, domain);
-		new MAPEAction(MAPE_ACTION_MOVE, domain);
+		new MapeAction(MAPE_ACTION_CREATE, domain);
+		new MapeAction(MAPE_ACTION_DELETE, domain);
+		new MapeAction(MAPE_ACTION_MOVE, domain);
 		
 		return domain;
 	}

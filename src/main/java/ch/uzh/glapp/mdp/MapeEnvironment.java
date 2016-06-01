@@ -5,7 +5,7 @@ import burlap.oomdp.singleagent.GroundedAction;
 import burlap.oomdp.singleagent.environment.Environment;
 import burlap.oomdp.singleagent.environment.EnvironmentOutcome;
 
-public class MAPEenvironment implements Environment {
+public class MapeEnvironment implements Environment {
 	@Override
 	public State getCurrentObservation() {
 		return null;
