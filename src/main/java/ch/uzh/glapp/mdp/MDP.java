@@ -1,4 +1,4 @@
-package ch.uzh.glapp;
+package ch.uzh.glapp.mdp;
 
 import java.util.ArrayList;
 import java.util.List;
