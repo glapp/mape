@@ -1,4 +1,4 @@
-package ch.uzh.glapp;
+package ch.uzh.glapp.mdp;
 
 import burlap.oomdp.core.states.State;
 import burlap.oomdp.singleagent.GroundedAction;
