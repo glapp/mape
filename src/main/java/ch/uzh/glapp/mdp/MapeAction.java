@@ -62,7 +62,7 @@ public class MapeAction extends Action implements FullActionModel {
 				}
 			}
 			
-			String newCellName = targetCellName.substring(0, 7) + "Cell" + (currentNumOfCells);
+			String newCellName = targetCellName.substring(0, 7) + "Cells" + (currentNumOfCells);
 			ObjectInstance newCell = new MutableObjectInstance(domain.getObjectClass(MapeWorldGenerator.CLASS_CELL), newCellName);
 			newCell.setValue(MapeWorldGenerator.PROVIDER, currentProvider);
 			newCell.setValue(MapeWorldGenerator.TIER, currentTier);

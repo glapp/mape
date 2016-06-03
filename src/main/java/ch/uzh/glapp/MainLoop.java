@@ -1,5 +1,6 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.Cell;
 import ch.uzh.glapp.model.Rules;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +13,12 @@ public class MainLoop {
 
     public static void main (String[] args) throws IOException {
 
+
+	    List<Cell> test = new SailsRetriever().getCellInfo();
+	    for (Cell c : test) {
+		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
+	    }
+
         Map<String, String> appMap;
 		List<String> appList = new ArrayList<>();
 		String appId;
@@ -21,7 +28,7 @@ public class MainLoop {
 		for (String appKey: appMap.keySet()){
 			String value = appMap.get(appKey);
 			System.out.println(appKey + " " + value);
-			if ("ready".equals(value)) {
+			if ("deployed".equals(value)) {
 				appList.add(appKey);
 			}
 
