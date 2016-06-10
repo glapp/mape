@@ -1,5 +1,8 @@
 package ch.uzh.glapp.mdp;
 
+import ch.uzh.glapp.*;
+import ch.uzh.glapp.model.Cell;
+import ch.uzh.glapp.model.Cells;
 import burlap.oomdp.auxiliary.DomainGenerator;
 import burlap.oomdp.core.*;
 import burlap.oomdp.core.Attribute.AttributeType;
@@ -114,6 +117,36 @@ public class MapeWorldGenerator implements DomainGenerator {
 		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ1_Cell_1"));
 		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell_1"));
 //		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell2"));
+		
+		return s;
+	}
+	
+	public static State setInitialStateRealWorld(Domain domain) {
+		State s = new MutableState();
+		List<Cell> cells = new SailsRetriever().getCellInfo();
+		
+		HashMap<String, Integer> numOfCells = new HashMap<String, Integer>();
+		
+		for (Cell cell : cells) {
+			String organID = cell.getOrganId().getId();
+			if (!cell.getIsProxy()) {
+				if (!numOfCells.containsKey(organID)) {
+					numOfCells.put(organID, 1);
+				} else {
+					numOfCells.put(organID, numOfCells.get(organID) + 1);
+				}
+			}
+		}
+		
+		for (Cell cell : cells) {
+			String organID = cell.getOrganId().getId();
+			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_" + organID + "_Cell_" + cell.getId());
+			cellObject.setValue(PROVIDER, cell.getHost().getLabels().getProvider());
+			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
+			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
+			cellObject.setValue(NUM_CELLS, numOfCells.get(organID));
+			s.addObject(cellObject);
+		}
 		
 		return s;
 	}
