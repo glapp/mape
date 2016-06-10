@@ -1,15 +1,30 @@
-package ch.uzh.glapp.mdp;
+package mapeTest;
 
 import burlap.oomdp.auxiliary.DomainGenerator;
 import burlap.oomdp.core.*;
 import burlap.oomdp.core.Attribute.AttributeType;
 import burlap.oomdp.core.objects.MutableObjectInstance;
+import burlap.oomdp.core.objects.ObjectInstance;
 import burlap.oomdp.core.states.MutableState;
 import burlap.oomdp.core.states.State;
 import burlap.oomdp.singleagent.*;
+import burlap.oomdp.singleagent.common.SimpleAction;
+import burlap.oomdp.singleagent.environment.SimulatedEnvironment;
+import burlap.oomdp.singleagent.explorer.TerminalExplorer;
+import burlap.oomdp.singleagent.explorer.VisualExplorer;
+import burlap.oomdp.visualizer.ObjectPainter;
+import burlap.oomdp.visualizer.StateRenderLayer;
+import burlap.oomdp.visualizer.StaticPainter;
+import burlap.oomdp.visualizer.Visualizer;
+
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.*;
+import java.util.List;
 
 
-public class MapeWorldGenerator implements DomainGenerator {
+public class MAPEDomain implements DomainGenerator {
 	public static final String PROVIDER = "provider";
 	public static final String AWS = "Amazon Web Services";
 	public static final String DO = "Digital Ocean";
@@ -86,9 +101,9 @@ public class MapeWorldGenerator implements DomainGenerator {
 		cellClass.addAttribute(numberOfCells);
 //		cellClass.addAttribute(numberOfCellsCategory);
 		
-		new MapeAction(MAPE_ACTION_CREATE, domain);
-		new MapeAction(MAPE_ACTION_DELETE, domain);
-		new MapeAction(MAPE_ACTION_MOVE, domain);
+		new MAPEAction(MAPE_ACTION_CREATE, domain);
+		new MAPEAction(MAPE_ACTION_DELETE, domain);
+		new MAPEAction(MAPE_ACTION_MOVE, domain);
 		
 		return domain;
 	}
@@ -96,8 +111,8 @@ public class MapeWorldGenerator implements DomainGenerator {
 	public static State setInitialState(Domain domain) {
 		State s = new MutableState();
 		
-		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ1_Cell1"));
-		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell2"));
+		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ1_Cell_1"));
+		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell_1"));
 //		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell2"));
 		
 		return s;
