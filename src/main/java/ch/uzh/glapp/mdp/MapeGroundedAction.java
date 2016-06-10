@@ -1,14 +1,14 @@
-package mapeTest;
+package ch.uzh.glapp.mdp;
 
 import burlap.oomdp.singleagent.GroundedAction;
 
-public class MAPEGroundedAction extends GroundedAction {
+public class MapeGroundedAction extends GroundedAction {
 	private String cellName;
 	private String provider;
 	private String tier;
 	private String geo;
 	
-	public MAPEGroundedAction(MAPEAction action, String cellName, String provider, String tier, String geo) {
+	public MapeGroundedAction(MapeAction action, String cellName, String provider, String tier, String geo) {
 		super(action);
 		this.cellName = cellName;
 		this.provider = provider;
@@ -34,6 +34,6 @@ public class MAPEGroundedAction extends GroundedAction {
 
 	@Override
 	public GroundedAction copy() {
-		return new MAPEGroundedAction((MAPEAction)this.action, this.cellName, this.provider, this.tier, this.geo);
+		return new MapeGroundedAction((MapeAction)this.action, this.cellName, this.provider, this.tier, this.geo);
 	}
 }

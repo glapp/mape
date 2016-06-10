@@ -1,4 +1,4 @@
-package mapeTest;
+package ch.uzh.glapp.mdp;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

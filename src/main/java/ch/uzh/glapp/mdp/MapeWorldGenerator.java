@@ -1,4 +1,4 @@
-package mapeTest;
+package ch.uzh.glapp.mdp;
 
 import burlap.oomdp.auxiliary.DomainGenerator;
 import burlap.oomdp.core.*;
@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class MAPEDomain implements DomainGenerator {
+public class MapeWorldGenerator implements DomainGenerator {
 	public static final String PROVIDER = "provider";
 	public static final String AWS = "Amazon Web Services";
 	public static final String DO = "Digital Ocean";
@@ -101,9 +101,9 @@ public class MAPEDomain implements DomainGenerator {
 		cellClass.addAttribute(numberOfCells);
 //		cellClass.addAttribute(numberOfCellsCategory);
 		
-		new MAPEAction(MAPE_ACTION_CREATE, domain);
-		new MAPEAction(MAPE_ACTION_DELETE, domain);
-		new MAPEAction(MAPE_ACTION_MOVE, domain);
+		new MapeAction(MAPE_ACTION_CREATE, domain);
+		new MapeAction(MAPE_ACTION_DELETE, domain);
+		new MapeAction(MAPE_ACTION_MOVE, domain);
 		
 		return domain;
 	}
