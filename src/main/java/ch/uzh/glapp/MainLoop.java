@@ -14,8 +14,8 @@ public class MainLoop {
     public static void main (String[] args) throws IOException {
 
 
-	    List<Cell> test = new SailsRetriever().getCellInfo();
-	    for (Cell c : test) {
+	    List<Cell> cells = new SailsRetriever().getCellInfo();
+	    for (Cell c : cells) {
 		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
 	    }
 
