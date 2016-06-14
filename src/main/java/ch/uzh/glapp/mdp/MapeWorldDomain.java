@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.List;
 
 
-public class MapeWorldGenerator implements DomainGenerator {
+public class MapeWorldDomain implements DomainGenerator {
 	public static final String PROVIDER = "provider";
 	public static final String AWS = "Amazon Web Services";
 	public static final String DO = "Digital Ocean";
