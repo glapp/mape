@@ -1,5 +1,6 @@
 package ch.uzh.glapp.mdp;
 
+import burlap.oomdp.core.Domain;
 import burlap.oomdp.core.objects.MutableObjectInstance;
 import burlap.oomdp.core.states.MutableState;
 import burlap.oomdp.core.states.State;
@@ -12,24 +13,32 @@ import ch.uzh.glapp.model.Cell;
 import java.util.List;
 
 public class MapeEnvironment implements Environment {
+
+	protected Domain domain;
+	protected State curState;
+
+	public MapeEnvironment (Domain domain) {
+		this.domain = domain;
+	}
+
 	@Override
 	public State getCurrentObservation() {
 
-		State s = new MutableState();
+		curState = new MutableState();
 
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		for (Cell cell : cells) {
-//			s.addObject(new MutableObjectInstance());
+//			curState.addObject(new MutableObjectInstance());
 
 			System.out.println(cell.getHost().getLabels().getProvider());
 
 		}
-		
-		return s;
+		return curState;
 	}
 
 	@Override
 	public EnvironmentOutcome executeAction(GroundedAction groundedAction) {
+		// send action to Sails
 		return null;
 	}
 

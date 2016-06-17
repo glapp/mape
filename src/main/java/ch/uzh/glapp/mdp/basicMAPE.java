@@ -21,8 +21,8 @@ import burlap.oomdp.statehashing.SimpleHashableStateFactory;
 public class basicMAPE {
 	MapeWorldDomain md;
 	Domain domain;
-	RewardFunction rf;
-	TerminalFunction tf;
+//	RewardFunction rf;
+//	TerminalFunction tf;
 	State initialState;
 	HashableStateFactory hashingFactory;
 	Environment env;
@@ -30,8 +30,8 @@ public class basicMAPE {
 	public basicMAPE() {
 		debugOutput.setDate(new Date());
 		
-		rf = new testRF();
-		tf = new testTF();
+//		rf = new testRF();
+//		tf = new testTF();
 		
 		md = new MapeWorldDomain();
 		domain = md.generateDomain();
@@ -40,17 +40,15 @@ public class basicMAPE {
 		List<ObjectInstance> cells = initialState.getObjectsOfClass(MapeWorldDomain.CLASS_CELL);
 		
 		for (ObjectInstance cell : cells) {
-//			System.out.println("Cell name: " + cell.getName());
-			cell.setValue(MapeWorldDomain.PROVIDER, MapeWorldDomain.AWS);
 			cell.setValue(MapeWorldDomain.TIER, MapeWorldDomain.TIER2);
 			cell.setValue(MapeWorldDomain.GEO, MapeWorldDomain.EU);
 			cell.setValue(MapeWorldDomain.NUM_CELLS, 1);
-//			cell.setValue(MapeWorldDomain.NUM_CELLS_CATEGORY, MapeWorldDomain.LOW);
 		}
 		
 		hashingFactory = new SimpleHashableStateFactory();
 		
 		env = new SimulatedEnvironment(domain, rf, tf, initialState);
+		env = new MapeEnvironment();
 	}
 	
 	public static void main(String[] args) {
@@ -71,7 +69,7 @@ public class basicMAPE {
 
 		//run learning for 1 episode
 		for(int i = 0; i < 1; i++){
-			EpisodeAnalysis ea = agent.runLearningEpisode(env);
+			EpisodeAnalysis ea = agent.runLearningEpisode(env, 1);
 
 			ea.writeToFile(outputPath + "ql_" + i);
 			System.out.println(i + ": " + ea.maxTimeStep());
@@ -96,12 +94,7 @@ public class basicMAPE {
 				String currentTier = cell.getStringValForAttribute(MapeWorldDomain.TIER);
 				String currentGeo = cell.getStringValForAttribute(MapeWorldDomain.GEO);
 				int currentNumOfCells = cell.getIntValForAttribute(MapeWorldDomain.NUM_CELLS);
-//				String currentNumOfCellsCategory = cell.getStringValForAttribute(MapeWorldDomain.NUM_CELLS_CATEGORY);
-				
-//				System.out.println("Provider: " + currentProvider + "\tTier: " + currentTier + "\tGeo: " + currentGeo + "\tNumber of cells: " + currentNumOfCells + "\tNumber of cells(Category): " + currentNumOfCellsCategory); 
-//				System.out.println("MapeWorldDomain.DO=" + MapeWorldDomain.DO);
-//				System.out.println("String comparison: " + currentProvider.equals(MapeWorldDomain.DO));
-				
+
 				if (currentProvider.equals(MapeWorldDomain.DO) && currentTier.equals(MapeWorldDomain.TIER1) && currentGeo.equals(MapeWorldDomain.EU) && currentNumOfCells > 2) {
 					return true;
 				}
