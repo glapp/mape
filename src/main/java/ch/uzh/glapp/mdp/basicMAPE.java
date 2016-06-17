@@ -4,28 +4,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import burlap.behavior.policy.GreedyQPolicy;
-import burlap.behavior.policy.Policy;
 import burlap.behavior.singleagent.EpisodeAnalysis;
 import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
-import burlap.behavior.singleagent.planning.Planner;
-import burlap.behavior.singleagent.planning.stochastic.valueiteration.ValueIteration;
-import burlap.oomdp.auxiliary.common.NullTermination;
 import burlap.oomdp.core.Domain;
 import burlap.oomdp.core.TerminalFunction;
 import burlap.oomdp.core.objects.ObjectInstance;
 import burlap.oomdp.core.states.State;
 import burlap.oomdp.singleagent.GroundedAction;
 import burlap.oomdp.singleagent.RewardFunction;
-import burlap.oomdp.singleagent.common.UniformCostRF;
 import burlap.oomdp.singleagent.environment.Environment;
 import burlap.oomdp.singleagent.environment.SimulatedEnvironment;
 import burlap.oomdp.statehashing.HashableStateFactory;
 import burlap.oomdp.statehashing.SimpleHashableStateFactory;
 
 public class basicMAPE {
-	MapeWorldGenerator md;
+	MapeWorldDomain md;
 	Domain domain;
 	RewardFunction rf;
 	TerminalFunction tf;
@@ -39,19 +33,19 @@ public class basicMAPE {
 		rf = new testRF();
 		tf = new testTF();
 		
-		md = new MapeWorldGenerator();
+		md = new MapeWorldDomain();
 		domain = md.generateDomain();
 		
-		initialState = MapeWorldGenerator.setInitialState(domain);
-		List<ObjectInstance> cells = initialState.getObjectsOfClass(MapeWorldGenerator.CLASS_CELL);
+		initialState = MapeWorldDomain.setInitialState(domain);
+		List<ObjectInstance> cells = initialState.getObjectsOfClass(MapeWorldDomain.CLASS_CELL);
 		
 		for (ObjectInstance cell : cells) {
 //			System.out.println("Cell name: " + cell.getName());
-			cell.setValue(MapeWorldGenerator.PROVIDER, MapeWorldGenerator.AWS);
-			cell.setValue(MapeWorldGenerator.TIER, MapeWorldGenerator.TIER2);
-			cell.setValue(MapeWorldGenerator.GEO, MapeWorldGenerator.EU);
-			cell.setValue(MapeWorldGenerator.NUM_CELLS, 1);
-//			cell.setValue(MapeWorldGenerator.NUM_CELLS_CATEGORY, MapeWorldGenerator.LOW);
+			cell.setValue(MapeWorldDomain.PROVIDER, MapeWorldDomain.AWS);
+			cell.setValue(MapeWorldDomain.TIER, MapeWorldDomain.TIER2);
+			cell.setValue(MapeWorldDomain.GEO, MapeWorldDomain.EU);
+			cell.setValue(MapeWorldDomain.NUM_CELLS, 1);
+//			cell.setValue(MapeWorldDomain.NUM_CELLS_CATEGORY, MapeWorldDomain.LOW);
 		}
 		
 		hashingFactory = new SimpleHashableStateFactory();
@@ -95,20 +89,20 @@ public class basicMAPE {
 		
 		@Override
 		public boolean isTerminal(State s) {
-			List<ObjectInstance> cells = s.getObjectsOfClass(MapeWorldGenerator.CLASS_CELL);
+			List<ObjectInstance> cells = s.getObjectsOfClass(MapeWorldDomain.CLASS_CELL);
 			
 			for (ObjectInstance cell : cells) {
-				String currentProvider = cell.getStringValForAttribute(MapeWorldGenerator.PROVIDER);
-				String currentTier = cell.getStringValForAttribute(MapeWorldGenerator.TIER);
-				String currentGeo = cell.getStringValForAttribute(MapeWorldGenerator.GEO);
-				int currentNumOfCells = cell.getIntValForAttribute(MapeWorldGenerator.NUM_CELLS);
-//				String currentNumOfCellsCategory = cell.getStringValForAttribute(MapeWorldGenerator.NUM_CELLS_CATEGORY);
+				String currentProvider = cell.getStringValForAttribute(MapeWorldDomain.PROVIDER);
+				String currentTier = cell.getStringValForAttribute(MapeWorldDomain.TIER);
+				String currentGeo = cell.getStringValForAttribute(MapeWorldDomain.GEO);
+				int currentNumOfCells = cell.getIntValForAttribute(MapeWorldDomain.NUM_CELLS);
+//				String currentNumOfCellsCategory = cell.getStringValForAttribute(MapeWorldDomain.NUM_CELLS_CATEGORY);
 				
 //				System.out.println("Provider: " + currentProvider + "\tTier: " + currentTier + "\tGeo: " + currentGeo + "\tNumber of cells: " + currentNumOfCells + "\tNumber of cells(Category): " + currentNumOfCellsCategory); 
-//				System.out.println("MapeWorldGenerator.DO=" + MapeWorldGenerator.DO);
-//				System.out.println("String comparison: " + currentProvider.equals(MapeWorldGenerator.DO));
+//				System.out.println("MapeWorldDomain.DO=" + MapeWorldDomain.DO);
+//				System.out.println("String comparison: " + currentProvider.equals(MapeWorldDomain.DO));
 				
-				if (currentProvider.equals(MapeWorldGenerator.DO) && currentTier.equals(MapeWorldGenerator.TIER1) && currentGeo.equals(MapeWorldGenerator.EU) && currentNumOfCells > 2) {
+				if (currentProvider.equals(MapeWorldDomain.DO) && currentTier.equals(MapeWorldDomain.TIER1) && currentGeo.equals(MapeWorldDomain.EU) && currentNumOfCells > 2) {
 					return true;
 				}
 			}
@@ -122,34 +116,34 @@ public class basicMAPE {
 		@Override
 		public double reward(State s, GroundedAction a, State sprime) {
 			HashMap rewards = new HashMap<String, Double>();
-			rewards.put(MapeWorldGenerator.DO, 0.1);
-			rewards.put(MapeWorldGenerator.AWS, 0.0);
-			rewards.put(MapeWorldGenerator.GOOGLE, 0.0);
-			rewards.put(MapeWorldGenerator.AZURE, 0.0);
-			rewards.put(MapeWorldGenerator.TIER1, 0.3);
-			rewards.put(MapeWorldGenerator.TIER2, 0.2);
-			rewards.put(MapeWorldGenerator.TIER3, 0.1);
-			rewards.put(MapeWorldGenerator.EU, 0.2);
-			rewards.put(MapeWorldGenerator.NA, 0.15);
-			rewards.put(MapeWorldGenerator.ASIA, 0.1);
+			rewards.put(MapeWorldDomain.DO, 0.0);
+			rewards.put(MapeWorldDomain.AWS, 0.0);
+			rewards.put(MapeWorldDomain.GOOGLE, 0.0);
+			rewards.put(MapeWorldDomain.AZURE, 0.0);
+			rewards.put(MapeWorldDomain.TIER1, 0.3);
+			rewards.put(MapeWorldDomain.TIER2, 0.2);
+			rewards.put(MapeWorldDomain.TIER3, 0.1);
+			rewards.put(MapeWorldDomain.EU, 0.2);
+			rewards.put(MapeWorldDomain.NA, 0.15);
+			rewards.put(MapeWorldDomain.ASIA, 0.1);
 			
-			List<ObjectInstance> sCells = s.getObjectsOfClass(MapeWorldGenerator.CLASS_CELL);
+			List<ObjectInstance> sCells = s.getObjectsOfClass(MapeWorldDomain.CLASS_CELL);
 
 			double currentHealthiness = 0;
 			for (ObjectInstance cell : sCells) {
-				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.PROVIDER))).doubleValue();
-				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.TIER))).doubleValue();
-				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.GEO))).doubleValue();
-				currentHealthiness += 0.1;// * cell.getIntValForAttribute(MapeWorldGenerator.NUM_CELLS);
+				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.PROVIDER))).doubleValue();
+				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.TIER))).doubleValue();
+				currentHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.GEO))).doubleValue();
+				currentHealthiness += 0.1;// * cell.getIntValForAttribute(MapeWorldDomain.NUM_CELLS);
 			}
 			
 			double newHealthiness = 0;
-			List<ObjectInstance> sPrimeCells = sprime.getObjectsOfClass(MapeWorldGenerator.CLASS_CELL);
+			List<ObjectInstance> sPrimeCells = sprime.getObjectsOfClass(MapeWorldDomain.CLASS_CELL);
 			for (ObjectInstance cell : sPrimeCells) {
-				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.PROVIDER))).doubleValue();
-				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.TIER))).doubleValue();
-				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldGenerator.GEO))).doubleValue();
-				newHealthiness += 0.1;// * cell.getIntValForAttribute(MapeWorldGenerator.NUM_CELLS);
+				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.PROVIDER))).doubleValue();
+				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.TIER))).doubleValue();
+				newHealthiness += ((Double)rewards.get(cell.getStringValForAttribute(MapeWorldDomain.GEO))).doubleValue();
+				newHealthiness += 0.1;// * cell.getIntValForAttribute(MapeWorldDomain.NUM_CELLS);
 			}
 			
 			double costOfAction = 0;
