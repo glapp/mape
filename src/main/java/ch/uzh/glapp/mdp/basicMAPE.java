@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import burlap.behavior.policy.GreedyQPolicy;
 import burlap.behavior.policy.Policy;
 import burlap.behavior.singleagent.EpisodeAnalysis;
 import burlap.behavior.singleagent.learning.LearningAgent;
@@ -72,6 +73,7 @@ public class basicMAPE {
 		// Initial Q-value: 0
 		// Learning rate: 0.9
 		LearningAgent agent = new QLearning(domain, 0.99, hashingFactory, 0, 0.9);
+		
 
 		//run learning for 1 episode
 		for(int i = 0; i < 1; i++){
@@ -120,7 +122,7 @@ public class basicMAPE {
 		@Override
 		public double reward(State s, GroundedAction a, State sprime) {
 			HashMap rewards = new HashMap<String, Double>();
-			rewards.put(MapeWorldGenerator.DO, 0.0);
+			rewards.put(MapeWorldGenerator.DO, 0.1);
 			rewards.put(MapeWorldGenerator.AWS, 0.0);
 			rewards.put(MapeWorldGenerator.GOOGLE, 0.0);
 			rewards.put(MapeWorldGenerator.AZURE, 0.0);

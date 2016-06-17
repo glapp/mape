@@ -114,8 +114,8 @@ public class MapeWorldGenerator implements DomainGenerator {
 	public static State setInitialState(Domain domain) {
 		State s = new MutableState();
 		
-		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ1_Cell_1"));
-		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell_1"));
+		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_57077ea32f9806267c71b4f8_Cell_1"));
+		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_57077ea32f9806267c71b4f9_Cell_1"));
 //		s.addObject(new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ2_Cell2"));
 		
 		return s;

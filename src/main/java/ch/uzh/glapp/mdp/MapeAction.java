@@ -61,7 +61,7 @@ public class MapeAction extends Action implements FullActionModel {
 			// Step 3: Go through all the cells belonging to the same organ and update currentNumOfCells attribute
 			// Cell name is in the format of "OrganX_CellY", substring(0, 6) extracts the "OrganX" part
 			for (ObjectInstance cell : cells) {
-				if (cell.getName().substring(0, 6).equals(targetCell.getName().substring(0, 6))) {
+				if (cell.getName().substring(0, 30).equals(targetCell.getName().substring(0, 30))) {
 					cell.setValue(MapeWorldGenerator.NUM_CELLS, currentNumOfCells);
 			
 			// update numOfCellCategory (low/medium/high) accordingly
@@ -77,7 +77,7 @@ public class MapeAction extends Action implements FullActionModel {
 			
 			// Step 4: Creating a new cell object and add it to the state object
 			String uniqueID = UUID.randomUUID().toString();
-			String newCellName = targetCellName.substring(0, 7) + "Cell_" + (uniqueID);
+			String newCellName = targetCellName.substring(0, 30) + "_Cell_" + (uniqueID);
 			ObjectInstance newCell = new MutableObjectInstance(domain.getObjectClass(MapeWorldGenerator.CLASS_CELL), newCellName);
 			newCell.setValue(MapeWorldGenerator.PROVIDER, currentProvider);
 			newCell.setValue(MapeWorldGenerator.TIER, currentTier);
@@ -95,8 +95,9 @@ public class MapeAction extends Action implements FullActionModel {
 				
 				// Step 3: Go through all cell objects and update currentNumOfCells attribute
 				// Cell name is in the format of "OrganX_CellY", substring(0, 6) extracts the "OrganX" part
+				// The length for real organ ID is 24 char
 				for (ObjectInstance cell : cells) {
-					if (cell.getName().substring(0, 6).equals(targetCell.getName().substring(0, 6))) {
+					if (cell.getName().substring(0, 30).equals(targetCell.getName().substring(0, 30))) {
 						cell.setValue(MapeWorldGenerator.NUM_CELLS, currentNumOfCells - 1);
 						
 				// update numOfCellCategory (low/medium/high) accordingly

@@ -43,7 +43,7 @@ public class MDP {
 
 		hashingFactory = new SimpleHashableStateFactory();
 
-		env = new SimulatedEnvironment(domain, rf, tf, initialState);
+//		env = new SimulatedEnvironment(domain, rf, tf, initialState);
 	}
 
 }
