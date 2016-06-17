@@ -34,16 +34,13 @@ public class Test {
 
 		for (Cell cell : cells) {
 			String organID = cell.getOrganId().getId();
-			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_" + organID + "_Cell_" + cell.getId());
-			cellObject.setValue(PROVIDER, cell.getHost().getLabels().getProvider());
-			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
-			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
-			cellObject.setValue(NUM_CELLS, numOfCells.get(organID));
-			s.addObject(cellObject);
+//			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_" + organID + "_Cell_" + cell.getId());
+//			cellObject.setValue(PROVIDER, cell.getHost().getLabels().getProvider());
+//			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
+//			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
+//			cellObject.setValue(NUM_CELLS, numOfCells.get(organID));
+//			s.addObject(cellObject);
 		}
-
-	}
-
 
 	}
 

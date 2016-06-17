@@ -14,7 +14,7 @@ import ch.uzh.glapp.model.Cell;
 import java.util.List;
 
 import static ch.uzh.glapp.mdp.MapeWorldDomain2.GEO;
-import static ch.uzh.glapp.mdp.MapeWorldDomain2.NUM_CELLS;
+//import static ch.uzh.glapp.mdp.MapeWorldDomain2.NUM_CELLS;
 import static ch.uzh.glapp.mdp.MapeWorldDomain2.TIER;
 
 public class MapeEnvironment implements Environment {
