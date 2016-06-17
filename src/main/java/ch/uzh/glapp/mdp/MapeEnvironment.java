@@ -14,7 +14,6 @@ import ch.uzh.glapp.model.Cell;
 import java.util.List;
 
 import static ch.uzh.glapp.mdp.MapeWorldDomain2.GEO;
-import static ch.uzh.glapp.mdp.MapeWorldDomain2.NUM_CELLS;
 import static ch.uzh.glapp.mdp.MapeWorldDomain2.TIER;
 
 public class MapeEnvironment implements Environment {
@@ -33,13 +32,12 @@ public class MapeEnvironment implements Environment {
 		curState = new MutableState();
 
 		List<Cell> cells = new SailsRetriever().getCellInfo();
+		System.out.println("Size of cells list: "+cells.size());
 		for (Cell cell : cells) {
 			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(MapeWorldDomain2.CLASS_CELL),"Organ_" + cell.getOrganId().getId() + "_Cell_" + cell.getId());
 			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
 			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
 			curState.addObject(cellObject);
-
-			System.out.println(cell.getHost().getLabels().getProvider());
 
 		}
 		return curState;
@@ -53,6 +51,7 @@ public class MapeEnvironment implements Environment {
 		// send action to Sails
 		// wait and get observation from Sails.
 
+		System.out.println("Call from executeAction");
 		nextState = getCurrentObservation();
 
 		double rewardReceived = 0; // this shold come from the observation.
