@@ -19,11 +19,12 @@ public class MapeEnvironment implements Environment {
 
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		for (Cell cell : cells) {
-			s.addObject(new MutableObjectInstance());
+//			s.addObject(new MutableObjectInstance());
 
 			System.out.println(cell.getHost().getLabels().getProvider());
 
 		}
+		return s;
 	}
 
 	@Override
