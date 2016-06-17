@@ -1,0 +1,149 @@
+!!burlap.behavior.singleagent.EpisodeAnalysis
+actionSequence: [!action 'Move Organ_5763d81a2255b6d33dc331b7_Cell_5763f0c12255b6d33dc331c8
+    Amazon Web Services 1 eu']
+rewardSequence: [0.0]
+stateSequence:
+- !!burlap.oomdp.stateserialization.simple.SimpleSerializableState
+  objects:
+  - name: Organ_5763d81a2255b6d33dc331b5_Cell_5763f0be2255b6d33dc331c2
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b6_Cell_5763f0be2255b6d33dc331c4
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b7_Cell_5763f0be2255b6d33dc331c3
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b9_Cell_5763f0be2255b6d33dc331c5
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b8_Cell_5763f0be2255b6d33dc331c6
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b8_Cell_5763f0c12255b6d33dc331c7
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b7_Cell_5763f0c12255b6d33dc331c8
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b5_Cell_5763f0c12255b6d33dc331c9
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b6_Cell_5763f0ce2255b6d33dc331ca
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b9_Cell_5763f0ce2255b6d33dc331cb
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+- !!burlap.oomdp.stateserialization.simple.SimpleSerializableState
+  objects:
+  - name: Organ_5763d81a2255b6d33dc331b5_Cell_5763f0be2255b6d33dc331c2
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b6_Cell_5763f0be2255b6d33dc331c4
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b7_Cell_5763f0be2255b6d33dc331c3
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b9_Cell_5763f0be2255b6d33dc331c5
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b8_Cell_5763f0be2255b6d33dc331c6
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b8_Cell_5763f0c12255b6d33dc331c7
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b7_Cell_5763f0c12255b6d33dc331c8
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b5_Cell_5763f0c12255b6d33dc331c9
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b6_Cell_5763f0ce2255b6d33dc331ca
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: us}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
+  - name: Organ_5763d81a2255b6d33dc331b9_Cell_5763f0ce2255b6d33dc331cb
+    object_class: cell
+    values:
+    - {attribute: provider, value: ''}
+    - {attribute: tier, value: '1'}
+    - {attribute: geo, value: eu}
+    - {attribute: numberOfCellsInOrgan, value: '0'}
