@@ -25,7 +25,6 @@ public class MapeWorldDomain2 implements DomainGenerator {
 	public static final String TIER3 = "Tier 3";
 	public static final String[] TIER_LIST = {TIER1, TIER2, TIER3};
 
-	public static final String NUM_CELLS = "numberOfCellsInOrgan";
 	public static final int NUM_CELLS_LOWER_BOUND = 1; // the lower bound of the number of cells is 1 (i.e. minimum 1 cell)
 	public static final int NUM_CELLS_UPPER_BOUND = 3; // the upper bound of the number of cells
 	
@@ -56,15 +55,11 @@ public class MapeWorldDomain2 implements DomainGenerator {
 		
 		Attribute geo = new Attribute(domain, GEO, AttributeType.STRING);
 		geo.setDiscValues(GEO_LIST);
-		
-		Attribute numberOfCells = new Attribute(domain, NUM_CELLS, AttributeType.INT);
-		numberOfCells.setLims(NUM_CELLS_LOWER_BOUND, NUM_CELLS_UPPER_BOUND);
-		
+
 		// ObjectClass: cell
 		ObjectClass cellClass = new ObjectClass(domain, CLASS_CELL);
 		cellClass.addAttribute(tier);
 		cellClass.addAttribute(geo);
-		cellClass.addAttribute(numberOfCells);
 
 		new MapeAction(MAPE_ACTION_CREATE, domain);
 		new MapeAction(MAPE_ACTION_DELETE, domain);
@@ -104,7 +99,6 @@ public class MapeWorldDomain2 implements DomainGenerator {
 			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(CLASS_CELL), "Organ_" + organID + "_Cell_" + cell.getId());
 			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
 			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
-			cellObject.setValue(NUM_CELLS, numOfCells.get(organID));
 			s.addObject(cellObject);
 		}
 		

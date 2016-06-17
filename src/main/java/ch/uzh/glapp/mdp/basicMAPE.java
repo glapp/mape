@@ -47,8 +47,8 @@ public class basicMAPE {
 		
 		hashingFactory = new SimpleHashableStateFactory();
 		
-		env = new SimulatedEnvironment(domain, rf, tf, initialState);
-		env = new MapeEnvironment();
+//		env = new SimulatedEnvironment(domain, rf, tf, initialState);
+		env = new MapeEnvironment(domain);
 	}
 	
 	public static void main(String[] args) {
