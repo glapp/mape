@@ -18,12 +18,12 @@ import static ch.uzh.glapp.mdp.MapeWorldDomain2.TIER;
 
 public class MapeEnvironment implements Environment {
 
-	protected Domain domain;
+	protected final ThreadLocal<Domain> domain = new ThreadLocal<>();
 	protected State curState;
 	protected State nextState;
 
 	public MapeEnvironment (Domain domain) {
-		this.domain = domain;
+		this.domain.set(domain);
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class MapeEnvironment implements Environment {
 		curState = new MutableState();
 
 		List<Cell> cells = new SailsRetriever().getCellInfo();
-		System.out.println("Size of cells list: "+cells.size());
+		System.out.println("getCurrentObservation - Size of cells list: "+cells.size());
 		for (Cell cell : cells) {
-			ObjectInstance cellObject = new MutableObjectInstance(domain.getObjectClass(MapeWorldDomain2.CLASS_CELL),"Organ_" + cell.getOrganId().getId() + "_Cell_" + cell.getId());
+			ObjectInstance cellObject = new MutableObjectInstance(domain.get().getObjectClass(MapeWorldDomain2.CLASS_CELL),"Organ_" + cell.getOrganId().getId() + "_Cell_" + cell.getId());
 			cellObject.setValue(TIER, cell.getHost().getLabels().getTier());
 			cellObject.setValue(GEO, cell.getHost().getLabels().getRegion());
 			curState.addObject(cellObject);

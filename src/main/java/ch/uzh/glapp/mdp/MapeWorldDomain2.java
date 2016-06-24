@@ -25,15 +25,6 @@ public class MapeWorldDomain2 implements DomainGenerator {
 	public static final String TIER3 = "Tier 3";
 	public static final String[] TIER_LIST = {TIER1, TIER2, TIER3};
 
-	public static final int NUM_CELLS_LOWER_BOUND = 1; // the lower bound of the number of cells is 1 (i.e. minimum 1 cell)
-	public static final int NUM_CELLS_UPPER_BOUND = 3; // the upper bound of the number of cells
-	
-	public static final String NUM_CELLS_CATEGORY = "numberOfCellsCategory";
-	public static final String HIGH = "High";
-	public static final String MEDIUM = "Medium";
-	public static final String LOW = "Low";
-	public static final String[] NUM_CELLS_LIST = {HIGH, MEDIUM, LOW};
-
 	public static final String GEO = "geo";
 	public static final String NA = "North America";
 	public static final String EU = "Europe";
@@ -61,9 +52,9 @@ public class MapeWorldDomain2 implements DomainGenerator {
 		cellClass.addAttribute(tier);
 		cellClass.addAttribute(geo);
 
-		new MapeAction(MAPE_ACTION_CREATE, domain);
-		new MapeAction(MAPE_ACTION_DELETE, domain);
-		new MapeAction(MAPE_ACTION_MOVE, domain);
+		new MapeAction2(MAPE_ACTION_CREATE, domain);
+		new MapeAction2(MAPE_ACTION_DELETE, domain);
+		new MapeAction2(MAPE_ACTION_MOVE, domain);
 		
 		return domain;
 	}
