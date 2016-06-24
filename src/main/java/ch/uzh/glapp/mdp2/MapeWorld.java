@@ -7,6 +7,7 @@ import burlap.mdp.singleagent.SADomain;
 
 public class MapeWorld implements DomainGenerator {
 
+	public static final String VAR_VIOLATED_POLICY = "violated_policy";
 	public static final String VAR_PROVIDER = "provider";
 	public static final String VAR_REGION = "region";
 	public static final String VAR_TIER = "tier";

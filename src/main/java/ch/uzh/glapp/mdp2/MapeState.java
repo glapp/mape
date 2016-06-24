@@ -1,5 +1,7 @@
 package ch.uzh.glapp.mdp2;
 
+import burlap.mdp.core.oo.state.ObjectInstance;
+import burlap.mdp.core.state.MutableState;
 import burlap.mdp.core.state.State;
 import burlap.mdp.core.state.StateUtilities;
 import burlap.mdp.core.state.UnknownKeyException;
@@ -12,8 +14,9 @@ import static ch.uzh.glapp.mdp2.MapeWorld.*;
 
 
 @DeepCopyState
-public class MapeState implements State {
+public class MapeState implements MutableState {
 
+	public String violated_policy;
 	public String provider;
 	public String region;
 	public String tier;
@@ -21,12 +24,13 @@ public class MapeState implements State {
 	public String proxy_provider;
 	public String proxy_region;
 
-	private final static List<Object> keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS,
+	private final static List<Object> keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS,
 			VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
 
 	public MapeState(){}
 
-	public MapeState(String provider, String region, String tier, int cells, String proxy_provider, String proxy_region) {
+	public MapeState(String violated_policy, String provider, String region, String tier, int cells, String proxy_provider, String proxy_region) {
+		this.violated_policy = violated_policy;
 		this.provider = provider;
 		this.region = region;
 		this.tier = tier;
@@ -41,8 +45,40 @@ public class MapeState implements State {
 	}
 
 	@Override
+	public MutableState set(Object variableKey, Object value) {
+		if(variableKey.equals(VAR_VIOLATED_POLICY)){
+			this.violated_policy = StateUtilities.stringOrNumber(value).toString();
+		}
+		else if(variableKey.equals(VAR_PROVIDER)){
+			this.provider = StateUtilities.stringOrNumber(value).toString();
+		}
+		else if(variableKey.equals(VAR_REGION)){
+			this.region = StateUtilities.stringOrNumber(value).toString();
+		}
+		else if(variableKey.equals(VAR_TIER)){
+			this.tier = StateUtilities.stringOrNumber(value).toString();
+		}
+		else if(variableKey.equals(VAR_CELLS)){
+			this.cells = StateUtilities.stringOrNumber(value).intValue();
+		}
+		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+			this.proxy_provider = StateUtilities.stringOrNumber(value).toString();
+		}
+		else if(variableKey.equals(VAR_PROXY_REGION)){
+			this.proxy_region = StateUtilities.stringOrNumber(value).toString();
+		}
+		else{
+			throw new UnknownKeyException(variableKey);
+		}
+		return this;
+	}
+
+	@Override
 	public Object get(Object variableKey) {
-		if(variableKey.equals(VAR_PROVIDER)){
+		if(variableKey.equals(VAR_VIOLATED_POLICY)){
+			return violated_policy;
+		}
+		else if(variableKey.equals(VAR_PROVIDER)){
 			return provider;
 		}
 		else if(variableKey.equals(VAR_REGION)){
@@ -65,11 +101,12 @@ public class MapeState implements State {
 
 	@Override
 	public MapeState copy() {
-		return new MapeState(provider, region, tier, cells, proxy_provider, proxy_region);
+		return new MapeState(violated_policy, provider, region, tier, cells, proxy_provider, proxy_region);
 	}
 
 	@Override
 	public String toString() {
 		return StateUtilities.stateToString(this);
 	}
+
 }
