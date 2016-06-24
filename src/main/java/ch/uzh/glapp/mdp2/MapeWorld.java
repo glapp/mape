@@ -1,11 +1,8 @@
 package ch.uzh.glapp.mdp2;
 
 import burlap.mdp.auxiliary.DomainGenerator;
-import burlap.mdp.core.Domain;
 import burlap.mdp.core.action.UniversalActionType;
-import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.SADomain;
-import burlap.mdp.singleagent.environment.Environment;
 
 
 public class MapeWorld implements DomainGenerator {
@@ -23,7 +20,7 @@ public class MapeWorld implements DomainGenerator {
 
 
 	@Override
-	public Domain generateDomain() {
+	public SADomain generateDomain() {
 
 		SADomain domain = new SADomain();
 
@@ -36,11 +33,4 @@ public class MapeWorld implements DomainGenerator {
 		return domain;
 	}
 
-//	public static void main(String[] args){
-//		MapeWorld gen = new MapeWorld();
-//		Domain domain = gen.generateDomain();
-//		State initialState = new MapeState();
-//		// get initial state from Sails
-//
-//	}
 }
