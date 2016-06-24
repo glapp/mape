@@ -87,3 +87,9 @@ buildNumber.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Others #
+##########
+.classpath
+.project
+.settings
