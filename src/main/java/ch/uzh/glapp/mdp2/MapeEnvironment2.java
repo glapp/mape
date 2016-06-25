@@ -7,7 +7,6 @@ import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import ch.uzh.glapp.SailsRetriever;
 import ch.uzh.glapp.model.Cell;
-import ch.uzh.glapp.model.MapeCellObject;
 import ch.uzh.glapp.model.ObjectForMdp;
 
 import java.util.List;
@@ -34,14 +33,15 @@ public class MapeEnvironment2 implements Environment {
 		System.out.println("getCurrentObservation - Size of cells list: "+cells.size());
 
 		String organId = objectForMpd.getOrganId();
-		MapeUtils mu = new MapeUtils();
+		MapeUtils mapeUtils = new MapeUtils();
 
 		// count cells in organ
-		int countCells = mu.countCellsInOrgan(cells, organId);
+		int countCells = mapeUtils.countCellsInOrgan(cells, organId);
 
 
+		System.out.println(objectForMpd.getPolicy());
 		for (Cell cell : cells) {
-//			curState.set(VAR_VIOLATED_POLICY, policy);
+			curState.set(VAR_VIOLATED_POLICY, objectForMpd.getPolicy());
 			curState.set(VAR_PROVIDER, cell.getHost().getLabels().getProvider());
 			curState.set(VAR_REGION, cell.getHost().getLabels().getRegion());
 			curState.set(VAR_TIER, cell.getHost().getLabels().getTier());

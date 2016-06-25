@@ -3,15 +3,15 @@ package ch.uzh.glapp.model;
 
 public class ObjectForMdp {
 
-	private String policyId;
+	private String policy;
 	private String cellId;
 	private String organId;
 	private String appId;
 	private String metric;
 	private float healthyValue;
 
-	public ObjectForMdp(String policyId, String cellId, String organId, String appId, String metric, float healthyValue) {
-		this.policyId = policyId;
+	public ObjectForMdp(String policy, String cellId, String organId, String appId, String metric, float healthyValue) {
+		this.policy = policy;
 		this.cellId = cellId;
 		this.organId = organId;
 		this.appId = appId;
@@ -19,12 +19,12 @@ public class ObjectForMdp {
 		this.healthyValue = healthyValue;
 	}
 
-	public String getPolicyId() {
-		return policyId;
+	public String getPolicy() {
+		return policy;
 	}
 
-	public void setPolicyId(String policyId) {
-		this.policyId = policyId;
+	public void setPolicy(String policy) {
+		this.policy = policy;
 	}
 
 	public String getCellId() {

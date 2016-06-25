@@ -24,12 +24,13 @@ public class MapeState implements MutableState {
 	public String proxy_provider;
 	public String proxy_region;
 
-	private final static List<Object> keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS,
-			VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
+	private final static List<Object> keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER,
+			VAR_CELLS, VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
 
 	public MapeState(){}
 
-	public MapeState(String violated_policy, String provider, String region, String tier, int cells, String proxy_provider, String proxy_region) {
+	public MapeState(String violated_policy, String provider, String region, String tier,
+	                 int cells, String proxy_provider, String proxy_region) {
 		this.violated_policy = violated_policy;
 		this.provider = provider;
 		this.region = region;

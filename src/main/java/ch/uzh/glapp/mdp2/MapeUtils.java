@@ -8,7 +8,7 @@ import java.util.List;
 class MapeUtils {
 
 	private int countCell = 0;
-	public int countCellsInOrgan (List<Cell> cells, String organID) {
+	int countCellsInOrgan(List<Cell> cells, String organID) {
 		for (Cell cell : cells) {
 			if ((cell.getOrganId().getId()).equals(organID)){
 				countCell++;
@@ -18,4 +18,14 @@ class MapeUtils {
 		return countCell;
 	}
 
+	String isProxyOfCell (List<Cell> cells, String organID, String cellID) {
+
+		String proxyID = "";
+		for (Cell cell : cells) {
+			if ((cell.getOrganId().getId()).equals(organID)){
+			}
+		}
+
+		return proxyID;
+	}
 }
