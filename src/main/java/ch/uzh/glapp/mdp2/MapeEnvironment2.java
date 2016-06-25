@@ -7,6 +7,7 @@ import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import ch.uzh.glapp.SailsRetriever;
 import ch.uzh.glapp.model.Cell;
+import ch.uzh.glapp.model.MapeCellObject;
 import ch.uzh.glapp.model.ObjectForMdp;
 
 import java.util.List;
@@ -31,23 +32,20 @@ public class MapeEnvironment2 implements Environment {
 		curState = new MapeState();
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list: "+cells.size());
-		int countCell = 0;
+
+		String organId = objectForMpd.getOrganId();
+		MapeUtils mu = new MapeUtils();
 
 		// count cells in organ
-		for (Cell cell : cells) {
-//			System.out.println(cell.getOrganId().getId() + " -- " + objectForMpd.getOrganId());
-			if ((cell.getOrganId().getId()).equals(objectForMpd.getOrganId())){
-				countCell++;
-			}
-		}
-		System.out.println("Cells in Organ: " + countCell);
+		int countCells = mu.countCellsInOrgan(cells, organId);
+
 
 		for (Cell cell : cells) {
 //			curState.set(VAR_VIOLATED_POLICY, policy);
 			curState.set(VAR_PROVIDER, cell.getHost().getLabels().getProvider());
 			curState.set(VAR_REGION, cell.getHost().getLabels().getRegion());
 			curState.set(VAR_TIER, cell.getHost().getLabels().getTier());
-//			curState.set(VAR_CELLS, cell.getHost().getLabels().adsf);
+			curState.set(VAR_CELLS, countCells);
 //			curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
 //			curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
 		}
