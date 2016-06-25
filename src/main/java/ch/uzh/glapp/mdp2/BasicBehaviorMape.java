@@ -3,12 +3,12 @@ package ch.uzh.glapp.mdp2;
 import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
-import burlap.mdp.core.Domain;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.SADomain;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
+import ch.uzh.glapp.model.ObjectForMdp;
 
 
 public class BasicBehaviorMape {
@@ -19,12 +19,12 @@ public class BasicBehaviorMape {
 	HashableStateFactory hashingFactory;
 	Environment env;
 
-	public BasicBehaviorMape () {
+	public BasicBehaviorMape (ObjectForMdp objectForMdp) {
 		mwdg = new MapeWorld();
 		domain = mwdg.generateDomain();
 		initialState = new MapeState();
 		hashingFactory = new SimpleHashableStateFactory();
-		env = new MapeEnvironment2(domain);
+		env = new MapeEnvironment2(domain, objectForMdp);
 	}
 
 	public void MyQLearningFunc (String outputPath) {
@@ -43,7 +43,19 @@ public class BasicBehaviorMape {
 
 	public static void main (String[] args) {
 
-		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape();
+		// policy triggers MDP
+		// need following infos: proetheus metric, healthy value app level, cell ID, organ ID, app ID
+
+		String policyId = "";
+		String cellId = "";
+		String organId = "576e7b187aa4ab1e1dbe593f";
+		String appId = "";
+		String metric = "";
+		float healthyValue = 0;
+
+		ObjectForMdp o = new ObjectForMdp(policyId, cellId, organId, appId, metric, healthyValue);
+
+		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
 		String outputPath = "output/"; // directory to record results
 
 		basicBehaviorMape.MyQLearningFunc(outputPath);

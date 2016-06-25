@@ -1,0 +1,36 @@
+http://localhost:1337/policy?app_id=576e7b177aa4ab1e1dbe593d
+
+Result:
+
+
+{
+  "rules": [
+    {
+      "application_id": "576e7b177aa4ab1e1dbe593d",
+      "metric": "process_cpu_seconds_total",
+      "createdAt": "2016-06-25T12:48:33.462Z",
+      "updatedAt": "2016-06-25T12:48:33.492Z",
+      "operator": "2",
+      "value": "0.018",
+      "id": "576e7da17aa4ab1e1dbe5954"
+    },
+    {
+      "application_id": "576e7b177aa4ab1e1dbe593d",
+      "metric": "container_network_receive_bytes_total",
+      "createdAt": "2016-06-25T12:48:33.464Z",
+      "updatedAt": "2016-06-25T12:48:33.496Z",
+      "operator": "1",
+      "value": "0.015",
+      "id": "576e7da17aa4ab1e1dbe5956"
+    },
+    {
+      "application_id": "576e7b177aa4ab1e1dbe593d",
+      "metric": "container_cpu_usage_seconds_total",
+      "createdAt": "2016-06-25T12:48:33.463Z",
+      "updatedAt": "2016-06-25T12:48:33.495Z",
+      "operator": "2",
+      "value": "0.011",
+      "id": "576e7da17aa4ab1e1dbe5955"
+    }
+  ]
+}
