@@ -11,12 +11,16 @@ public class MapeActionRemove implements Action {
 
 	@Override
 	public String actionName() {
-		return "Remove";
+		return MapeWorld.ACTION_REMOVE;
 	}
 
 	@Override
 	public Action copy() {
 		return new MapeActionRemove(this.cellName);
+	}
+
+	public String getCellName() {
+		return cellName;
 	}
 
 }
