@@ -22,8 +22,8 @@ public class MapeEnvironment2 implements Environment {
 
 	protected ObjectForMdp objectForMpd;
 	protected final ThreadLocal<Domain> domain = new ThreadLocal<>();
-	protected GenericOOState curState;
-	protected GenericOOState nextState;
+	protected DeepOOState curState;
+	protected DeepOOState nextState;
 
 	public MapeEnvironment2(Domain domain, ObjectForMdp objectForMpd) {
 		this.domain.set(domain);
@@ -67,13 +67,16 @@ public class MapeEnvironment2 implements Environment {
 
 			String cellID = cell.getId();
 
-			curState.addObject(new MapeCell(cellID));
-//				curState.set(VAR_VIOLATED_POLICY, objectForMpd.getPolicy());
+			if(!cell.getIsProxy()) {
+
+				curState.addObject(new MapeCell(cellID));
 //				curState.set(new OOVariableKey(cellID, VAR_VIOLATED_POLICY), objectForMpd.getPolicy());
+
 				curState.set(new OOVariableKey(cellID, VAR_PROVIDER), cell.getHost().getLabels().getProvider());
 				curState.set(new OOVariableKey(cellID, VAR_REGION), cell.getHost().getLabels().getRegion());
 				curState.set(new OOVariableKey(cellID, VAR_TIER), cell.getHost().getLabels().getTier());
 				curState.set(new OOVariableKey(cellID, VAR_CELLS), numOfCells.get(cell.getOrganId().getId()));
+
 //				curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
 //				curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
 
@@ -82,6 +85,7 @@ public class MapeEnvironment2 implements Environment {
 				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_TIER)));
 				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_CELLS)));
 
+			}
 		}
 
 		return curState;
