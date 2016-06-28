@@ -117,4 +117,67 @@ public class MapeCell implements ObjectInstance, MutableState {
 		return cellName;
 	}
 
+
+
+	// getter and setter for YAML serialization
+
+	public String getCellName() {
+		return cellName;
+	}
+
+	public void setCellName(String cellName) {
+		this.cellName = cellName;
+	}
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getTier() {
+		return tier;
+	}
+
+	public void setTier(String tier) {
+		this.tier = tier;
+	}
+
+	public int getCells() {
+		return cells;
+	}
+
+	public void setCells(int cells) {
+		this.cells = cells;
+	}
+
+	public String getProxy_provider() {
+		return proxy_provider;
+	}
+
+	public void setProxy_provider(String proxy_provider) {
+		this.proxy_provider = proxy_provider;
+	}
+
+	public String getProxy_region() {
+		return proxy_region;
+	}
+
+	public void setProxy_region(String proxy_region) {
+		this.proxy_region = proxy_region;
+	}
+
+	public static List<Object> getKeys() {
+		return keys;
+	}
 }
