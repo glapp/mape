@@ -27,8 +27,8 @@ public class BasicBehaviorMape {
 		initialState = new DeepOOState();
 
 		// MapeCell(String cellName, String provider, String region, String tier, int cells, String proxy_provider, String proxy_region)
-		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f8_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
-		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
+//		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f8_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
+//		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
 
 		hashingFactory = new SimpleHashableStateFactory();
 		env = new MapeEnvironment2(domain, objectForMdp);
@@ -54,7 +54,7 @@ public class BasicBehaviorMape {
 		// need following infos from triggering policy:
 		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
 
-		String policy = "process_cpu_seconds_total"; // TODO: that doesn't work.
+		String policy = "process_cpu_seconds_total";
 		String cellId = "57725130644b311b20c4d8a2";
 		String organId = "57724fef644b311b20c4d898";
 		String appId = "57724fee644b311b20c4d896";
