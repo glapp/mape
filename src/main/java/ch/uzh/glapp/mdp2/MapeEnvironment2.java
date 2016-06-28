@@ -36,30 +36,8 @@ public class MapeEnvironment2 implements Environment {
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 
-		String organId = objectForMpd.getOrganId();
 		MapeUtils mapeUtils = new MapeUtils();
-
-		HashMap<String, Integer> numOfCells = new HashMap<String, Integer>();
-
-		for (Cell cell : cells) {
-//			System.out.println(cell.getOrganId().getId());
-			String organID = cell.getOrganId().getId();
-			if (!cell.getIsProxy()) {
-				if (!numOfCells.containsKey(organID)) {
-					numOfCells.put(organID, 1);
-				} else {
-					numOfCells.put(organID, numOfCells.get(organID) + 1);
-				}
-			}
-		}
-
-		for (String name: numOfCells.keySet()){
-
-			System.out.println(name + ": " + numOfCells.get(name));
-		}
-
-		int countCellsInOrgan = mapeUtils.countCellsInOrgan(cells, organId);
-
+		HashMap numOfCellsList = mapeUtils.countCellsInAllOrgans(cells);
 
 		System.out.println("##### " + objectForMpd.getPolicy());
 
@@ -75,7 +53,7 @@ public class MapeEnvironment2 implements Environment {
 				curState.set(new OOVariableKey(cellID, VAR_PROVIDER), cell.getHost().getLabels().getProvider());
 				curState.set(new OOVariableKey(cellID, VAR_REGION), cell.getHost().getLabels().getRegion());
 				curState.set(new OOVariableKey(cellID, VAR_TIER), cell.getHost().getLabels().getTier());
-				curState.set(new OOVariableKey(cellID, VAR_CELLS), numOfCells.get(cell.getOrganId().getId()));
+				curState.set(new OOVariableKey(cellID, VAR_CELLS), numOfCellsList.get(cell.getOrganId().getId()));
 
 //				curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
 //				curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
