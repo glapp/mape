@@ -9,7 +9,8 @@ import java.util.List;
 class MapeUtils {
 
 	private int countCell = 0;
-	int countCellsInOrgan(List<Cell> cells, String organID) {
+
+	public int countCellsInOrgan(List<Cell> cells, String organID) {
 		for (Cell cell : cells) {
 			if ((cell.getOrganId().getId()).equals(organID)){
 				countCell++;
@@ -19,19 +20,7 @@ class MapeUtils {
 		return countCell;
 	}
 
-	String isProxyOfCell (List<Cell> cells, String organID, String cellID) {
-
-		String proxyID = "";
-		for (Cell cell : cells) {
-			if ((cell.getOrganId().getId()).equals(organID)){
-				// TODO
-			}
-		}
-
-		return proxyID;
-	}
-
-	HashMap<String, Integer> countCellsInAllOrgans (List<Cell> cells) {
+	public HashMap<String, Integer> countCellsInAllOrgans (List<Cell> cells) {
 		HashMap<String, Integer> numOfCells = new HashMap<String, Integer>();
 		for (Cell cell : cells) {
 //			System.out.println(cell.getOrganId().getId());

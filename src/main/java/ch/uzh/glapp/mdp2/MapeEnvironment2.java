@@ -36,11 +36,8 @@ public class MapeEnvironment2 implements Environment {
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 
-		String organId = objectForMpd.getOrganId();
 		MapeUtils mapeUtils = new MapeUtils();
-
 		HashMap numOfCellsList = mapeUtils.countCellsInAllOrgans(cells);
-
 
 		System.out.println("##### " + objectForMpd.getPolicy());
 
