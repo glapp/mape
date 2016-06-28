@@ -31,7 +31,7 @@ public class BasicBehaviorMape {
 		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
 
 		hashingFactory = new SimpleHashableStateFactory();
-		env = new MapeEnvironment2(domain);
+		env = new MapeEnvironment2(domain, objectForMdp);
 	}
 
 	public void MyQLearningFunc (String outputPath) {

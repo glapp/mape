@@ -2,6 +2,7 @@ package ch.uzh.glapp.mdp2;
 
 import burlap.mdp.core.Domain;
 import burlap.mdp.core.action.Action;
+import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.oo.state.generic.GenericOOState;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.Environment;
@@ -29,7 +30,7 @@ public class MapeEnvironment2 implements Environment {
 
 	@Override
 	public State currentObservation() {
-		curState = new MapeState();
+		curState = new DeepOOState();
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 

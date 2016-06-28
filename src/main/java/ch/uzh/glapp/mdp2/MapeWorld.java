@@ -1,6 +1,7 @@
 package ch.uzh.glapp.mdp2;
 
 import burlap.mdp.auxiliary.DomainGenerator;
+import burlap.mdp.core.action.UniversalActionType;
 import burlap.mdp.singleagent.oo.OOSADomain;
 
 
@@ -44,7 +45,10 @@ public class MapeWorld implements DomainGenerator {
 		domain.addActionTypes(
 				new UniversalActionType(ACTION_MOVE),
 				new UniversalActionType(ACTION_CREATE),
-				new UniversalActionType(ACTION_DELETE)
+				new UniversalActionType(ACTION_REMOVE)
+//				new MapeActionTypeMove(),
+//				new MapeActionTypeCreate(),
+//				new MapeActionTypeRemove()
 		);
 
 		return domain;
