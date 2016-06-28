@@ -11,7 +11,7 @@ public class MapeActionRemove implements Action {
 
 	@Override
 	public String actionName() {
-		return MapeWorld.ACTION_REMOVE;
+		return MapeWorld.ACTION_REMOVE + " cell " + cellName;
 	}
 
 	@Override

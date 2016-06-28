@@ -41,7 +41,7 @@ public class MapeActionTypeRemove implements ActionType {
 
 	@Override
 	public String typeName() {
-		return "Remove";
+		return MapeWorld.ACTION_REMOVE;
 	}
 
 }
