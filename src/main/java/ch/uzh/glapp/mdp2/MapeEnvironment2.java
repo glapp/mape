@@ -30,32 +30,43 @@ public class MapeEnvironment2 implements Environment {
 	public State currentObservation() {
 		curState = new MapeState();
 		List<Cell> cells = new SailsRetriever().getCellInfo();
-		System.out.println("getCurrentObservation - Size of cells list: "+cells.size());
+		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 
 		String organId = objectForMpd.getOrganId();
 		MapeUtils mapeUtils = new MapeUtils();
 
-		// count cells in organ
-		int countCells = mapeUtils.countCellsInOrgan(cells, organId);
+		int countCellsInOrgan = mapeUtils.countCellsInOrgan(cells, organId);
 
 
-		System.out.println(objectForMpd.getPolicy());
+		System.out.println("##### " + objectForMpd.getPolicy());
+
 		for (Cell cell : cells) {
-			curState.set(VAR_VIOLATED_POLICY, objectForMpd.getPolicy());
-			curState.set(VAR_PROVIDER, cell.getHost().getLabels().getProvider());
-			curState.set(VAR_REGION, cell.getHost().getLabels().getRegion());
-			curState.set(VAR_TIER, cell.getHost().getLabels().getTier());
-			curState.set(VAR_CELLS, countCells);
-//			curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
-//			curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
+			if (objectForMpd.getCellId().equals(cell.getId())) {
+				curState.set(VAR_VIOLATED_POLICY, objectForMpd.getPolicy());
+				curState.set(VAR_PROVIDER, cell.getHost().getLabels().getProvider());
+				curState.set(VAR_REGION, cell.getHost().getLabels().getRegion());
+				curState.set(VAR_TIER, cell.getHost().getLabels().getTier());
+				curState.set(VAR_CELLS, countCellsInOrgan);
+//				curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
+//				curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
+
+//				System.out.println(curState.violated_policy);
+//				System.out.println(curState.provider);
+//				System.out.println(curState.region);
+//				System.out.println(curState.tier);
+//				System.out.println(curState.cells);
+			}
 		}
 
-		return null;
+		return curState;
 	}
 
 	@Override
 	public EnvironmentOutcome executeAction(Action action) {
-		return null;
+
+		nextState = curState.copy();
+		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, 0.8, true);
+		return envOutCome;
 	}
 
 	@Override

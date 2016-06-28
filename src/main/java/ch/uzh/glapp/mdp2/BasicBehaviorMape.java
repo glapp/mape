@@ -44,12 +44,13 @@ public class BasicBehaviorMape {
 	public static void main (String[] args) {
 
 		// policy triggers MDP
-		// need following infos: proetheus metric, healthy value app level, cell ID, organ ID, app ID
+		// need following infos from triggering policy:
+		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
 
 		String policy = "process_cpu_seconds_total"; // TODO: that doesn't work.
-		String cellId = "";
-		String organId = "576e7b187aa4ab1e1dbe593f";
-		String appId = "";
+		String cellId = "57725130644b311b20c4d8a2";
+		String organId = "57724fef644b311b20c4d898";
+		String appId = "57724fee644b311b20c4d896";
 		String metric = "";
 		float healthyValue = 0;
 

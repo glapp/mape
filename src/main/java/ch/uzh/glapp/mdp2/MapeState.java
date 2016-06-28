@@ -48,25 +48,25 @@ public class MapeState implements MutableState {
 	@Override
 	public MutableState set(Object variableKey, Object value) {
 		if(variableKey.equals(VAR_VIOLATED_POLICY)){
-			this.violated_policy = StateUtilities.stringOrNumber(value).toString();
+			this.violated_policy = (String)value;
 		}
 		else if(variableKey.equals(VAR_PROVIDER)){
-			this.provider = StateUtilities.stringOrNumber(value).toString();
+			this.provider = (String)value;
 		}
 		else if(variableKey.equals(VAR_REGION)){
-			this.region = StateUtilities.stringOrNumber(value).toString();
+			this.region = (String)value;
 		}
 		else if(variableKey.equals(VAR_TIER)){
-			this.tier = StateUtilities.stringOrNumber(value).toString();
+			this.tier = (String)value;
 		}
 		else if(variableKey.equals(VAR_CELLS)){
 			this.cells = StateUtilities.stringOrNumber(value).intValue();
 		}
 		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-			this.proxy_provider = StateUtilities.stringOrNumber(value).toString();
+			this.proxy_provider = (String)value;
 		}
 		else if(variableKey.equals(VAR_PROXY_REGION)){
-			this.proxy_region = StateUtilities.stringOrNumber(value).toString();
+			this.proxy_region = (String)value;
 		}
 		else{
 			throw new UnknownKeyException(variableKey);

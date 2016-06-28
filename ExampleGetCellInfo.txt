@@ -7,7 +7,7 @@
           "80"
         ],
         "environment": [
-          "REDIS_HOST=576e7b177aa4ab1e1dbe593d_redis",
+          "REDIS_HOST=57724fee644b311b20c4d896_redis",
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "LANG=C.UTF-8",
           "GPG_KEY=C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF",
@@ -15,8 +15,8 @@
           "PYTHON_PIP_VERSION=8.1.0"
         ],
         "originalName": "voting-app",
-        "name": "576e7b177aa4ab1e1dbe593d_voting-app",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_voting-app",
+        "application_id": "57724fee644b311b20c4d896",
         "labels": [],
         "expose": [
           "80"
@@ -24,14 +24,14 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.606Z",
-        "updatedAt": "2016-06-25T12:39:49.928Z",
-        "id": "576e7b187aa4ab1e1dbe593f"
+        "createdAt": "2016-06-28T10:22:39.590Z",
+        "updatedAt": "2016-06-28T10:25:58.635Z",
+        "id": "57724fef644b311b20c4d898"
       },
       "host": {
         "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
         "status": "Healthy",
         "containers": "9",
         "reservedCPUs": "0 / 1",
@@ -45,24 +45,29 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
+        "updatedAt": "2016-06-28T10:29:45.048Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
       },
       "environment": [],
       "isProxy": false,
-      "createdAt": "2016-06-25T12:41:54.474Z",
-      "updatedAt": "2016-06-25T12:43:42.553Z",
-      "container_id": "fb28294ef3f737410b8123ba5f7b9746651e114b38341b47ccdf8fe038d08710",
-      "id": "576e7c127aa4ab1e1dbe5949"
+      "createdAt": "2016-06-28T10:28:00.460Z",
+      "updatedAt": "2016-06-28T10:29:44.614Z",
+      "container_id": "f8c2696e2e45f854b6656f018dbfbb4406dfd55f02e25e4e7e6c83dca6c73d09",
+      "id": "57725130644b311b20c4d8a2"
     },
+
+
+
+
+
     {
       "organ_id": {
         "image": "clabs/worker",
         "environment": [
-          "REDIS_HOST=576e7b177aa4ab1e1dbe593d_redis",
-          "DB_HOST=576e7b177aa4ab1e1dbe593d_db",
+          "REDIS_HOST=57724fee644b311b20c4d896_redis",
+          "DB_HOST=57724fee644b311b20c4d896_db",
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "LANG=C.UTF-8",
           "JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64",
@@ -70,22 +75,22 @@
           "JAVA_DEBIAN_VERSION=7u95-2.6.4-1~deb8u1"
         ],
         "originalName": "worker",
-        "name": "576e7b177aa4ab1e1dbe593d_worker",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_worker",
+        "application_id": "57724fee644b311b20c4d896",
         "labels": [],
         "ports": [],
         "expose": [],
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.611Z",
-        "updatedAt": "2016-06-25T12:39:59.043Z",
-        "id": "576e7b187aa4ab1e1dbe5941"
+        "createdAt": "2016-06-28T10:22:39.594Z",
+        "updatedAt": "2016-06-28T10:25:49.838Z",
+        "id": "57724fef644b311b20c4d89a"
       },
       "host": {
         "name": "DO-master",
-        "ip": "146.185.156.19",
-        "iD": "DPBT:PL6K:WBYL:4CXN:OY5L:FQPY:LIID:ZNPP:WP2U:XETZ:6QNE:S5ZL",
+        "ip": "95.85.5.108",
+        "iD": "5XNC:I7N5:DG6L:LJO7:Y77H:CR3C:EJNG:K4NG:5AYI:WS5N:K2C5:XENF",
         "status": "Healthy",
         "containers": "8",
         "reservedCPUs": "0 / 1",
@@ -99,17 +104,17 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.758Z",
+        "updatedAt": "2016-06-28T10:29:45.050Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.355Z",
-        "id": "576e7ab27aa4ab1e1dbe593b"
+        "createdAt": "2016-06-28T10:21:39.876Z",
+        "id": "57724fb3644b311b20c4d894"
       },
       "environment": [],
       "isProxy": false,
-      "createdAt": "2016-06-25T12:41:54.480Z",
-      "updatedAt": "2016-06-25T12:43:42.455Z",
-      "container_id": "aed4d08d589bdf519d7c0f2a2cfb9531ef94bd705bd6ee3692d6d9b84742867b",
-      "id": "576e7c127aa4ab1e1dbe594b"
+      "createdAt": "2016-06-28T10:28:00.464Z",
+      "updatedAt": "2016-06-28T10:29:44.544Z",
+      "container_id": "d5bdb7481fe5a6417ea388a772e98128fb9eca969969040bae3370f4b9d86653",
+      "id": "57725130644b311b20c4d8a4"
     },
     {
       "organ_id": {
@@ -118,15 +123,15 @@
           "80"
         ],
         "environment": [
-          "DB_HOST=576e7b177aa4ab1e1dbe593d_db",
+          "DB_HOST=57724fee644b311b20c4d896_db",
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "NODE_VERSION=0.10.43",
           "NPM_VERSION=2.14.1",
           "PORT=80"
         ],
         "originalName": "result-app",
-        "name": "576e7b177aa4ab1e1dbe593d_result-app",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_result-app",
+        "application_id": "57724fee644b311b20c4d896",
         "labels": [],
         "expose": [
           "80"
@@ -134,68 +139,14 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.609Z",
-        "updatedAt": "2016-06-25T12:39:51.118Z",
-        "id": "576e7b187aa4ab1e1dbe5940"
-      },
-      "host": {
-        "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
-        "status": "Healthy",
-        "containers": "9",
-        "reservedCPUs": "0 / 1",
-        "reservedMemory": "0 B / 519.2 MiB",
-        "labels": {
-          "executiondriver": null,
-          "kernelversion": "3.16.0-4-amd64",
-          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
-          "provider": "digitalocean",
-          "region": "us",
-          "storagedriver": "aufs",
-          "tier": "1"
-        },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
-        "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
-      },
-      "environment": [],
-      "isProxy": false,
-      "createdAt": "2016-06-25T12:41:54.476Z",
-      "updatedAt": "2016-06-25T12:43:42.957Z",
-      "container_id": "e8ee679ceb9cea1a1c26c80a2913bf57fd37d1eb13f51059a7751d6d10907206",
-      "id": "576e7c127aa4ab1e1dbe594a"
-    },
-    {
-      "organ_id": {
-        "image": "redis",
-        "expose": [
-          "6379"
-        ],
-        "originalName": "redis",
-        "name": "576e7b177aa4ab1e1dbe593d_redis",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
-        "environment": [
-          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-          "GOSU_VERSION=1.7",
-          "REDIS_VERSION=3.2.1",
-          "REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-3.2.1.tar.gz",
-          "REDIS_DOWNLOAD_SHA1=26c0fc282369121b4e278523fce122910b65fbbf"
-        ],
-        "labels": [],
-        "ports": [],
-        "volumes": [],
-        "volumes_from": [],
-        "ready": true,
-        "createdAt": "2016-06-25T12:37:44.613Z",
-        "updatedAt": "2016-06-25T12:38:56.040Z",
-        "id": "576e7b187aa4ab1e1dbe5942"
+        "createdAt": "2016-06-28T10:22:39.592Z",
+        "updatedAt": "2016-06-28T10:26:00.408Z",
+        "id": "57724fef644b311b20c4d899"
       },
       "host": {
         "name": "DO-master",
-        "ip": "146.185.156.19",
-        "iD": "DPBT:PL6K:WBYL:4CXN:OY5L:FQPY:LIID:ZNPP:WP2U:XETZ:6QNE:S5ZL",
+        "ip": "95.85.5.108",
+        "iD": "5XNC:I7N5:DG6L:LJO7:Y77H:CR3C:EJNG:K4NG:5AYI:WS5N:K2C5:XENF",
         "status": "Healthy",
         "containers": "8",
         "reservedCPUs": "0 / 1",
@@ -209,24 +160,24 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.758Z",
+        "updatedAt": "2016-06-28T10:29:45.050Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.355Z",
-        "id": "576e7ab27aa4ab1e1dbe593b"
+        "createdAt": "2016-06-28T10:21:39.876Z",
+        "id": "57724fb3644b311b20c4d894"
       },
       "environment": [],
       "isProxy": false,
-      "createdAt": "2016-06-25T12:41:54.481Z",
-      "updatedAt": "2016-06-25T12:43:42.461Z",
-      "container_id": "e9a550c60707f96541ef1de17ead6c516ef4999df77bb92afe782eb6218b2c68",
-      "id": "576e7c127aa4ab1e1dbe594c"
+      "createdAt": "2016-06-28T10:28:00.462Z",
+      "updatedAt": "2016-06-28T10:29:44.554Z",
+      "container_id": "f8a63067d18e6f32ba9356e98858940f962052d45c8c775e883ccf8f58aef211",
+      "id": "57725130644b311b20c4d8a3"
     },
     {
       "organ_id": {
         "image": "postgres:9.4",
         "originalName": "db",
-        "name": "576e7b177aa4ab1e1dbe593d_db",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_db",
+        "application_id": "57724fee644b311b20c4d896",
         "environment": [
           "PATH=/usr/lib/postgresql/9.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "GOSU_VERSION=1.7",
@@ -243,14 +194,14 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.615Z",
-        "updatedAt": "2016-06-25T12:39:46.750Z",
-        "id": "576e7b187aa4ab1e1dbe5943"
+        "createdAt": "2016-06-28T10:22:39.598Z",
+        "updatedAt": "2016-06-28T10:25:15.262Z",
+        "id": "57724fef644b311b20c4d89c"
       },
       "host": {
         "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
         "status": "Healthy",
         "containers": "9",
         "reservedCPUs": "0 / 1",
@@ -264,71 +215,17 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
+        "updatedAt": "2016-06-28T10:29:45.048Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
       },
       "environment": [],
       "isProxy": false,
-      "createdAt": "2016-06-25T12:41:54.483Z",
-      "updatedAt": "2016-06-25T12:43:42.960Z",
-      "container_id": "71acfa57be02a2018ebea42f023ba9662ba2a5fd3e3e7415511180803322d218",
-      "id": "576e7c127aa4ab1e1dbe594d"
-    },
-    {
-      "organ_id": {
-        "image": "clabs/worker",
-        "environment": [
-          "REDIS_HOST=576e7b177aa4ab1e1dbe593d_redis",
-          "DB_HOST=576e7b177aa4ab1e1dbe593d_db",
-          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-          "LANG=C.UTF-8",
-          "JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64",
-          "JAVA_VERSION=7u95",
-          "JAVA_DEBIAN_VERSION=7u95-2.6.4-1~deb8u1"
-        ],
-        "originalName": "worker",
-        "name": "576e7b177aa4ab1e1dbe593d_worker",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
-        "labels": [],
-        "ports": [],
-        "expose": [],
-        "volumes": [],
-        "volumes_from": [],
-        "ready": true,
-        "createdAt": "2016-06-25T12:37:44.611Z",
-        "updatedAt": "2016-06-25T12:39:59.043Z",
-        "id": "576e7b187aa4ab1e1dbe5941"
-      },
-      "host": {
-        "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
-        "status": "Healthy",
-        "containers": "9",
-        "reservedCPUs": "0 / 1",
-        "reservedMemory": "0 B / 519.2 MiB",
-        "labels": {
-          "executiondriver": null,
-          "kernelversion": "3.16.0-4-amd64",
-          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
-          "provider": "digitalocean",
-          "region": "us",
-          "storagedriver": "aufs",
-          "tier": "1"
-        },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
-        "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
-      },
-      "isProxy": true,
-      "environment": [],
-      "createdAt": "2016-06-25T12:41:56.298Z",
-      "updatedAt": "2016-06-25T12:43:42.923Z",
-      "container_id": "cc26edc6e1e6a2491ab608760b0cbd5744cf6913fcf42328af4a045731feb845",
-      "id": "576e7c147aa4ab1e1dbe594e"
+      "createdAt": "2016-06-28T10:28:00.465Z",
+      "updatedAt": "2016-06-28T10:29:44.803Z",
+      "container_id": "ee6ac844efdc4d5bcdcf0293355a83450500cf0fa4dfb72e1761109d5b723c21",
+      "id": "57725130644b311b20c4d8a5"
     },
     {
       "organ_id": {
@@ -337,8 +234,8 @@
           "6379"
         ],
         "originalName": "redis",
-        "name": "576e7b177aa4ab1e1dbe593d_redis",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_redis",
+        "application_id": "57724fee644b311b20c4d896",
         "environment": [
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "GOSU_VERSION=1.7",
@@ -351,14 +248,70 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.613Z",
-        "updatedAt": "2016-06-25T12:38:56.040Z",
-        "id": "576e7b187aa4ab1e1dbe5942"
+        "createdAt": "2016-06-28T10:22:39.595Z",
+        "updatedAt": "2016-06-28T10:23:37.495Z",
+        "id": "57724fef644b311b20c4d89b"
+      },
+      "host": {
+        "name": "DO-01",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
+        "status": "Healthy",
+        "containers": "9",
+        "reservedCPUs": "0 / 1",
+        "reservedMemory": "0 B / 519.2 MiB",
+        "labels": {
+          "executiondriver": null,
+          "kernelversion": "3.16.0-4-amd64",
+          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
+          "provider": "digitalocean",
+          "region": "us",
+          "storagedriver": "aufs",
+          "tier": "1"
+        },
+        "updatedAt": "2016-06-28T10:29:45.048Z",
+        "serverVersion": "1.11.2",
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
+      },
+      "environment": [],
+      "isProxy": false,
+      "createdAt": "2016-06-28T10:28:00.467Z",
+      "updatedAt": "2016-06-28T10:29:44.722Z",
+      "container_id": "7bb864ec1ba0f8312882335bab9a3e087da2898b725d1369d38e706f48dc1810",
+      "id": "57725130644b311b20c4d8a6"
+    },
+    {
+      "organ_id": {
+        "image": "clabs/result-app",
+        "ports": [
+          "80"
+        ],
+        "environment": [
+          "DB_HOST=57724fee644b311b20c4d896_db",
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "NODE_VERSION=0.10.43",
+          "NPM_VERSION=2.14.1",
+          "PORT=80"
+        ],
+        "originalName": "result-app",
+        "name": "57724fee644b311b20c4d896_result-app",
+        "application_id": "57724fee644b311b20c4d896",
+        "labels": [],
+        "expose": [
+          "80"
+        ],
+        "volumes": [],
+        "volumes_from": [],
+        "ready": true,
+        "createdAt": "2016-06-28T10:22:39.592Z",
+        "updatedAt": "2016-06-28T10:26:00.408Z",
+        "id": "57724fef644b311b20c4d899"
       },
       "host": {
         "name": "DO-master",
-        "ip": "146.185.156.19",
-        "iD": "DPBT:PL6K:WBYL:4CXN:OY5L:FQPY:LIID:ZNPP:WP2U:XETZ:6QNE:S5ZL",
+        "ip": "95.85.5.108",
+        "iD": "5XNC:I7N5:DG6L:LJO7:Y77H:CR3C:EJNG:K4NG:5AYI:WS5N:K2C5:XENF",
         "status": "Healthy",
         "containers": "8",
         "reservedCPUs": "0 / 1",
@@ -372,17 +325,72 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.758Z",
+        "updatedAt": "2016-06-28T10:29:45.050Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.355Z",
-        "id": "576e7ab27aa4ab1e1dbe593b"
+        "createdAt": "2016-06-28T10:21:39.876Z",
+        "id": "57724fb3644b311b20c4d894"
       },
       "isProxy": true,
       "environment": [],
-      "createdAt": "2016-06-25T12:41:56.312Z",
-      "updatedAt": "2016-06-25T12:43:42.469Z",
-      "container_id": "f6336801aa241d66494376099d028769628e4d007fc3682cab54152244e3fd1f",
-      "id": "576e7c147aa4ab1e1dbe594f"
+      "createdAt": "2016-06-28T10:28:02.810Z",
+      "updatedAt": "2016-06-28T10:29:44.530Z",
+      "container_id": "7ea08983c6cab92a2dc4d494d7a7a637e6b31685be479f737f7a270d7dda8651",
+      "published_port": "32768",
+      "id": "57725132644b311b20c4d8a7"
+    },
+    {
+      "organ_id": {
+        "image": "clabs/worker",
+        "environment": [
+          "REDIS_HOST=57724fee644b311b20c4d896_redis",
+          "DB_HOST=57724fee644b311b20c4d896_db",
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG=C.UTF-8",
+          "JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64",
+          "JAVA_VERSION=7u95",
+          "JAVA_DEBIAN_VERSION=7u95-2.6.4-1~deb8u1"
+        ],
+        "originalName": "worker",
+        "name": "57724fee644b311b20c4d896_worker",
+        "application_id": "57724fee644b311b20c4d896",
+        "labels": [],
+        "ports": [],
+        "expose": [],
+        "volumes": [],
+        "volumes_from": [],
+        "ready": true,
+        "createdAt": "2016-06-28T10:22:39.594Z",
+        "updatedAt": "2016-06-28T10:25:49.838Z",
+        "id": "57724fef644b311b20c4d89a"
+      },
+      "host": {
+        "name": "DO-01",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
+        "status": "Healthy",
+        "containers": "9",
+        "reservedCPUs": "0 / 1",
+        "reservedMemory": "0 B / 519.2 MiB",
+        "labels": {
+          "executiondriver": null,
+          "kernelversion": "3.16.0-4-amd64",
+          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
+          "provider": "digitalocean",
+          "region": "us",
+          "storagedriver": "aufs",
+          "tier": "1"
+        },
+        "updatedAt": "2016-06-28T10:29:45.048Z",
+        "serverVersion": "1.11.2",
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
+      },
+      "isProxy": true,
+      "environment": [],
+      "createdAt": "2016-06-28T10:28:02.845Z",
+      "updatedAt": "2016-06-28T10:29:44.823Z",
+      "container_id": "85c50a5cba4f8e652fb0779212ce0a1eaf4a78c93d352923f61b2360e38d8c40",
+      "id": "57725132644b311b20c4d8a8"
     },
     {
       "organ_id": {
@@ -391,7 +399,7 @@
           "80"
         ],
         "environment": [
-          "REDIS_HOST=576e7b177aa4ab1e1dbe593d_redis",
+          "REDIS_HOST=57724fee644b311b20c4d896_redis",
           "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "LANG=C.UTF-8",
           "GPG_KEY=C01E1CAD5EA2C4F0B8E3571504C367C218ADD4FF",
@@ -399,8 +407,8 @@
           "PYTHON_PIP_VERSION=8.1.0"
         ],
         "originalName": "voting-app",
-        "name": "576e7b177aa4ab1e1dbe593d_voting-app",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_voting-app",
+        "application_id": "57724fee644b311b20c4d896",
         "labels": [],
         "expose": [
           "80"
@@ -408,16 +416,16 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.606Z",
-        "updatedAt": "2016-06-25T12:39:49.928Z",
-        "id": "576e7b187aa4ab1e1dbe593f"
+        "createdAt": "2016-06-28T10:22:39.590Z",
+        "updatedAt": "2016-06-28T10:25:58.635Z",
+        "id": "57724fef644b311b20c4d898"
       },
       "host": {
-        "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
+        "name": "DO-master",
+        "ip": "95.85.5.108",
+        "iD": "5XNC:I7N5:DG6L:LJO7:Y77H:CR3C:EJNG:K4NG:5AYI:WS5N:K2C5:XENF",
         "status": "Healthy",
-        "containers": "9",
+        "containers": "8",
         "reservedCPUs": "0 / 1",
         "reservedMemory": "0 B / 519.2 MiB",
         "labels": {
@@ -425,29 +433,29 @@
           "kernelversion": "3.16.0-4-amd64",
           "operatingsystem": "Debian GNU/Linux 8 (jessie)",
           "provider": "digitalocean",
-          "region": "us",
+          "region": "eu",
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
+        "updatedAt": "2016-06-28T10:29:45.050Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
+        "createdAt": "2016-06-28T10:21:39.876Z",
+        "id": "57724fb3644b311b20c4d894"
       },
       "isProxy": true,
       "environment": [],
-      "createdAt": "2016-06-25T12:42:36.877Z",
-      "updatedAt": "2016-06-25T12:43:42.975Z",
-      "container_id": "4768367821ae3f3b82d896d63059967d1acea23a9db5cd7bb153aa7ef933e80e",
-      "published_port": "32768",
-      "id": "576e7c3c7aa4ab1e1dbe5950"
+      "createdAt": "2016-06-28T10:28:30.203Z",
+      "updatedAt": "2016-06-28T10:29:44.546Z",
+      "container_id": "e9456a3f1d21577783054f71f4c8780428931b12c2eaf455c0fa64619209277b",
+      "published_port": "32769",
+      "id": "5772514e644b311b20c4d8ac"
     },
     {
       "organ_id": {
         "image": "postgres:9.4",
         "originalName": "db",
-        "name": "576e7b177aa4ab1e1dbe593d_db",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
+        "name": "57724fee644b311b20c4d896_db",
+        "application_id": "57724fee644b311b20c4d896",
         "environment": [
           "PATH=/usr/lib/postgresql/9.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
           "GOSU_VERSION=1.7",
@@ -464,70 +472,14 @@
         "volumes": [],
         "volumes_from": [],
         "ready": true,
-        "createdAt": "2016-06-25T12:37:44.615Z",
-        "updatedAt": "2016-06-25T12:39:46.750Z",
-        "id": "576e7b187aa4ab1e1dbe5943"
-      },
-      "host": {
-        "name": "DO-master",
-        "ip": "146.185.156.19",
-        "iD": "DPBT:PL6K:WBYL:4CXN:OY5L:FQPY:LIID:ZNPP:WP2U:XETZ:6QNE:S5ZL",
-        "status": "Healthy",
-        "containers": "8",
-        "reservedCPUs": "0 / 1",
-        "reservedMemory": "0 B / 519.2 MiB",
-        "labels": {
-          "executiondriver": null,
-          "kernelversion": "3.16.0-4-amd64",
-          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
-          "provider": "digitalocean",
-          "region": "eu",
-          "storagedriver": "aufs",
-          "tier": "1"
-        },
-        "updatedAt": "2016-06-25T13:00:01.758Z",
-        "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.355Z",
-        "id": "576e7ab27aa4ab1e1dbe593b"
-      },
-      "isProxy": true,
-      "environment": [],
-      "createdAt": "2016-06-25T12:42:36.886Z",
-      "updatedAt": "2016-06-25T12:43:42.476Z",
-      "container_id": "2b036050f1aee46c3efb47d5aaadd97b450c957ad7f16b472a8ae6b88662965b",
-      "id": "576e7c3c7aa4ab1e1dbe5951"
-    },
-    {
-      "organ_id": {
-        "image": "clabs/result-app",
-        "ports": [
-          "80"
-        ],
-        "environment": [
-          "DB_HOST=576e7b177aa4ab1e1dbe593d_db",
-          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-          "NODE_VERSION=0.10.43",
-          "NPM_VERSION=2.14.1",
-          "PORT=80"
-        ],
-        "originalName": "result-app",
-        "name": "576e7b177aa4ab1e1dbe593d_result-app",
-        "application_id": "576e7b177aa4ab1e1dbe593d",
-        "labels": [],
-        "expose": [
-          "80"
-        ],
-        "volumes": [],
-        "volumes_from": [],
-        "ready": true,
-        "createdAt": "2016-06-25T12:37:44.609Z",
-        "updatedAt": "2016-06-25T12:39:51.118Z",
-        "id": "576e7b187aa4ab1e1dbe5940"
+        "createdAt": "2016-06-28T10:22:39.598Z",
+        "updatedAt": "2016-06-28T10:25:15.262Z",
+        "id": "57724fef644b311b20c4d89c"
       },
       "host": {
         "name": "DO-01",
-        "ip": "208.68.38.208",
-        "iD": "236T:IXEJ:CRJ7:SRI4:N7VQ:EUNY:2TKN:MNLE:SKFO:ZCWJ:7TV2:RANY",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
         "status": "Healthy",
         "containers": "9",
         "reservedCPUs": "0 / 1",
@@ -541,18 +493,71 @@
           "storagedriver": "aufs",
           "tier": "1"
         },
-        "updatedAt": "2016-06-25T13:00:01.749Z",
+        "updatedAt": "2016-06-28T10:29:45.048Z",
         "serverVersion": "1.11.2",
-        "createdAt": "2016-06-25T12:36:02.342Z",
-        "id": "576e7ab27aa4ab1e1dbe593a"
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
       },
       "isProxy": true,
       "environment": [],
-      "createdAt": "2016-06-25T12:42:48.534Z",
-      "updatedAt": "2016-06-25T12:43:42.829Z",
-      "container_id": "bb5315ed46aa96660b6f4d82cc74f5130e29cc7c4f8e1670feac582d9663c470",
-      "published_port": "32769",
-      "id": "576e7c487aa4ab1e1dbe5952"
+      "createdAt": "2016-06-28T10:28:30.216Z",
+      "updatedAt": "2016-06-28T10:29:44.620Z",
+      "container_id": "ce68fef776cc6935ec7128b38ac93371cb0320e4ad3bf4332a26053757a18a5f",
+      "id": "5772514e644b311b20c4d8ad"
+    },
+    {
+      "organ_id": {
+        "image": "redis",
+        "expose": [
+          "6379"
+        ],
+        "originalName": "redis",
+        "name": "57724fee644b311b20c4d896_redis",
+        "application_id": "57724fee644b311b20c4d896",
+        "environment": [
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "GOSU_VERSION=1.7",
+          "REDIS_VERSION=3.2.1",
+          "REDIS_DOWNLOAD_URL=http://download.redis.io/releases/redis-3.2.1.tar.gz",
+          "REDIS_DOWNLOAD_SHA1=26c0fc282369121b4e278523fce122910b65fbbf"
+        ],
+        "labels": [],
+        "ports": [],
+        "volumes": [],
+        "volumes_from": [],
+        "ready": true,
+        "createdAt": "2016-06-28T10:22:39.595Z",
+        "updatedAt": "2016-06-28T10:23:37.495Z",
+        "id": "57724fef644b311b20c4d89b"
+      },
+      "host": {
+        "name": "DO-01",
+        "ip": "192.81.216.116",
+        "iD": "RYAQ:DYRP:55AO:KZKD:3GHJ:WND7:S6FW:BEPR:TYO7:V5R2:4O5M:RIRK",
+        "status": "Healthy",
+        "containers": "9",
+        "reservedCPUs": "0 / 1",
+        "reservedMemory": "0 B / 519.2 MiB",
+        "labels": {
+          "executiondriver": null,
+          "kernelversion": "3.16.0-4-amd64",
+          "operatingsystem": "Debian GNU/Linux 8 (jessie)",
+          "provider": "digitalocean",
+          "region": "us",
+          "storagedriver": "aufs",
+          "tier": "1"
+        },
+        "updatedAt": "2016-06-28T10:29:45.048Z",
+        "serverVersion": "1.11.2",
+        "createdAt": "2016-06-28T10:21:39.865Z",
+        "id": "57724fb3644b311b20c4d893"
+      },
+      "isProxy": true,
+      "environment": [],
+      "createdAt": "2016-06-28T10:28:30.279Z",
+      "updatedAt": "2016-06-28T10:29:44.708Z",
+      "container_id": "36263b8fc30eac550cee5a7d5c77616eca7f65ba76489d1095f34c99907b9501",
+      "id": "5772514e644b311b20c4d8ae"
     }
   ]
 }

@@ -14,7 +14,7 @@ class MapeUtils {
 				countCell++;
 			}
 		}
-		System.out.println("Cells in Organ " + organID + ": " + countCell);
+//		System.out.println("Cells in Organ " + organID + ": " + countCell);
 		return countCell;
 	}
 
@@ -23,6 +23,7 @@ class MapeUtils {
 		String proxyID = "";
 		for (Cell cell : cells) {
 			if ((cell.getOrganId().getId()).equals(organID)){
+				// TODO
 			}
 		}
 
