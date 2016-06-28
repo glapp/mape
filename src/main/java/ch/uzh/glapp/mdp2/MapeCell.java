@@ -24,8 +24,8 @@ public class MapeCell implements ObjectInstance, MutableState {
 	private String region;
 	private String tier;
 	private int cells;
-//	private String proxy_provider;
-//	private String proxy_region;
+	private String proxy_provider;
+	private String proxy_region;
 	
 	private final static List<Object> keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS, VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
 
@@ -33,19 +33,19 @@ public class MapeCell implements ObjectInstance, MutableState {
 		this.cellName = cellName;
 	}
 
-	public MapeCell(String cellName, String provider, String region, String tier, int cells/*, String proxy_provider, String proxy_region*/) {
+	public MapeCell(String cellName, String provider, String region, String tier, int cells, String proxy_provider, String proxy_region) {
 		this.cellName = cellName;
 		this.provider = provider;
 		this.region = region;
 		this.cells = cells;
 		this.tier = tier;
-//		this.proxy_provider = proxy_provider;
-//		this.proxy_region = proxy_region;
+		this.proxy_provider = proxy_provider;
+		this.proxy_region = proxy_region;
 	}
 
 	@Override
 	public State copy() {
-		return new MapeCell(this.cellName, this.provider, this.region, this.tier, this.cells/*, this.proxy_provider, this.proxy_region*/);
+		return new MapeCell(this.cellName, this.provider, this.region, this.tier, this.cells, this.proxy_provider, this.proxy_region);
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class MapeCell implements ObjectInstance, MutableState {
 		}
 		else if(variableKey.equals(VAR_CELLS)){
 			return cells;
-//		}
-//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-//			return proxy_provider;
-//		}
-//		else if(variableKey.equals(VAR_PROXY_REGION)){
-//			return proxy_region;
+		}
+		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+			return proxy_provider;
+		}
+		else if(variableKey.equals(VAR_PROXY_REGION)){
+			return proxy_region;
 		} else {
 			throw new UnknownKeyException(variableKey);
 		}
@@ -90,12 +90,12 @@ public class MapeCell implements ObjectInstance, MutableState {
 		}
 		else if(variableKey.equals(VAR_CELLS)){
 			cells  = StateUtilities.stringOrNumber(value).intValue();
-//		}
-//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-//			proxy_provider = (String)value;
-//		}
-//		else if(variableKey.equals(VAR_PROXY_REGION)){
-//			proxy_region  = (String)value;
+		}
+		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+			proxy_provider = (String)value;
+		}
+		else if(variableKey.equals(VAR_PROXY_REGION)){
+			proxy_region  = (String)value;
 		} else {
 			throw new UnknownKeyException(variableKey);
 		}
@@ -109,7 +109,7 @@ public class MapeCell implements ObjectInstance, MutableState {
 
 	@Override
 	public ObjectInstance copyWithName(String arg0) {
-		return new MapeCell(arg0, this.provider, this.region, this.tier, this.cells/*, this.proxy_provider, this.proxy_region*/);
+		return new MapeCell(arg0, this.provider, this.region, this.tier, this.cells, this.proxy_provider, this.proxy_region);
 	}
 
 	@Override
