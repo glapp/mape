@@ -15,16 +15,19 @@ public class MapeWorld implements DomainGenerator {
 	public static final String DO = "Digital Ocean";
 	public static final String AZURE = "Microsoft Azure";
 	public static final String GOOGLE = "Google Compute Engine";
+	public static final String[] PROVIDER_LIST = {AWS, DO, AZURE, GOOGLE};
 
 	public static final String VAR_REGION = "region";
 	public static final String NA = "North America";
 	public static final String EU = "Europe";
 	public static final String ASIA = "Asia";
+	public static final String[] REGION_LIST = {NA, EU, ASIA};
 
 	public static final String VAR_TIER = "tier";
-	public static final String TIER1 = "Tier 1";
-	public static final String TIER2 = "Tier 2";
-	public static final String TIER3 = "Tier 3";
+	public static final String TIER1 = "1";
+	public static final String TIER2 = "2";
+	public static final String TIER3 = "3";
+	public static final String[] TIER_LIST = {TIER1, TIER2, TIER3};
 
 	public static final String VAR_CELLS = "cells";
 	public static final String VAR_PROXY_PROVIDER = "proxy_provider";
