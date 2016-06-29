@@ -4,7 +4,6 @@ import burlap.mdp.core.Domain;
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.oo.state.OOVariableKey;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
-import burlap.mdp.core.oo.state.generic.GenericOOState;
 import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;

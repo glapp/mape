@@ -28,5 +28,4 @@ public class MapeActionMove implements Action {
 	public Action copy() {
 		return new MapeActionMove(this.cellName, this.provider, this.region, this.tier/*, this.proxy_provider, this.proxy_region*/);
 	}
-
 }

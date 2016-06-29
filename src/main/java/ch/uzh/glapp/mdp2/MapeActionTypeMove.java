@@ -31,7 +31,7 @@ public class MapeActionTypeMove implements ActionType {
 				for (String newRegion : REGION_LIST) {
 					for (String newTier : TIER_LIST) {
 						if (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion) || !newTier.equals(currentTier)) {
-							actionList.add(new MapeActionMove(cellName, newProvider, newRegion, currentTier));
+							actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
 						}
 					}
 				}
