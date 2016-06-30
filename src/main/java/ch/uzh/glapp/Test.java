@@ -4,7 +4,7 @@
 //import burlap.oomdp.core.objects.ObjectInstance;
 //import burlap.oomdp.core.states.MutableState;
 //import burlap.oomdp.core.states.State;
-//import ch.uzh.glapp.model.Cell;
+//import ch.uzh.glapp.model.cellinfo.Cell;
 //
 //import java.util.HashMap;
 //import java.util.List;

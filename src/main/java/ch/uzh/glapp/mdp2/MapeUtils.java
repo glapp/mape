@@ -1,6 +1,6 @@
 package ch.uzh.glapp.mdp2;
 
-import ch.uzh.glapp.model.Cell;
+import ch.uzh.glapp.model.cellinfo.Cell;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ class MapeUtils {
 				countCell++;
 			}
 		}
-//		System.out.println("Cells in Organ " + organID + ": " + countCell);
+//		System.out.println("CellDataObject in Organ " + organID + ": " + countCell);
 		return countCell;
 	}
 

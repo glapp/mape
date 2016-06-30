@@ -1,8 +1,9 @@
-package ch.uzh.glapp.model;
+package ch.uzh.glapp.model.cellinfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Generated;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

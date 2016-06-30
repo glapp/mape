@@ -1,6 +1,6 @@
-package ch.uzh.glapp.model;
+package ch.uzh.glapp.model.ruleinfo;
 
-public class Rules {
+public class Rule {
 	private String application_id;
 	private String metric;
 	private String createdAt;

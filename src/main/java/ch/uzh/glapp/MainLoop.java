@@ -1,7 +1,7 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.Cell;
-import ch.uzh.glapp.model.Rules;
+import ch.uzh.glapp.model.cellinfo.Cell;
+import ch.uzh.glapp.model.ruleinfo.Rule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +49,12 @@ public class MainLoop {
         // 2. Prometheus metrics
         // 3. infrastructure details
         // at the end of Stage 1 we hve a list of healthiness values.
-        // overall healthiness value is between 0 and 1. It's an average of all rules. A rule has 0 or 1.
+        // overall healthiness value is between 0 and 1. It's an average of all ruleinfo. A rule has 0 or 1.
 
         // Healthiness, App ID, list of actions and transitions.
 
 
-        List<Rules> rulesList;
+        List<Rule> rulesList;
         double value = 0.017;
 		int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
 
@@ -89,7 +89,7 @@ public class MainLoop {
 		// get state from stage 1
 		// solve MDP --> policies (policy iteration)
         // Possible statuses: HEALTHY, WARNING, UNHEALTHY
-        // HEALTHY means: all rules are satisfied.
+        // HEALTHY means: all ruleinfo are satisfied.
 		// 1. give a random healthiness values to the set of next states or update the value based
 		// 		on previous iterations.
 		// 2. choose the action that lead to the state with the highest healthiness value

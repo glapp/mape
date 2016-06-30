@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model;
+package ch.uzh.glapp.model.cellinfo;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

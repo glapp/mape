@@ -1,6 +1,12 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.*;
+import ch.uzh.glapp.model.appinfo.AppDataObject;
+import ch.uzh.glapp.model.cellinfo.Cell;
+import ch.uzh.glapp.model.cellinfo.CellDataObject;
+import ch.uzh.glapp.model.hostinfo.Host;
+import ch.uzh.glapp.model.hostinfo.HostDataObject;
+import ch.uzh.glapp.model.ruleinfo.RuleDataObject;
+import ch.uzh.glapp.model.ruleinfo.Rule;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -12,6 +18,35 @@ import java.util.Map;
 public class SailsRetriever {
 
 	private String urlSails = "http://localhost:1337";
+
+
+	public List<Host> getHostInfo () {
+
+		String paramSails = "/host/infoMape";
+		List<Host> hostList = new ArrayList<>();
+		HttpRequest con = new HttpRequest();
+		String str = "";
+		try {
+			str = con.connect(urlSails, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		String jsonString;
+		HostDataObject jobj;
+
+		jsonString = str;
+		//System.out.println(jsonString);
+		jobj = new Gson().fromJson(jsonString, HostDataObject.class);
+
+		int sizeHosts = jobj.getHosts().size();
+		for (int i = 0; i<sizeHosts; i++) {
+			hostList.add(jobj.getHosts().get(i));
+//			System.out.println("Get Host: "+ hostList.get(i));
+		}
+
+		return hostList;
+	}
 
 
 	public Map<String, String> getAppIds () {
@@ -30,11 +65,11 @@ public class SailsRetriever {
 		}
 
 		String jsonString;
-		Applications jobj;
+		AppDataObject jobj;
 
 		jsonString = str;
 //		System.out.println(jsonString);
-		jobj = new Gson().fromJson(jsonString, Applications.class);
+		jobj = new Gson().fromJson(jsonString, AppDataObject.class);
 
 		int sizeApplications = jobj.getApps().size();
 //		System.out.println();
@@ -47,10 +82,10 @@ public class SailsRetriever {
 	}
 
 
-    public List<Rules> getRules (String appId) {
+    public List<Rule> getRules (String appId) {
 
 		String paramSails = "/policy?app_id=" + appId;
-		List<Rules> myList = new ArrayList<>();
+		List<Rule> myList = new ArrayList<>();
 
         HttpRequest con = new HttpRequest();
         String str = "";
@@ -61,11 +96,11 @@ public class SailsRetriever {
         }
 
         String jsonString;
-        PolicyDataObject jobj;
+        RuleDataObject jobj;
 
         jsonString = str;
         //System.out.println(jsonString);
-        jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
+        jobj = new Gson().fromJson(jsonString, RuleDataObject.class);
 
 		int sizeRules = jobj.getRules().size();
 		for (int i = 0; i<sizeRules; i++) {
@@ -82,10 +117,6 @@ public class SailsRetriever {
 
 		String paramSails = "/application/getCellInfo";
 		List<Cell> cellList = new ArrayList<>();
-		String provider;
-		String region;
-		String tier;
-		int cells;
 
 //		System.out.println(urlSails+paramSails);
 
@@ -98,11 +129,11 @@ public class SailsRetriever {
 		}
 
 		String jsonString;
-		Cells jobj;
+		CellDataObject jobj;
 
 		jsonString = str;
 //		System.out.println(jsonString);
-		jobj = new Gson().fromJson(jsonString, Cells.class);
+		jobj = new Gson().fromJson(jsonString, CellDataObject.class);
 
 		int sizeCells = jobj.getCells().size();
 //		System.out.println(sizeCells);
