@@ -6,12 +6,22 @@ import java.io.IOException;
 
 
 public class PrometheusRetriever {
+	
+	private String prometheusHost;
+	
+	public PrometheusRetriever() {
+		this.prometheusHost = "37.139.31.31";
+	}
+	
+	public PrometheusRetriever(String prometheusHost) {
+		this.prometheusHost = prometheusHost;
+	}
 
     public float retrieveInt (String query) {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
 
-        String prometheusHost = "95.85.11.38";
+//        String prometheusHost = "95.85.11.38";
         int prometheusPort = 19090;
 
         long currTime = System.currentTimeMillis()/1000;

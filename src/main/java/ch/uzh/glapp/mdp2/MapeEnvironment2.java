@@ -38,7 +38,7 @@ public class MapeEnvironment2 implements Environment {
 		MapeUtils mapeUtils = new MapeUtils();
 		HashMap numOfCellsList = mapeUtils.countCellsInAllOrgans(cells);
 
-		System.out.println("##### " + objectForMpd.getPolicy());
+		System.out.println("##### " + objectForMpd.getMetric());
 
 		for (Cell cell : cells) {
 
@@ -47,7 +47,7 @@ public class MapeEnvironment2 implements Environment {
 			if(!cell.getIsProxy()) {
 
 				curState.addObject(new MapeCell(cellID));
-//				curState.set(new OOVariableKey(cellID, VAR_VIOLATED_POLICY), objectForMpd.getPolicy());
+//				curState.set(new OOVariableKey(cellID, VAR_VIOLATED_POLICY), objectForMpd.getMetric());
 
 				curState.set(new OOVariableKey(cellID, VAR_PROVIDER), cell.getHost().getLabels().getProvider());
 				curState.set(new OOVariableKey(cellID, VAR_REGION), cell.getHost().getLabels().getRegion());

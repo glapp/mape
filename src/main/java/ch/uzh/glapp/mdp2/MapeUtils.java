@@ -39,4 +39,16 @@ class MapeUtils {
 //		}
 		return numOfCells;
 	}
+	
+	/**
+	 * Function to check if a host from given cloud provider, region and tier is available
+	 * @param provider
+	 * @param region
+	 * @param tier
+	 * @return true if the host is available and false otherwise
+	 */
+	public boolean isAvailable(String provider, String region, String tier) {
+		
+		return false;
+	}
 }

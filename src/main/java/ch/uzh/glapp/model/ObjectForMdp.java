@@ -3,28 +3,26 @@ package ch.uzh.glapp.model;
 
 public class ObjectForMdp {
 
-	private String policy;
+	private String metric;
 	private String cellId;
 	private String organId;
 	private String appId;
-	private String metric;
-	private float healthyValue;
+	private float healthinessValue;
 
-	public ObjectForMdp(String policy, String cellId, String organId, String appId, String metric, float healthyValue) {
-		this.policy = policy;
+	public ObjectForMdp(String metric, String cellId, String organId, String appId, float healthinessValue) {
+		this.metric = metric;
 		this.cellId = cellId;
 		this.organId = organId;
 		this.appId = appId;
+		this.healthinessValue = healthinessValue;
+	}
+
+	public String getMetric() {
+		return metric;
+	}
+
+	public void setMetric(String metric) {
 		this.metric = metric;
-		this.healthyValue = healthyValue;
-	}
-
-	public String getPolicy() {
-		return policy;
-	}
-
-	public void setPolicy(String policy) {
-		this.policy = policy;
 	}
 
 	public String getCellId() {
@@ -51,19 +49,11 @@ public class ObjectForMdp {
 		this.appId = appId;
 	}
 
-	public String getMetric() {
-		return metric;
-	}
-
-	public void setMetric(String metric) {
-		this.metric = metric;
-	}
-
 	public float getHealthyValue() {
-		return healthyValue;
+		return healthinessValue;
 	}
 
 	public void setHealthyValue(float healthyValue) {
-		this.healthyValue = healthyValue;
+		this.healthinessValue = healthyValue;
 	}
 }
