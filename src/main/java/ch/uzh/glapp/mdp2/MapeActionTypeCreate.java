@@ -1,17 +1,44 @@
 package ch.uzh.glapp.mdp2;
 
+import static ch.uzh.glapp.mdp2.MapeWorld.CLASS_CELL;
+import static ch.uzh.glapp.mdp2.MapeWorld.PROVIDER_LIST;
+import static ch.uzh.glapp.mdp2.MapeWorld.REGION_LIST;
+import static ch.uzh.glapp.mdp2.MapeWorld.TIER_LIST;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.action.ActionType;
+import burlap.mdp.core.oo.state.ObjectInstance;
+import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
 
 public class MapeActionTypeCreate implements ActionType {
 
 	@Override
-	public List<Action> allApplicableActions(State arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Action> allApplicableActions(State state) {
+		List<Action> actionList = new ArrayList<Action>();
+		
+		List<ObjectInstance> cells = ((DeepOOState)state).objectsOfClass(CLASS_CELL);
+		for (ObjectInstance cell : cells) {
+			// String cellName, String provider, String region, String tier
+			
+			String cellName = ((MapeCell)cell).name();
+//			String currentProvider = ((MapeCell)cell).getProvider();
+//			String currentRegion = ((MapeCell)cell).getRegion();
+//			String currentTier = ((MapeCell)cell).getTier();
+		
+			for (String newProvider : PROVIDER_LIST) {
+				for (String newRegion : REGION_LIST) {
+					for (String newTier : TIER_LIST) {
+						actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
+					}
+				}
+			}
+		}
+		
+		return actionList;
 	}
 
 	@Override

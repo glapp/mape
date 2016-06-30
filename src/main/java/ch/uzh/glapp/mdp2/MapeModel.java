@@ -8,6 +8,9 @@ import burlap.mdp.singleagent.model.SampleModel;
 
 import static ch.uzh.glapp.mdp2.MapeWorld.*;
 
+/*
+ * Class for simulation only
+ */
 public class MapeModel implements SampleModel {
 
 	@Override
