@@ -1,12 +1,6 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.CLASS_CELL;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_CELLS;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_PROVIDER;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_PROXY_PROVIDER;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_PROXY_REGION;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_REGION;
-import static ch.uzh.glapp.mdp2.MapeWorld.VAR_TIER;
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 import java.util.Arrays;
 import java.util.List;

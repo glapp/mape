@@ -1,4 +1,6 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
+
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +11,10 @@ import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
-
-public class MapeActionTypeMove implements ActionType {
+public class MapeActionTypeCreate implements ActionType {
 
 	@Override
 	public List<Action> allApplicableActions(State state) {
-		
 		List<Action> actionList = new ArrayList<Action>();
 		
 		List<ObjectInstance> cells = ((DeepOOState)state).objectsOfClass(CLASS_CELL);
@@ -23,16 +22,14 @@ public class MapeActionTypeMove implements ActionType {
 			// String cellName, String provider, String region, String tier
 			
 			String cellName = ((MapeCell)cell).name();
-			String currentProvider = ((MapeCell)cell).getProvider();
-			String currentRegion = ((MapeCell)cell).getRegion();
-			String currentTier = ((MapeCell)cell).getTier();
+//			String currentProvider = ((MapeCell)cell).getProvider();
+//			String currentRegion = ((MapeCell)cell).getRegion();
+//			String currentTier = ((MapeCell)cell).getTier();
 		
 			for (String newProvider : PROVIDER_LIST) {
 				for (String newRegion : REGION_LIST) {
 					for (String newTier : TIER_LIST) {
-						if (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion) || !newTier.equals(currentTier)) {
-							actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
-						}
+						actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
 					}
 				}
 			}
@@ -52,8 +49,8 @@ public class MapeActionTypeMove implements ActionType {
 			// 3: tier
 			// 4: proxy_provider
 			// 5: proxy_region
-//			return new MapeActionMove(params[0], params[1], params[2], params[3], params[4], params[5]);
-			return new MapeActionMove(params[0], params[1], params[2], params[3]);
+//			return new MapeActionCreate(params[0], params[1], params[2], params[3], params[4], params[5]);
+			return new MapeActionCreate(params[0], params[1], params[2], params[3]);
 		} else {
 			// TODO throw exception
 			return null;
@@ -62,7 +59,7 @@ public class MapeActionTypeMove implements ActionType {
 
 	@Override
 	public String typeName() {
-		return ACTION_MOVE;
+		return MapeWorld.ACTION_CREATE;
 	}
 
 }

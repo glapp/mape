@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.state.MutableState;
@@ -10,7 +10,7 @@ import burlap.mdp.core.state.annotations.DeepCopyState;
 import java.util.Arrays;
 import java.util.List;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 
 @DeepCopyState

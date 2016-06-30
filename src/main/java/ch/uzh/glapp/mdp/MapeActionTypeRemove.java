@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 public class MapeActionTypeRemove implements ActionType {
 
