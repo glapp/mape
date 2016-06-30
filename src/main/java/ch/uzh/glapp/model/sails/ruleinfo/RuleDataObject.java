@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model.ruleinfo;
+package ch.uzh.glapp.model.sails.ruleinfo;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model;
+package ch.uzh.glapp.model.prometheus;
 
 public class Metric {
 	private String group;

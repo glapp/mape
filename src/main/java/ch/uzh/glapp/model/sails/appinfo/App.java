@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model.appinfo;
+package ch.uzh.glapp.model.sails.appinfo;
 
 //import javax.annotation.Generated;
 //

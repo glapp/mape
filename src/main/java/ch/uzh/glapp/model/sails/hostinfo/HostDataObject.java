@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model.hostinfo;
+package ch.uzh.glapp.model.sails.hostinfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

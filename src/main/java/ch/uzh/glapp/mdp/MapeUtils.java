@@ -1,6 +1,6 @@
 package ch.uzh.glapp.mdp;
 
-import ch.uzh.glapp.model.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.cellinfo.Cell;
 
 import java.util.HashMap;
 import java.util.List;

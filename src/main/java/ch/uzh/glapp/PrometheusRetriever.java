@@ -1,6 +1,6 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.PrometheusDataObject;
+import ch.uzh.glapp.model.prometheus.PrometheusDataObject;
 import com.google.gson.Gson;
 import java.io.IOException;
 

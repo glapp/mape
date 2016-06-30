@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model.cellinfo;
+package ch.uzh.glapp.model.sails.cellinfo;
 
 import java.util.ArrayList;
 import java.util.List;

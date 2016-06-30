@@ -1,4 +1,4 @@
-package ch.uzh.glapp.model;
+package ch.uzh.glapp.model.prometheus;
 
 import java.util.List;
 

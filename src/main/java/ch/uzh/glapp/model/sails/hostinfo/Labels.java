@@ -1,33 +1,20 @@
-package ch.uzh.glapp.model.cellinfo;
+package ch.uzh.glapp.model.sails.hostinfo;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Generated;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 @Generated("org.jsonschema2pojo")
 public class Labels {
 
-	@SerializedName("executiondriver")
-	@Expose
 	private Object executiondriver;
-	@SerializedName("kernelversion")
-	@Expose
 	private String kernelversion;
-	@SerializedName("operatingsystem")
-	@Expose
 	private String operatingsystem;
-	@SerializedName("provider")
-	@Expose
 	private String provider;
-	@SerializedName("region")
-	@Expose
 	private String region;
-	@SerializedName("storagedriver")
-	@Expose
 	private String storagedriver;
-	@SerializedName("tier")
-	@Expose
 	private String tier;
+	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 	/**
 	 *
@@ -153,6 +140,14 @@ public class Labels {
 	 */
 	public void setTier(String tier) {
 		this.tier = tier;
+	}
+
+	public Map<String, Object> getAdditionalProperties() {
+		return this.additionalProperties;
+	}
+
+	public void setAdditionalProperty(String name, Object value) {
+		this.additionalProperties.put(name, value);
 	}
 
 }

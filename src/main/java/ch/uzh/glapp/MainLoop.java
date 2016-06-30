@@ -1,7 +1,6 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.cellinfo.Cell;
-import ch.uzh.glapp.model.ruleinfo.Rule;
+import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
 import java.io.IOException;

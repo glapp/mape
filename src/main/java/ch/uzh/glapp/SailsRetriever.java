@@ -1,12 +1,12 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.appinfo.AppDataObject;
-import ch.uzh.glapp.model.cellinfo.Cell;
-import ch.uzh.glapp.model.cellinfo.CellDataObject;
-import ch.uzh.glapp.model.hostinfo.Host;
-import ch.uzh.glapp.model.hostinfo.HostDataObject;
-import ch.uzh.glapp.model.ruleinfo.RuleDataObject;
-import ch.uzh.glapp.model.ruleinfo.Rule;
+import ch.uzh.glapp.model.sails.appinfo.AppDataObject;
+import ch.uzh.glapp.model.sails.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.cellinfo.CellDataObject;
+import ch.uzh.glapp.model.sails.hostinfo.Host;
+import ch.uzh.glapp.model.sails.hostinfo.HostDataObject;
+import ch.uzh.glapp.model.sails.ruleinfo.RuleDataObject;
+import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import com.google.gson.Gson;
 
 import java.io.IOException;

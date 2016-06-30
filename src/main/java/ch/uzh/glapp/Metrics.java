@@ -80,7 +80,7 @@ public class Metrics {
 		
 		JsonObject responeData = responseObject.get("data").getAsJsonObject();
 		
-//		System.out.println("ch.uzh.glapp.model.Result: " + responeData.get("result"));
+//		System.out.println("ch.uzh.glapp.model.prometheus.Result: " + responeData.get("result"));
 		
 		JsonArray result = responeData.get("result").getAsJsonArray();
 		

@@ -1,46 +1,49 @@
-package ch.uzh.glapp.model.hostinfo;
+package ch.uzh.glapp.model.sails.cellinfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Generated;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @Generated("org.jsonschema2pojo")
 public class Host {
 
-	private List<Cell> cells = new ArrayList<Cell>();
+	@SerializedName("name")
+	@Expose
 	private String name;
+	@SerializedName("ip")
+	@Expose
 	private String ip;
+	@SerializedName("iD")
+	@Expose
 	private String iD;
+	@SerializedName("status")
+	@Expose
 	private String status;
+	@SerializedName("containers")
+	@Expose
 	private String containers;
+	@SerializedName("reservedCPUs")
+	@Expose
 	private String reservedCPUs;
+	@SerializedName("reservedMemory")
+	@Expose
 	private String reservedMemory;
+	@SerializedName("labels")
+	@Expose
 	private Labels labels;
+	@SerializedName("updatedAt")
+	@Expose
 	private String updatedAt;
+	@SerializedName("serverVersion")
+	@Expose
 	private String serverVersion;
+	@SerializedName("createdAt")
+	@Expose
 	private String createdAt;
+	@SerializedName("id")
+	@Expose
 	private String id;
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-	/**
-	 *
-	 * @return
-	 * The cells
-	 */
-	public List<Cell> getCells() {
-		return cells;
-	}
-
-	/**
-	 *
-	 * @param cells
-	 * The cells
-	 */
-	public void setCells(List<Cell> cells) {
-		this.cells = cells;
-	}
 
 	/**
 	 *
@@ -256,14 +259,6 @@ public class Host {
 	 */
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
-
-	public void setAdditionalProperty(String name, Object value) {
-		this.additionalProperties.put(name, value);
 	}
 
 }
