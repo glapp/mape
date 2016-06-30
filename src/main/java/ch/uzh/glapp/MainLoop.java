@@ -71,7 +71,7 @@ public class MainLoop {
         String smoothed = "[30s]";
         String query = "rate(" + ruleName + smoothed+ ")"; // rate(process_cpu_seconds_total[30s])
 
-        PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
+        PrometheusRetriever prometheusRetriever = new PrometheusRetriever("95.85.11.77");
         float metric = prometheusRetriever.retrieveInt(query);
         System.out.println("Result from Prometheus API call (metric): " + metric);
 
