@@ -61,6 +61,8 @@ public class MainLoop {
 
     			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + value);
 
+    			// TODO: (Adrian) change the rate computation into function in MapeUtil class
+    			// NOTE: consider other computation of metric value that may be meaningful
     			int smoothed = 30; // second
     			String query = "rate(" + metricName + "[" + smoothed + "s])"; // rate(process_cpu_seconds_total[30s])
     			
@@ -73,13 +75,21 @@ public class MainLoop {
     			float metricValue = prometheusRetriever.retrieveInt(query);
     			System.out.println("Query result " + metricValue);
 
-    			// TODO: implement function to calculate the degree of compliance (healthiness) and normalize to range [0,1] 
-    			
+    			// TODO: (Adrian) implement function to calculate the degree of compliance/healthiness and normalize to range [0,1]
+    			// e.g. threshold = 50% -> 70% utilization means 20% difference above threshold. difference / threshold = 0.2 / 0.5 = 0.4
     			boolean compliant = mapeUtils.compareInt(value, metricValue, function);
+    			
+//    			double degreeOfHealthiness = some function;
+    			
     			System.out.print("Comparison result: ");
     			if (!compliant) {
     				System.out.println("Not compliant, trigger MDP.");
     				appHealthiness += 0 * weight;
+    				
+//    				appHealthiness += degreeOfHealthiness * weight;
+    				
+    				// change the violation flag for MDP to true
+    				
     			} else {
     				System.out.println("Compliant, proceed to next rule.");
     				appHealthiness += 1 * weight;
@@ -111,12 +121,11 @@ public class MainLoop {
     		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
     		String outputPath = "output/" + appId + "/"; // directory to record results
 
-    		basicBehaviorMape.MyQLearningFunc(outputPath);
-    		
     		// solve MDP (Q-Learning)
     		basicBehaviorMape.MyQLearningFunc(outputPath);
+    		
 
-
+    		// TODO: (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
     		// Stage 3: Send actions to the platform
     		// connect to sails API.
     		// pass three pieces of information:
