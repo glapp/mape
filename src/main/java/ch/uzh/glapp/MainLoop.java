@@ -35,20 +35,16 @@ public class MainLoop {
 			}
 
 		}
-		
 		System.out.println();
 
-//        int appListSize = appList.size();
-//        for (int i = 0; i< appListSize; i++) {
-//            System.out.println("App ID: " + appList.get(i));
-//        }
-        
+		// Start processing the applications one by one
         for (int i = 0; i < appList.size(); ++i) {
         	appId = appList.get(i);
         	
-        	System.out.println("Processing app. App ID: " + appList.get(i));
+        	System.out.println("MAPE started for app ID: " + appList.get(i));
+        	System.out.println("Stage 1: Get data and compute healthiness value");
         	
-        	// Stage 1 get Data:
+        	// Stage 1: Get data and compute healthiness value
             // 1. Retrieve user defined policy (a set of rules)
         	List<Rule> ruleList;
         	ruleList = sa.getRules(appId);
@@ -98,6 +94,11 @@ public class MainLoop {
             
             
 
+    		// Stage 2: MDP
+    		System.out.println("Stage 2: Perform MDP");
+    		
+    		// get state from stage 1
+    		
     		// Simulate a violated rule
     		String violoatedMetric = "process_cpu_seconds_total";
     		String violatedCellId = "57725130644b311b20c4d8a2";
@@ -108,25 +109,15 @@ public class MainLoop {
     		ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, healthinessValue);
 
     		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
-    		String outputPath = "output/"; // directory to record results
+    		String outputPath = "output/" + appId + "/"; // directory to record results
 
     		basicBehaviorMape.MyQLearningFunc(outputPath);
     		
-    		
-    		// 3. infrastructure details
-            
-
-    		// TODO: Stage 2 MDP calculations.
-    		// get state from stage 1
-    		// solve MDP --> policies (policy iteration)
-            // Possible statuses: HEALTHY, WARNING, UNHEALTHY
-            // HEALTHY means: all rules are satisfied.
-    		// 1. give a random healthiness values to the set of next states or update the value based
-    		// 		on previous iterations.
-    		// 2. choose the action that lead to the state with the highest healthiness value
+    		// solve MDP (Q-Learning)
+    		basicBehaviorMape.MyQLearningFunc(outputPath);
 
 
-    		// TODO: Stage 3 send actions to the platform.
+    		// Stage 3: Send actions to the platform
     		// connect to sails API.
     		// pass three pieces of information:
     		// 1. action (move, delete, create container)
