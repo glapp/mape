@@ -1,9 +1,9 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.cellinfo.Cell;
+import ch.uzh.glapp.model.ruleinfo.Rule;
 import ch.uzh.glapp.mdp2.BasicBehaviorMape;
-import ch.uzh.glapp.model.Cell;
 import ch.uzh.glapp.model.ObjectForMdp;
-import ch.uzh.glapp.model.Rules;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +50,13 @@ public class MainLoop {
         	
         	// Stage 1 get Data:
             // 1. Retrieve user defined policy (a set of rules)
-        	List<Rules> ruleList;
+        	List<Rule> ruleList;
         	ruleList = sa.getRules(appId);
         	double appHealthiness = 0;
         	double appHealthinessNormalized; // [0,1]
         	double totalWeight = 0;
         	
-    		for (Rules rule : ruleList) {
+    		for (Rule rule : ruleList) {
     			String metricName = rule.getMetric();
     			double value = Double.parseDouble(rule.getValue());
     			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
