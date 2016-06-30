@@ -1,6 +1,4 @@
-package ch.uzh.glapp.model;
-
-import java.util.List;
+package ch.uzh.glapp.model.prometheus;
 
 public class PrometheusDataObject {
     private String status;

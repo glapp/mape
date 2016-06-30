@@ -8,7 +8,7 @@ import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import ch.uzh.glapp.SailsRetriever;
-import ch.uzh.glapp.model.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.ObjectForMdp;
 
 import java.util.HashMap;
