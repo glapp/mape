@@ -15,9 +15,9 @@ public class MainLoop {
 
 
 	    List<Cell> cells = new SailsRetriever().getCellInfo();
-	    for (Cell c : cells) {
-		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
-	    }
+//	    for (Cell c : cells) {
+//		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
+//	    }
 
         Map<String, String> appMap;
 		List<String> appList = new ArrayList<>();

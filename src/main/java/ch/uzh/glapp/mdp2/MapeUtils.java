@@ -33,10 +33,10 @@ class MapeUtils {
 				}
 			}
 		}
-		for (String name: numOfCells.keySet()){
-
-			System.out.println(name + ": " + numOfCells.get(name));
-		}
+//		for (String name: numOfCells.keySet()){
+//
+//			System.out.println(name + ": " + numOfCells.get(name));
+//		}
 		return numOfCells;
 	}
 }
