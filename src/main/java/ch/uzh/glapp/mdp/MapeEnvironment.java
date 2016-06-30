@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import burlap.mdp.core.Domain;
 import burlap.mdp.core.action.Action;
@@ -14,7 +14,7 @@ import ch.uzh.glapp.model.ObjectForMdp;
 import java.util.HashMap;
 import java.util.List;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 
 public class MapeEnvironment implements Environment {

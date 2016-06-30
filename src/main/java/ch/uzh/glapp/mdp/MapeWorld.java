@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import burlap.mdp.auxiliary.DomainGenerator;
 import burlap.mdp.core.action.UniversalActionType;

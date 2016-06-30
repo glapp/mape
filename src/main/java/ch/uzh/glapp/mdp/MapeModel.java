@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
@@ -6,7 +6,7 @@ import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import burlap.mdp.singleagent.model.SampleModel;
 
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
+import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 /*
  * Class for simulation only

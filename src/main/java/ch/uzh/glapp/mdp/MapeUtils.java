@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import ch.uzh.glapp.model.cellinfo.Cell;
 

@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp2;
+package ch.uzh.glapp.mdp;
 
 import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.learning.LearningAgent;
