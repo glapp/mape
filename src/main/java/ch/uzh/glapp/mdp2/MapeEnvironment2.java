@@ -58,14 +58,13 @@ public class MapeEnvironment2 implements Environment {
 //				curState.set(VAR_PROXY_PROVIDER, cell.getHost().getLabels().adsf);
 //				curState.set(VAR_PROXY_REGION, cell.getHost().getLabels().adsf);
 
-				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_PROVIDER)));
-				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_REGION)));
-				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_TIER)));
-				System.out.println(curState.get(new OOVariableKey(cell.getId(), VAR_CELLS)));
-
+				Object tProvider =  curState.get(new OOVariableKey(cell.getId(), VAR_PROVIDER));
+				Object tRegion = curState.get(new OOVariableKey(cell.getId(), VAR_REGION));
+				Object tTier = curState.get(new OOVariableKey(cell.getId(), VAR_TIER));
+				Object tCells = curState.get(new OOVariableKey(cell.getId(), VAR_CELLS));
+				System.out.println(tRegion + ", " + tTier + ", " + tCells + ", " + tProvider);
 			}
 		}
-
 		return curState;
 	}
 
