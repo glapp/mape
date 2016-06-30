@@ -54,14 +54,13 @@ public class BasicBehaviorMape {
 		// need following infos from triggering policy:
 		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
 
-		String policy = "process_cpu_seconds_total";
+		String metric = "process_cpu_seconds_total";
 		String cellId = "57725130644b311b20c4d8a2";
 		String organId = "57724fef644b311b20c4d898";
 		String appId = "57724fee644b311b20c4d896";
-		String metric = "";
 		float healthyValue = 0;
 
-		ObjectForMdp o = new ObjectForMdp(policy, cellId, organId, appId, metric, healthyValue);
+		ObjectForMdp o = new ObjectForMdp(metric, cellId, organId, appId, healthyValue);
 
 		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
 		String outputPath = "output/"; // directory to record results

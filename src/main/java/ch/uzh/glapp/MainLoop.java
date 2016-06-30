@@ -1,6 +1,8 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.mdp2.BasicBehaviorMape;
 import ch.uzh.glapp.model.Cell;
+import ch.uzh.glapp.model.ObjectForMdp;
 import ch.uzh.glapp.model.Rules;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,13 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MainLoop {
-
-	private static final int RULE = 0;
-
     public static void main (String[] args) throws IOException {
+    	MapeUtils mapeUtils = new MapeUtils();
+    	SailsRetriever sa = new SailsRetriever();
 
-
-	    List<Cell> cells = new SailsRetriever().getCellInfo();
+//	    List<Cell> cells = sa.getCellInfo();
 //	    for (Cell c : cells) {
 //		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
 //	    }
@@ -23,8 +23,10 @@ public class MainLoop {
 		List<String> appList = new ArrayList<>();
 		String appId;
 
-        appMap = new SailsRetriever().getAppIds();
+        appMap = sa.getAppIds();
 
+        // Display app status
+        System.out.println("Application status:");
 		for (String appKey: appMap.keySet()){
 			String value = appMap.get(appKey);
 			System.out.println(appKey + " " + value);
@@ -33,76 +35,107 @@ public class MainLoop {
 			}
 
 		}
+		
+		System.out.println();
 
-        int appListSize = appList.size();
-        for (int i = 0; i< appListSize; i++) {
-            System.out.println("App ID: " + appList.get(i));
+//        int appListSize = appList.size();
+//        for (int i = 0; i< appListSize; i++) {
+//            System.out.println("App ID: " + appList.get(i));
+//        }
+        
+        for (int i = 0; i < appList.size(); ++i) {
+        	appId = appList.get(i);
+        	
+        	System.out.println("Processing app. App ID: " + appList.get(i));
+        	
+        	// Stage 1 get Data:
+            // 1. Retrieve user defined policy (a set of rules)
+        	List<Rules> ruleList;
+        	ruleList = sa.getRules(appId);
+        	double appHealthiness = 0;
+        	double appHealthinessNormalized; // [0,1]
+        	double totalWeight = 0;
+        	
+    		for (Rules rule : ruleList) {
+    			String metricName = rule.getMetric();
+    			double value = Double.parseDouble(rule.getValue());
+    			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
+    			double weight = 1;
+    			totalWeight += weight;
+
+    			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + value);
+
+    			int smoothed = 30; // second
+    			String query = "rate(" + metricName + "[" + smoothed + "s])"; // rate(process_cpu_seconds_total[30s])
+    			
+    			System.out.println("Query to Prometheus: " + query);
+    			System.out.println();
+
+    			// 2. Retrieve Prometheus metrics
+
+    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever("95.85.11.77");
+    			float metricValue = prometheusRetriever.retrieveInt(query);
+    			System.out.println("Query result " + metricValue);
+
+    			// TODO: implement function to calculate the degree of compliance (healthiness) and normalize to range [0,1] 
+    			
+    			boolean compliant = mapeUtils.compareInt(value, metricValue, function);
+    			System.out.print("Comparison result: ");
+    			if (!compliant) {
+    				System.out.println("Not compliant, trigger MDP.");
+    				appHealthiness += 0 * weight;
+    			} else {
+    				System.out.println("Compliant, proceed to next rule.");
+    				appHealthiness += 1 * weight;
+    			}
+    			
+    			System.out.println();
+    		}
+
+            // application healthiness value is normalized to range [0,1]. It's an weighted average of healthiness value of all rules.
+    		appHealthinessNormalized = appHealthiness / totalWeight;
+    		System.out.println("Application healthiness value (normalized): " + appHealthinessNormalized);
+            
+            
+
+    		// Simulate a violated rule
+    		String violoatedMetric = "process_cpu_seconds_total";
+    		String violatedCellId = "57725130644b311b20c4d8a2";
+    		String violatedOrganId = "57724fef644b311b20c4d898";
+    		String violatedAppId = "57724fee644b311b20c4d896";
+    		float healthinessValue = 0;
+
+    		ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, healthinessValue);
+
+    		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
+    		String outputPath = "output/"; // directory to record results
+
+    		basicBehaviorMape.MyQLearningFunc(outputPath);
+    		
+    		
+    		// 3. infrastructure details
+            
+
+    		// TODO: Stage 2 MDP calculations.
+    		// get state from stage 1
+    		// solve MDP --> policies (policy iteration)
+            // Possible statuses: HEALTHY, WARNING, UNHEALTHY
+            // HEALTHY means: all rules are satisfied.
+    		// 1. give a random healthiness values to the set of next states or update the value based
+    		// 		on previous iterations.
+    		// 2. choose the action that lead to the state with the highest healthiness value
+
+
+    		// TODO: Stage 3 send actions to the platform.
+    		// connect to sails API.
+    		// pass three pieces of information:
+    		// 1. action (move, delete, create container)
+    		// 2. application, organ, cell information
+    		// 3. Infrastructure information.
+    		// store the (improved) healthiness value somewhere, after taking the action.
+    		// (improved) healthiness value = value of new node.
+        	
         }
-//        String appId = "572f2524ebff73e916d194e2";
-        appId = appList.get(0);
-        // TODO apply code below on all App IDs (not only on index 0)
-
-
-
-        // TODO: Stage 1 get Data:
-        // 1. user defined policies
-        // 2. Prometheus metrics
-        // 3. infrastructure details
-        // at the end of Stage 1 we hve a list of healthiness values.
-        // overall healthiness value is between 0 and 1. It's an average of all rules. A rule has 0 or 1.
-
-        // Healthiness, App ID, list of actions and transitions.
-
-
-        List<Rules> rulesList;
-        double value = 0.017;
-		int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
-
-        SailsRetriever sailsRetriever = new SailsRetriever();
-        rulesList = sailsRetriever.getRules(appId);
-        value = Double.parseDouble(rulesList.get(RULE).getValue());
-        function = Integer.parseInt(rulesList.get(RULE).getOperator());
-
-
-        System.out.println("Sails API call (value): "+value +
-				", Function is set to: "+function + " ||| 1 = greater than, 2 = smaller than, 3 = equal");
-
-        String ruleName = rulesList.get(RULE).getMetric();
-        String smoothed = "[30s]";
-        String query = "rate(" + ruleName + smoothed+ ")"; // rate(process_cpu_seconds_total[30s])
-
-        PrometheusRetriever prometheusRetriever = new PrometheusRetriever("95.85.11.77");
-        float metric = prometheusRetriever.retrieveInt(query);
-        System.out.println("Result from Prometheus API call (metric): " + metric);
-
-
-        MapeUtils mapeUtils = new MapeUtils();
-        boolean compare = mapeUtils.compareInt(value, metric, function);
-        System.out.println("Comparison: " + compare);
-        if (!compare) {
-            System.out.println("Change something in the infrastructure. Send command to Sails!");
-        } else {
-            System.out.println("Everything OK. :-)");
-        }
-
-		// TODO: Stage 2 MDP calculations.
-		// get state from stage 1
-		// solve MDP --> policies (policy iteration)
-        // Possible statuses: HEALTHY, WARNING, UNHEALTHY
-        // HEALTHY means: all rules are satisfied.
-		// 1. give a random healthiness values to the set of next states or update the value based
-		// 		on previous iterations.
-		// 2. choose the action that lead to the state with the highest healthiness value
-
-
-		// TODO: Stage 3 send actions to the platform.
-		// connect to sails API.
-		// pass three pieces of information:
-		// 1. action (move, delete, create container)
-		// 2. application, organ, cell information
-		// 3. Infrastructure information.
-		// store the (improved) healthiness value somewhere, after taking the action.
-		// (improved) healthiness value = value of new node.
 
     }
 
