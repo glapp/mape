@@ -1,4 +1,4 @@
-package ch.uzh.glapp.mdp;
+package ch.uzh.glapp.mdp2;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

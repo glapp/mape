@@ -5,13 +5,10 @@ import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.singleagent.environment.Environment;
-import burlap.mdp.singleagent.environment.SimulatedEnvironment;
 import burlap.mdp.singleagent.oo.OOSADomain;
 import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import ch.uzh.glapp.model.ObjectForMdp;
-
-import static ch.uzh.glapp.mdp2.MapeWorld.*;
 
 public class BasicBehaviorMape {
 
@@ -31,7 +28,7 @@ public class BasicBehaviorMape {
 //		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
 
 		hashingFactory = new SimpleHashableStateFactory();
-		env = new MapeEnvironment2(domain, objectForMdp);
+		env = new MapeEnvironment(domain, objectForMdp);
 	}
 
 	public void MyQLearningFunc (String outputPath) {

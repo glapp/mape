@@ -17,14 +17,14 @@ import java.util.List;
 import static ch.uzh.glapp.mdp2.MapeWorld.*;
 
 
-public class MapeEnvironment2 implements Environment {
+public class MapeEnvironment implements Environment {
 
 	protected ObjectForMdp objectForMpd;
 	protected final ThreadLocal<Domain> domain = new ThreadLocal<>();
 	protected DeepOOState curState;
 	protected DeepOOState nextState;
 
-	public MapeEnvironment2(Domain domain, ObjectForMdp objectForMpd) {
+	public MapeEnvironment(Domain domain, ObjectForMdp objectForMpd) {
 		this.domain.set(domain);
 		this.objectForMpd = objectForMpd;
 	}
