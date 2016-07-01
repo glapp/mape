@@ -70,7 +70,7 @@ public class MainLoop {
 
     			// 2. Retrieve Prometheus metrics
 
-    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever("95.85.11.77");
+    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.139.214");
     			float metricValue = prometheusRetriever.retrieveInt(query);
     			System.out.println("Query result " + metricValue);
 

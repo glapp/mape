@@ -4,7 +4,6 @@ import burlap.mdp.core.Domain;
 import burlap.mdp.core.action.Action;
 import burlap.mdp.core.oo.state.OOVariableKey;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
-import burlap.mdp.core.state.State;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import ch.uzh.glapp.SailsRetriever;
@@ -30,7 +29,7 @@ public class MapeEnvironment implements Environment {
 	}
 
 	@Override
-	public State currentObservation() {
+	public DeepOOState currentObservation() {
 		curState = new DeepOOState();
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
@@ -70,7 +69,25 @@ public class MapeEnvironment implements Environment {
 	@Override
 	public EnvironmentOutcome executeAction(Action action) {
 
-		nextState = curState.copy();
+		String cellId = objectForMpd.getCellId();
+		String organId = objectForMpd.getOrganId();
+		String options = "{ region: us, provider: aws }";// TODO: is still hardcoded. Have to get the values from action.
+		SailsRetriever sailsRetriever = new SailsRetriever();
+
+		System.out.println(action.actionName());
+
+		if (action.actionName() == "move") {
+			sailsRetriever.postMove(cellId, options);
+		} else if (action.actionName() == "create") {
+			sailsRetriever.postCreate(organId, options);
+		} else if (action.actionName() == "remove") {
+			sailsRetriever.postRemove(organId, cellId);
+		} else {
+			System.err.println("action name is wrong!");
+			System.exit(199);
+		}
+
+		nextState = currentObservation();
 		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, 0.8, true);
 		return envOutCome;
 	}

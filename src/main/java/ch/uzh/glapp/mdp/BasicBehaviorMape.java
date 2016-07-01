@@ -52,9 +52,9 @@ public class BasicBehaviorMape {
 		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
 
 		String metric = "process_cpu_seconds_total";
-		String cellId = "57725130644b311b20c4d8a2";
-		String organId = "57724fef644b311b20c4d898";
-		String appId = "57724fee644b311b20c4d896";
+		String cellId = "57763337e4270f811e334d89";
+		String organId = "5776326fe4270f811e334d7f";
+		String appId = "5776326de4270f811e334d7d";
 		float healthyValue = 0;
 
 		ObjectForMdp o = new ObjectForMdp(metric, cellId, organId, appId, healthyValue);

@@ -20,10 +20,7 @@ public class SailsRetriever {
 	private String urlSails = "http://localhost:1337";
 
 
-	public List<Host> getHostInfo () {
-
-		String paramSails = "/host/infoMape";
-		List<Host> hostList = new ArrayList<>();
+	private String callSails (String paramSails) {
 		HttpRequest con = new HttpRequest();
 		String str = "";
 		try {
@@ -31,6 +28,40 @@ public class SailsRetriever {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return str;
+	}
+
+
+	public void postMove (String cellId, String options) {
+		String paramSails = "/cell/move?cell_id=" + cellId + "&options=" + options;
+			System.out.println(urlSails + "" + paramSails);
+		String str = callSails(paramSails);
+
+		System.out.println(str);
+	}
+
+	public void postCreate (String organId, String options) {
+		String paramSails = "/organ/scaleUp?organ_id=" + organId + "&options=" + options;
+			System.out.println(urlSails + "" + paramSails);
+		String str = callSails(paramSails);
+
+		System.out.println(str);
+	}
+
+	public void postRemove (String organId, String cellId) {
+		String paramSails = "/organ/scaleDown?organ_id=" + organId + "&cell_id=" + cellId;
+			System.out.println(urlSails + "" + paramSails);
+		String str = callSails(paramSails);
+
+		System.out.println(str);
+	}
+
+
+	public List<Host> getHostInfo () {
+
+		String paramSails = "/host/infoMape";
+		List<Host> hostList = new ArrayList<>();
+		String str = callSails(paramSails);
 
 		String jsonString;
 		HostDataObject jobj;
@@ -53,16 +84,7 @@ public class SailsRetriever {
 
 		String paramSails = "/application/getAppInfo";
 		Map appIdMap = new HashMap<>();
-
-//		System.out.println(urlSails+paramSails);
-
-		HttpRequest con = new HttpRequest();
-		String str = "";
-		try {
-			str = con.connect(urlSails, paramSails);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String str = callSails(paramSails);
 
 		String jsonString;
 		AppDataObject jobj;
@@ -86,14 +108,7 @@ public class SailsRetriever {
 
 		String paramSails = "/policy?app_id=" + appId;
 		List<Rule> myList = new ArrayList<>();
-
-        HttpRequest con = new HttpRequest();
-        String str = "";
-        try {
-            str = con.connect(urlSails, paramSails);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+	    String str = callSails(paramSails);
 
         String jsonString;
         RuleDataObject jobj;
@@ -117,16 +132,7 @@ public class SailsRetriever {
 
 		String paramSails = "/application/getCellInfo";
 		List<Cell> cellList = new ArrayList<>();
-
-//		System.out.println(urlSails+paramSails);
-
-		HttpRequest con = new HttpRequest();
-		String str = "";
-		try {
-			str = con.connect(urlSails, paramSails);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String str = callSails(paramSails);
 
 		String jsonString;
 		CellDataObject jobj;
