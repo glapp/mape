@@ -18,6 +18,7 @@ File name: config.txt
 
 Location: MAPE root directory
 
+Sample content:
 ```
 #!text
 prometheusServerIP=146.185.171.54
