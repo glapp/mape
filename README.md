@@ -15,6 +15,7 @@ This is the MAPE loop for the GLAPP
 ### Config file for MAPE ###
 
 File name: config.txt
+
 Location: MAPE root directory
 
 ```
