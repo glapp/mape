@@ -7,28 +7,38 @@ import java.io.IOException;
 
 public class PrometheusRetriever {
 	
-	private String prometheusHost;
+	private String prometheusServerIP;
+	private int prometheusServerPort;
 	
 	public PrometheusRetriever() {
-		this.prometheusHost = "37.139.31.31";
+		this.prometheusServerIP = "127.0.0.1";
+		this.prometheusServerPort = 19090;
 	}
 	
-	public PrometheusRetriever(String prometheusHost) {
-		this.prometheusHost = prometheusHost;
+	public PrometheusRetriever(String prometheusServerIP, int prometheusServerPort) {
+		this.prometheusServerIP = prometheusServerIP;
+		this.prometheusServerPort = prometheusServerPort;
 	}
 
-    public float retrieveInt (String query) {
+	/**
+	 * Calculates the per-second average rate of increase of the time series in the range vector.
+	 * Using Prometheus provided rate function {@link https://prometheus.io/docs/querying/functions/#rate()}.
+	 * @param metricName
+	 * @param range (in seconds) of data averaged for each metric data point
+	 * @param duration (in seconds) of the data points
+	 * @return average value of the data points in the specified duration
+	 */
+    public float getMetric (String metricName, int range, int duration) {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
-
-//        String prometheusHost = "95.85.11.38";
-        int prometheusPort = 19090;
+    	
+    	String query = "rate(" + metricName + "[" + range + "s])";
 
         long currTime = System.currentTimeMillis()/1000;
-        long startTime = currTime - 3600; // 1 hour
-        String step = "60s"; // 10 minutes
+        long startTime = currTime - duration;
+        String step = "60s"; // query resolution. e.g. 60 seconds
 
-        String urlPrometheus = "http://" + prometheusHost + ":" + prometheusPort;
+        String urlPrometheus = "http://" + prometheusServerIP + ":" + prometheusServerPort;
 
         String paramPrometheus = "/api/v1/query_range" +
                 "?query=" + query +         // or query2
@@ -36,8 +46,7 @@ public class PrometheusRetriever {
                 "&end=" + currTime +
                 "&step=" + step;
 
-//        System.out.println(urlPrometheus + paramPrometheus);
-
+        System.out.println("Prometheus call: " + urlPrometheus + paramPrometheus);
 
         HttpRequest con = new HttpRequest();
         String str = "";
@@ -54,6 +63,8 @@ public class PrometheusRetriever {
         jsonString = str;
 //        System.out.println("jsonString: "+jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
+        
+        // TODO: get the value of the required instance
         int listSize = jobj.getData().getResult().get(0).getValues().size();
 
         float sum_value = 0;
@@ -63,14 +74,12 @@ public class PrometheusRetriever {
         }
 
         float averge = sum_value/listSize;
-//        System.out.println("average: "+averge);
+//        System.out.println("average: "+average);
 
         return averge;
 
-
 //        result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
 //        return Float.parseFloat(result);
-
     }
 
 }

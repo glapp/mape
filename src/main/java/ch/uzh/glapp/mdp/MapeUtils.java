@@ -51,4 +51,9 @@ class MapeUtils {
 		
 		return false;
 	}
+	
+	public double healthiness() {
+		
+		return 0.0;
+	}
 }

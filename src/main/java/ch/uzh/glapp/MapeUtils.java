@@ -1,5 +1,7 @@
 package ch.uzh.glapp;
 
+import java.text.NumberFormat;
+
 public class MapeUtils {
 
     // metric is an array with the values of the last time period
@@ -64,41 +66,49 @@ public class MapeUtils {
 
 
     // metric is an Integer
-    public boolean compareInt (double value, float metric, int function) {
+    public double ruleHealthiness (double thresholdValue, float metricValue, int function) {
+    	double degreeOfHealthiness = 0.0;
+    	
+    	// Formatter for showing degree of healthiness in terms of percentage
+    	degreeOfHealthiness = -1 * (metricValue - thresholdValue) / thresholdValue;
+    	NumberFormat percentFormatter = NumberFormat.getPercentInstance();
+    	percentFormatter.setMaximumFractionDigits(2);
 
         switch (function) {
 
             // grater than
             case 1:
-                if (metric > value) {
-                    System.out.println("Comparison: "+metric+ " is grater than "+value);
-                    return true;
+            	degreeOfHealthiness = (metricValue - thresholdValue) / thresholdValue;
+                if (metricValue > thresholdValue) {
+                    System.out.println("Comparison: " + metricValue + " is grater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 } else {
-                    System.out.println("Comparison: "+metric+ " is smaller than "+value);
-                    return false;
+                    System.out.println("Comparison: " + metricValue + " is smaller than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 }
+                return degreeOfHealthiness;
 
-                // smaller than
+            // smaller than
             case 2:
-                if (metric < value) {
-                    System.out.println("Comparison: "+metric+ " is smaller than "+value);
-                    return true;
-                } else {
-                    System.out.println("Comparison: "+metric+ " is grater than "+value);
-                    return false;
-                }
 
-                // equals
-            case 3:
-                if (metric == value) {
-                    System.out.println("Comparison: "+metric+ " is equal "+value);
-                    return true;
+
+                if (metricValue < thresholdValue) {
+                    System.out.println("Comparison: " + metricValue + " is smaller than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 } else {
-                    System.out.println("Comparison: "+metric+ " is not equal "+value);
-                    return false;
+                    System.out.println("Comparison: " + metricValue + " is grater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
+                }
+                return degreeOfHealthiness;
+
+            // equals
+            case 3:
+                if (metricValue == thresholdValue) {
+                    System.out.println("Comparison: " + metricValue + " is equal " + thresholdValue);
+                    return 1;
+                } else {
+                    System.out.println("Comparison: " + metricValue + " is not equal " + thresholdValue);
+                    return -1;
                 }
         }
-        return false;
+        
+        return degreeOfHealthiness;
     }
 
 }

@@ -8,6 +8,7 @@ public class Rule {
 	private String operator;
 	private String value;
 	private String id;
+	private String weight;
 
 	public String getApplication_id() {
 		return application_id;
@@ -50,6 +51,12 @@ public class Rule {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 
 }

@@ -3,13 +3,25 @@ package ch.uzh.glapp;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class MainLoop {
     public static void main (String[] args) throws IOException {
+    	
+    	// Read the config file
+    	FileInputStream configFile = new FileInputStream("config.txt");
+    	Properties config = new Properties();
+    	config.load(configFile);
+    	configFile.close();
+    	String prometheusServerIP = config.getProperty("prometheusServerIP");
+    	int prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
+    	
     	MapeUtils mapeUtils = new MapeUtils();
     	SailsRetriever sa = new SailsRetriever();
 
@@ -38,9 +50,11 @@ public class MainLoop {
 
 		// Start processing the applications one by one
         for (int i = 0; i < appList.size(); ++i) {
+        	boolean ruleViolated = false;
+        	
         	appId = appList.get(i);
         	
-        	System.out.println("MAPE started for app ID: " + appList.get(i));
+        	System.out.println("MAPE started for app ID: " + appList.get(i) + "\n");
         	System.out.println("Stage 1: Get data and compute healthiness value");
         	
         	// Stage 1: Get data and compute healthiness value
@@ -53,46 +67,34 @@ public class MainLoop {
         	
     		for (Rule rule : ruleList) {
     			String metricName = rule.getMetric();
-    			double value = Double.parseDouble(rule.getValue());
+    			double thresholdValue = Double.parseDouble(rule.getValue());
     			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
-    			double weight = 1;
+    			double weight = Double.parseDouble(rule.getWeight());
     			totalWeight += weight;
 
-    			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + value);
+    			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue);
 
-    			// TODO: (Adrian) change the rate computation into function in MapeUtil class
-    			// NOTE: consider other computation of metric value that may be meaningful
-    			int smoothed = 30; // second
-    			String query = "rate(" + metricName + "[" + smoothed + "s])"; // rate(process_cpu_seconds_total[30s])
-    			
-    			System.out.println("Query to Prometheus: " + query);
-    			System.out.println();
 
     			// 2. Retrieve Prometheus metrics
-
-    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.139.214");
-    			float metricValue = prometheusRetriever.retrieveInt(query);
+    			// NOTE: consider other computation of metric value that may be meaningful
+    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever(prometheusServerIP, prometheusServerPort);
+    			
+    			// get the metric value. e.g. get a per-second average metric value from a 60 range in the past hour (3600 seconds)
+    			float metricValue = prometheusRetriever.getMetric(metricName, 60, 3600);  
     			System.out.println("Query result " + metricValue);
 
-    			// TODO: (Adrian) implement function to calculate the degree of compliance/healthiness and normalize to range [0,1]
-    			// e.g. threshold = 50% -> 70% utilization means 20% difference above threshold. difference / threshold = 0.2 / 0.5 = 0.4
-    			boolean compliant = mapeUtils.compareInt(value, metricValue, function);
-    			
-//    			double degreeOfHealthiness = some function;
+    			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, there will be a 20% difference above threshold.
+    			// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
+    			double degreeOfHealthiness = mapeUtils.ruleHealthiness(thresholdValue, metricValue, function);
     			
     			System.out.print("Comparison result: ");
-    			if (!compliant) {
+    			if (degreeOfHealthiness < 0) {
     				System.out.println("Not compliant, trigger MDP.");
-    				appHealthiness += 0 * weight;
-    				
-//    				appHealthiness += degreeOfHealthiness * weight;
-    				
-    				// change the violation flag for MDP to true
-    				
+    				ruleViolated = true;
     			} else {
     				System.out.println("Compliant, proceed to next rule.");
-    				appHealthiness += 1 * weight;
     			}
+    			appHealthiness += degreeOfHealthiness * weight;
     			
     			System.out.println();
     		}
@@ -100,40 +102,38 @@ public class MainLoop {
             // application healthiness value is normalized to range [0,1]. It's an weighted average of healthiness value of all rules.
     		appHealthinessNormalized = appHealthiness / totalWeight;
     		System.out.println("Application healthiness value (normalized): " + appHealthinessNormalized);
-            
-            
 
     		// Stage 2: MDP
-    		System.out.println("Stage 2: Perform MDP");
+    		// if any rule is violated, perform MDP to find an adaptation action
+    		if (ruleViolated) {
+        		System.out.println("Stage 2: Perform MDP");
+    			
+    			// Simulate a violated rule
+    			String violoatedMetric = config.getProperty("violoatedMetric");
+    			String violatedCellId = config.getProperty("violatedCellId");
+    			String violatedOrganId = config.getProperty("violatedOrganId");
+    			String violatedAppId = config.getProperty("violatedAppId");
+    			float healthinessValue = Float.parseFloat(config.getProperty("healthinessValue"));
+
+    			ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, healthinessValue);
+
+    			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
+    			String outputPath = "output/" + appId + "/"; // directory to record results
+
+    			// solve MDP (Q-Learning)
+    			basicBehaviorMape.MyQLearningFunc(outputPath);
     		
-    		// get state from stage 1
-    		
-    		// Simulate a violated rule
-    		String violoatedMetric = "process_cpu_seconds_total";
-    		String violatedCellId = "57725130644b311b20c4d8a2";
-    		String violatedOrganId = "57724fef644b311b20c4d898";
-    		String violatedAppId = "57724fee644b311b20c4d896";
-    		float healthinessValue = 0;
 
-    		ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, healthinessValue);
-
-    		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
-    		String outputPath = "output/" + appId + "/"; // directory to record results
-
-    		// solve MDP (Q-Learning)
-    		basicBehaviorMape.MyQLearningFunc(outputPath);
-    		
-
-    		// TODO: (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
-    		// Stage 3: Send actions to the platform
-    		// connect to sails API.
-    		// pass three pieces of information:
-    		// 1. action (move, delete, create container)
-    		// 2. application, organ, cell information
-    		// 3. Infrastructure information.
-    		// store the (improved) healthiness value somewhere, after taking the action.
-    		// (improved) healthiness value = value of new node.
-        	
+	    		// TODO: (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
+	    		// Stage 3: Send actions to the platform
+	    		// connect to sails API.
+	    		// pass three pieces of information:
+	    		// 1. action (move, delete, create container)
+	    		// 2. application, organ, cell information
+	    		// 3. Infrastructure information.
+	    		// store the (improved) healthiness value somewhere, after taking the action.
+	    		// (improved) healthiness value = value of new node.
+    		}
         }
 
     }
