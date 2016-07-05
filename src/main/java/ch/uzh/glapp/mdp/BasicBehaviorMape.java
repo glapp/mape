@@ -23,6 +23,7 @@ public class BasicBehaviorMape {
 		domain = mwdg.generateDomain();
 		initialState = new DeepOOState();
 
+		// For simulation only:
 		// MapeCell(String cellName, String provider, String region, String tier, int cells, String proxy_provider, String proxy_region)
 //		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f8_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
 //		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
