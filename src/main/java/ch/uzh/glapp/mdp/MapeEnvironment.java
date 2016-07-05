@@ -71,7 +71,7 @@ public class MapeEnvironment implements Environment {
 
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
-		String options = "{ region: us, provider: aws }";// TODO: is still hardcoded. Have to get the values from action.
+		String options = "{region:us,provider:google}";// TODO: is still hardcoded. Have to get the values from action.
 		SailsRetriever sailsRetriever = new SailsRetriever();
 
 		System.out.println(action.actionName());

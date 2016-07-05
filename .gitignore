@@ -93,3 +93,5 @@ Thumbs.db
 .classpath
 .project
 .settings
+output/
+config.txt
