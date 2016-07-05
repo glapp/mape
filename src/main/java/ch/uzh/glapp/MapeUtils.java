@@ -66,13 +66,13 @@ public class MapeUtils {
 
 
     /**
-     * Compute the healthiness value of a rule.
+     * Compute the healthiness value for a given metric value.
      * @param thresholdValue is the threshold value of the rule.
      * @param metricValue is the current value of the metric.
      * @param function is the comparison function (Currently supported: 1 = greater than, 2 = smaller than, 3 = equal)
      * @return the healthiness value. A positive value indicate the current value of the metric is within the defined threshold. 
      */
-    public double ruleHealthiness (double thresholdValue, float metricValue, int function) {
+    public double cellHealthiness (double thresholdValue, float metricValue, int function) {
     	double degreeOfHealthiness = 0.0;
     	
     	// Formatter for showing degree of healthiness in terms of percentage

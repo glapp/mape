@@ -1,7 +1,0 @@
-prometheusServerIP=82.196.8.151
-prometheusServerPort=19090
-violoatedMetric=process_cpu_seconds_total
-violatedCellId=577b925a9babc96e2fa21106
-violatedOrganId=577b89f65127a7f32799b427
-violatedAppId=577b89f55127a7f32799b425
-healthinessValue=0

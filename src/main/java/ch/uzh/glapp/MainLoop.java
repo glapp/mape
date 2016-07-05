@@ -1,6 +1,7 @@
 package ch.uzh.glapp;
 
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
+import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
 
@@ -19,11 +20,15 @@ public class MainLoop {
     	Properties config = new Properties();
     	config.load(configFile);
     	configFile.close();
+    	
     	String prometheusServerIP = config.getProperty("prometheusServerIP");
     	int prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
+    	PrometheusRetriever prometheusRetriever = new PrometheusRetriever(prometheusServerIP, prometheusServerPort);
     	
     	MapeUtils mapeUtils = new MapeUtils();
     	SailsRetriever sa = new SailsRetriever();
+    	
+//    	prometheusRetriever.findContainerID("bcf548d11ab3");
 
 //	    List<Cell> cells = sa.getCellInfo();
 //	    for (Cell c : cells) {
@@ -62,11 +67,20 @@ public class MainLoop {
         	List<Rule> ruleList;
         	ruleList = sa.getRules(appId);
         	double appHealthiness = 0;
-        	double appHealthinessNormalized; // [0,1]
+        	double appHealthinessWeighted;
         	double totalWeight = 0;
         	
     		for (Rule rule : ruleList) {
+    			double ruleHealthiness = 0;
+    			double totalCellHealthiness = 0;
+    			
     			String metricName = rule.getMetric();
+    			List<String> cellIDs = new ArrayList<String>();
+    			
+    			// TODO: get the cell IDs from sails 
+    			cellIDs.add("bcf548d11ab3b3575e0e89d6978c2d4bd3857976f3fde41b698a2ca3ffd2185a"); // Hardcoded at the moment
+//    			cellIDs.add("blahblah");
+    			
     			double thresholdValue = Double.parseDouble(rule.getValue());
     			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
     			double weight = Double.parseDouble(rule.getWeight());
@@ -74,34 +88,46 @@ public class MainLoop {
 
     			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue);
 
-
     			// 2. Retrieve Prometheus metrics
+    			// get the metric value. e.g. get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
     			// NOTE: consider other computation of metric value that may be meaningful
-    			PrometheusRetriever prometheusRetriever = new PrometheusRetriever(prometheusServerIP, prometheusServerPort);
     			
-    			// get the metric value. e.g. get a per-second average metric value from a 60 range in the past hour (3600 seconds)
-    			float metricValue = prometheusRetriever.getMetric(metricName, 60, 3600);  
-    			System.out.println("Query result " + metricValue);
+    			for (int j = 0; j < cellIDs.size(); ++j) {
+    				System.out.println("Computation for cell " + cellIDs.get(j) + "started.");
+    				float metricValue = 0;
+    				try {
+    					metricValue = prometheusRetriever.getMetric(cellIDs.get(j), metricName, 60, 3600);
+    				} catch (MetricNotFoundException e) {
+    					e.printStackTrace();
+    					System.out.println("Testing Testing Testing");
+    				}  
+        			System.out.println("Query result (cell metric value): " + metricValue);
 
-    			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, there will be a 20% difference above threshold.
-    			// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
-    			double degreeOfHealthiness = mapeUtils.ruleHealthiness(thresholdValue, metricValue, function);
-    			
-    			System.out.print("Comparison result: ");
-    			if (degreeOfHealthiness < 0) {
-    				System.out.println("Not compliant, trigger MDP.");
-    				ruleViolated = true;
-    			} else {
-    				System.out.println("Compliant, proceed to next rule.");
+        			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, there will be a 20% difference above threshold.
+        			// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
+        			double cellHealthiness = mapeUtils.cellHealthiness(thresholdValue, metricValue, function);
+        			totalCellHealthiness += cellHealthiness;
+        			
+        			System.out.print("Comparison result: ");
+        			if (cellHealthiness < 0) {
+        				System.out.println("Not compliant, trigger MDP.");
+        				ruleViolated = true;
+        			} else {
+        				System.out.println("Compliant, proceed to next rule.");
+        			}
     			}
-    			appHealthiness += degreeOfHealthiness * weight;
+    			
+    			System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
+    			ruleHealthiness = totalCellHealthiness/cellIDs.size();
+    			
+    			appHealthiness += ruleHealthiness * weight;
     			
     			System.out.println();
     		}
 
-            // application healthiness value is normalized to range [0,1]. It's an weighted average of healthiness value of all rules.
-    		appHealthinessNormalized = appHealthiness / totalWeight;
-    		System.out.println("Application healthiness value (normalized): " + appHealthinessNormalized);
+            // application healthiness value which is an weighted average of healthiness value of all rules.
+    		appHealthinessWeighted = appHealthiness / totalWeight;
+    		System.out.println("Application healthiness value (normalized): " + appHealthinessWeighted);
 
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action
@@ -128,14 +154,12 @@ public class MainLoop {
 	    		// Stage 3: Send actions to the platform
 	    		// connect to sails API.
 	    		// pass three pieces of information:
-	    		// 1. action (move, delete, create container)
+	    		// 1. action (move, delete, create cell)
 	    		// 2. application, organ, cell information
 	    		// 3. Infrastructure information.
 	    		// store the (improved) healthiness value somewhere, after taking the action.
 	    		// (improved) healthiness value = value of new node.
     		}
         }
-
     }
-
 }

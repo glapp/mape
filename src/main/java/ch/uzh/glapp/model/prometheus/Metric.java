@@ -4,6 +4,7 @@ public class Metric {
 	private String group;
 	private String instance;
 	private String job;
+	private String id;
 
 	public String getGroup() {
 		return group;
@@ -22,5 +23,11 @@ public class Metric {
 	}
 	public void setJob(String job) {
 		this.job = job;
+	}
+	public String getID() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }
