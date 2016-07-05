@@ -65,22 +65,27 @@ public class MapeUtils {
     }
 
 
-    // metric is an Integer
+    /**
+     * Compute the healthiness value of a rule.
+     * @param thresholdValue is the threshold value of the rule.
+     * @param metricValue is the current value of the metric.
+     * @param function is the comparison function (Currently supported: 1 = greater than, 2 = smaller than, 3 = equal)
+     * @return the healthiness value. A positive value indicate the current value of the metric is within the defined threshold. 
+     */
     public double ruleHealthiness (double thresholdValue, float metricValue, int function) {
     	double degreeOfHealthiness = 0.0;
     	
     	// Formatter for showing degree of healthiness in terms of percentage
-    	degreeOfHealthiness = -1 * (metricValue - thresholdValue) / thresholdValue;
     	NumberFormat percentFormatter = NumberFormat.getPercentInstance();
     	percentFormatter.setMaximumFractionDigits(2);
 
         switch (function) {
 
-            // grater than
+            // greater than
             case 1:
             	degreeOfHealthiness = (metricValue - thresholdValue) / thresholdValue;
                 if (metricValue > thresholdValue) {
-                    System.out.println("Comparison: " + metricValue + " is grater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
+                    System.out.println("Comparison: " + metricValue + " is greater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 } else {
                     System.out.println("Comparison: " + metricValue + " is smaller than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 }
@@ -88,12 +93,11 @@ public class MapeUtils {
 
             // smaller than
             case 2:
-
-
+            	degreeOfHealthiness = -1 * (metricValue - thresholdValue) / thresholdValue;
                 if (metricValue < thresholdValue) {
                     System.out.println("Comparison: " + metricValue + " is smaller than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 } else {
-                    System.out.println("Comparison: " + metricValue + " is grater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
+                    System.out.println("Comparison: " + metricValue + " is greater than " + thresholdValue + " by " + percentFormatter.format(degreeOfHealthiness));
                 }
                 return degreeOfHealthiness;
 
