@@ -66,10 +66,11 @@ public class MainLoop {
             // 1. Retrieve user defined policy (a set of rules)
         	List<Rule> ruleList;
         	ruleList = sa.getRules(appId);
-        	double appHealthiness = 0;
-        	double appHealthinessWeighted;
+        	double totalRuleHealthiness = 0;
+        	double appHealthiness;
         	double totalWeight = 0;
         	
+        	// Compute the healthiness value for each rule
     		for (Rule rule : ruleList) {
     			double ruleHealthiness = 0;
     			double totalCellHealthiness = 0;
@@ -79,7 +80,7 @@ public class MainLoop {
     			
     			// TODO: get the cell IDs from sails 
     			cellIDs.add("bcf548d11ab3b3575e0e89d6978c2d4bd3857976f3fde41b698a2ca3ffd2185a"); // Hardcoded at the moment
-//    			cellIDs.add("blahblah");
+    			cellIDs.add("0e4a5a38918e1b75608a67e9b63e4515be5652406d07b2078cbb74e8d7382062");
     			
     			double thresholdValue = Double.parseDouble(rule.getValue());
     			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
@@ -88,18 +89,17 @@ public class MainLoop {
 
     			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue);
 
-    			// 2. Retrieve Prometheus metrics
-    			// get the metric value. e.g. get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
-    			// NOTE: consider other computation of metric value that may be meaningful
-    			
+    			// Compute the healthiness value for each cell
     			for (int j = 0; j < cellIDs.size(); ++j) {
     				System.out.println("Computation for cell " + cellIDs.get(j) + "started.");
     				float metricValue = 0;
     				try {
+    	    			// Retrieve Prometheus metrics
+    	    			// get the metric value. e.g. get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
+    	    			// NOTE: consider other computation of metric value that may be meaningful
     					metricValue = prometheusRetriever.getMetric(cellIDs.get(j), metricName, 60, 3600);
     				} catch (MetricNotFoundException e) {
-    					e.printStackTrace();
-    					System.out.println("Testing Testing Testing");
+    					e.printStackTrace(); // TODO: handle exception
     				}  
         			System.out.println("Query result (cell metric value): " + metricValue);
 
@@ -110,25 +110,31 @@ public class MainLoop {
         			
         			System.out.print("Comparison result: ");
         			if (cellHealthiness < 0) {
-        				System.out.println("Not compliant, trigger MDP.");
+        				System.out.println("Not compliant, will trigger MDP.");
         				ruleViolated = true;
         			} else {
-        				System.out.println("Compliant, proceed to next rule.");
+        				System.out.println("Compliant, proceed to next cell/rule.");
         			}
+        			
+        			System.out.println();
     			}
     			
-    			System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
+//    			System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
     			ruleHealthiness = totalCellHealthiness/cellIDs.size();
-    			
-    			appHealthiness += ruleHealthiness * weight;
+//    			System.out.println("ruleHealthiness: " + ruleHealthiness);
+    			totalRuleHealthiness += ruleHealthiness * weight;
     			
     			System.out.println();
     		}
 
             // application healthiness value which is an weighted average of healthiness value of all rules.
-    		appHealthinessWeighted = appHealthiness / totalWeight;
-    		System.out.println("Application healthiness value (normalized): " + appHealthinessWeighted);
+    		appHealthiness = totalRuleHealthiness / totalWeight;
+    		System.out.println("Application healthiness value (weighted): " + appHealthiness);
+    		System.out.println();
 
+    		
+    		ruleViolated = true; // For testing, force trigger MDP
+    		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action
     		if (ruleViolated) {
