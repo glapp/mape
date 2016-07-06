@@ -2,11 +2,12 @@ package ch.uzh.glapp.mdp;
 
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-class MapeUtils {
+public class MapeUtils {
 
 	private int countCell = 0;
 

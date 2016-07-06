@@ -1,5 +1,7 @@
 package ch.uzh.glapp.model.sails.ruleinfo;
 
+import java.util.List;
+
 public class Rule {
 	private String application_id;
 	private String metric;
@@ -9,6 +11,7 @@ public class Rule {
 	private String value;
 	private String id;
 	private String weight;
+	private List<Organ> organs;
 
 	public String getApplication_id() {
 		return application_id;
@@ -58,5 +61,21 @@ public class Rule {
 	public void setWeight(String weight) {
 		this.weight = weight;
 	}
+	/**
+	*
+	* @return
+	* The organs
+	*/
+	public List<Organ> getOrgans() {
+		return organs;
+	}
 
+	/**
+	*
+	* @param organs
+	* The organs
+	*/
+	public void setOrgans(List<Organ> organs) {
+		this.organs = organs;
+	}
 }

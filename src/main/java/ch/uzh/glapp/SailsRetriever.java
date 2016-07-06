@@ -114,7 +114,7 @@ public class SailsRetriever {
         RuleDataObject jobj;
 
         jsonString = str;
-        //System.out.println(jsonString);
+//        System.out.println(jsonString);
         jobj = new Gson().fromJson(jsonString, RuleDataObject.class);
 
 		int sizeRules = jobj.getRules().size();

@@ -1,5 +1,7 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.sails.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.ruleinfo.Organ;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
@@ -79,8 +81,26 @@ public class MainLoop {
     			List<String> cellIDs = new ArrayList<String>();
     			
     			// TODO: get the cell IDs from sails 
-    			cellIDs.add("bcf548d11ab3b3575e0e89d6978c2d4bd3857976f3fde41b698a2ca3ffd2185a"); // Hardcoded at the moment
-    			cellIDs.add("0e4a5a38918e1b75608a67e9b63e4515be5652406d07b2078cbb74e8d7382062");
+    			System.out.println("Processing rule (ID: " + rule.getId() + ")");
+    			
+    			// get the organ that current rule is applicable to
+    			List<Organ> organs = rule.getOrgans();
+        		for (Organ organ : organs) {
+        			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
+        			List<Cell> cells = sa.getCellInfo();
+        			
+        			// get the cells that belongs to an organ specified by organ ID
+        			cellIDs.addAll(MapeUtils.getCellIDs(cells, organ.getId()));
+        		}
+        		
+//        		System.out.println(cellIDs.contains("6a424c7426fa070def6ab8d048557a136588a7b3daa9542f71a92e8d32917b66"));
+//        		cellIDs.remove("6a424c7426fa070def6ab8d048557a136588a7b3daa9542f71a92e8d32917b66");
+        		
+        		System.out.println("Applicable cells and corresponding cell IDs:");
+    			for (String cellID : cellIDs) {
+    				System.out.println(cellID);
+    			}
+    			System.out.println();
     			
     			double thresholdValue = Double.parseDouble(rule.getValue());
     			int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
@@ -133,7 +153,7 @@ public class MainLoop {
     		System.out.println();
 
     		
-    		ruleViolated = true; // For testing, force trigger MDP
+//    		ruleViolated = true; // For testing, force trigger MDP
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action

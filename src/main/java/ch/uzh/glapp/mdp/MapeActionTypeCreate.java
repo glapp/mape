@@ -52,7 +52,6 @@ public class MapeActionTypeCreate implements ActionType {
 //			return new MapeActionCreate(params[0], params[1], params[2], params[3], params[4], params[5]);
 			return new MapeActionCreate(params[0], params[1], params[2], params[3]);
 		} else {
-			// TODO throw exception
 			return null;
 		}
 	}
@@ -61,5 +60,4 @@ public class MapeActionTypeCreate implements ActionType {
 	public String typeName() {
 		return MapeWorld.ACTION_CREATE;
 	}
-
 }
