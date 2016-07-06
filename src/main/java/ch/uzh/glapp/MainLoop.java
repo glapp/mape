@@ -92,9 +92,6 @@ public class MainLoop {
         			cellIDs.addAll(MapeUtils.getCellIDs(cells, organ.getId()));
         		}
         		
-//        		System.out.println(cellIDs.contains("6a424c7426fa070def6ab8d048557a136588a7b3daa9542f71a92e8d32917b66"));
-//        		cellIDs.remove("6a424c7426fa070def6ab8d048557a136588a7b3daa9542f71a92e8d32917b66");
-        		
         		System.out.println("Applicable cells and corresponding cell IDs:");
     			for (String cellID : cellIDs) {
     				System.out.println(cellID);
@@ -110,7 +107,7 @@ public class MainLoop {
 
     			// Compute the healthiness value for each cell
     			for (int j = 0; j < cellIDs.size(); ++j) {
-    				System.out.println("Computation for cell " + cellIDs.get(j) + "started.");
+    				System.out.println("Computation for cell " + cellIDs.get(j) + " started.");
     				float metricValue = 0;
     				try {
     	    			// Retrieve Prometheus metrics
@@ -151,8 +148,11 @@ public class MainLoop {
     		System.out.println("Application healthiness value (weighted): " + appHealthiness);
     		System.out.println();
 
-    		
-//    		ruleViolated = true; // For testing, force trigger MDP
+    		if (config.getProperty("ForceMDP").equals("true")) {
+    			ruleViolated = true; // For testing, force trigger MDP
+    		} else {
+    			ruleViolated = false;
+    		}
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action
