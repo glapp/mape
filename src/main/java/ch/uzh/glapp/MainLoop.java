@@ -80,7 +80,6 @@ public class MainLoop {
     			String metricName = rule.getMetric();
     			List<String> cellIDs = new ArrayList<String>();
     			
-    			// TODO: get the cell IDs from sails 
     			System.out.println("Processing rule (ID: " + rule.getId() + ")");
     			
     			// get the organ that current rule is applicable to
@@ -89,7 +88,7 @@ public class MainLoop {
         			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
         			List<Cell> cells = sa.getCellInfo();
         			
-        			// get the cells that belongs to an organ specified by organ ID
+        			// get the ID of corresponding cells that belongs to an organ specified by organ ID. Cell IDs refers to container IDs in Docker
         			cellIDs.addAll(MapeUtils.getCellIDs(cells, organ.getId()));
         		}
         		
