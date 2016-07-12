@@ -21,7 +21,7 @@ public class MapeActionCreate implements Action {
 
 	@Override
 	public String actionName() {
-		return MapeWorld.ACTION_CREATE + " duplicate of cell " + cellName + " at " + provider + ", " + region + ", " + tier;
+		return MapeWorld.ACTION_CREATE + " a duplicate of cell " + cellName + " at " + provider + ", " + region + ", " + tier;
 	}
 
 	@Override

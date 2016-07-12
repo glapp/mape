@@ -24,12 +24,19 @@ public class MapeActionTypeCreate implements ActionType {
 			String cellName = ((MapeCell)cell).name();
 //			String currentProvider = ((MapeCell)cell).getProvider();
 //			String currentRegion = ((MapeCell)cell).getRegion();
-//			String currentTier = ((MapeCell)cell).getTier();
+			String currentTier = ((MapeCell)cell).getTier();
 		
 			for (String newProvider : PROVIDER_LIST) {
 				for (String newRegion : REGION_LIST) {
 					for (String newTier : TIER_LIST) {
-						actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
+						
+						// Only generate action to create new cell at higher tier host. This reduce the applicable actions from 36 to 12
+						// given the following conditions:
+						// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
+						// (2) current host is at tier 2
+						if (MapeUtils.isNewTierHigher(currentTier, newTier)) {
+							actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
+						}
 					}
 				}
 			}
