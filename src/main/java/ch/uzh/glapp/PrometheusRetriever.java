@@ -37,7 +37,7 @@ public class PrometheusRetriever {
       System.out.println("Prometheus query: " + urlPrometheus + paramPrometheus);
       
       try {
-    	  response = con.connect(urlPrometheus, paramPrometheus);
+    	  response = con.GETConnection(urlPrometheus, paramPrometheus);
       } catch (IOException e) {
           e.printStackTrace();
       }
@@ -101,7 +101,7 @@ public class PrometheusRetriever {
 //            result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
 //            return Float.parseFloat(result);
         } else {
-        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
+//        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
         	throw new MetricNotFoundException("Metric for cell (container ID: " + cellID + ") not found.");
         }
     }

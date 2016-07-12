@@ -132,7 +132,7 @@ public class MapeUtils {
 		for (Cell cell : cells) {
 			if (cell.getOrganId().getId().equals(organID)) {
 				cellIDs.add(cell.getContainerId());
-//				System.out.println("cell.getContainerId(): " + cell.getContainerId());
+				System.out.println("cell.getContainerId(): " + cell.getContainerId());
 			}
 		}
 		

@@ -71,16 +71,16 @@ public class MapeEnvironment implements Environment {
 
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
-		String options = "{region:us,provider:google}";// TODO: is still hardcoded. Have to get the values from action.
+		String options = "{\"region\":\"us\",\"provider\":\"amazonec2\"}";// TODO: is still hardcoded. Have to get the values from action.
 		SailsRetriever sailsRetriever = new SailsRetriever();
 
 		System.out.println(action.actionName());
 
 		if (action.actionName() == "move") {
 			sailsRetriever.postMove(cellId, options);
-		} else if (action.actionName() == "create") {
+		} else if (action.actionName() == "Pcreate") {
 			sailsRetriever.postCreate(organId, options);
-		} else if (action.actionName() == "remove") {
+		} else if (action.actionName() == "Premove") {
 			sailsRetriever.postRemove(organId, cellId);
 		} else {
 			System.err.println("action name is wrong!");
