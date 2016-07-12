@@ -177,7 +177,7 @@ public class MainLoop {
 
 	    		// TODO: (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
 	    		// Stage 3: Send actions to the platform
-	    		// connect to sails API.
+	    		// GETConnection to sails API.
 	    		// pass three pieces of information:
 	    		// 1. action (move, delete, create cell)
 	    		// 2. application, organ, cell information

@@ -14,7 +14,7 @@ public class ConsulRetriever {
         HttpRequest con = new HttpRequest();
         String str = "";
         try {
-            str = con.connect(urlConsul, paramConsul);
+            str = con.GETConnection(urlConsul, paramConsul);
         } catch (IOException e) {
             e.printStackTrace();
         }
