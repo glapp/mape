@@ -22,8 +22,8 @@ public class MapeActionTypeCreate implements ActionType {
 			// String cellName, String provider, String region, String tier
 			
 			String cellName = ((MapeCell)cell).name();
-//			String currentProvider = ((MapeCell)cell).getProvider();
-//			String currentRegion = ((MapeCell)cell).getRegion();
+			String currentProvider = ((MapeCell)cell).getProvider();
+			String currentRegion = ((MapeCell)cell).getRegion();
 			String currentTier = ((MapeCell)cell).getTier();
 		
 			for (String newProvider : PROVIDER_LIST) {
@@ -35,6 +35,8 @@ public class MapeActionTypeCreate implements ActionType {
 						// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
 						// (2) current host is at tier 2
 						if (MapeUtils.isNewTierHigher(currentTier, newTier)) {
+							actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
+						} else if (currentTier.equals(TIER3) && (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion))) {
 							actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
 						}
 					}
