@@ -30,7 +30,7 @@ public class MapeActionTypeCreate implements ActionType {
 				for (String newRegion : REGION_LIST) {
 					for (String newTier : TIER_LIST) {
 						
-						// Only generate action to create new cell at higher tier host. This reduce the applicable actions from 36 to 12
+						// Only generate action to create new cell at higher tier host or same tier(if it is already at max tier). This reduce the applicable actions from 36 to 12
 						// given the following conditions:
 						// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
 						// (2) current host is at tier 2

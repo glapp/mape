@@ -78,7 +78,7 @@ public class MainLoop {
     			double totalCellHealthiness = 0;
     			
     			String metricName = rule.getMetric();
-    			List<String> cellIDs = new ArrayList<String>();
+    			List<String> containerIDs = new ArrayList<String>();
     			
     			System.out.println("Processing rule (ID: " + rule.getId() + ")");
     			
@@ -88,13 +88,13 @@ public class MainLoop {
         			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
         			List<Cell> cells = sa.getCellInfo();
         			
-        			// get the ID of corresponding cells that belongs to an organ specified by organ ID. Cell IDs refers to container IDs in Docker
-        			cellIDs.addAll(MapeUtils.getCellIDs(cells, organ.getId()));
+        			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
+        			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
         		}
         		
         		System.out.println("Applicable cells and corresponding cell IDs:");
-    			for (String cellID : cellIDs) {
-    				System.out.println(cellID);
+    			for (String containerID : containerIDs) {
+    				System.out.println(containerID);
     			}
     			System.out.println();
     			
@@ -105,15 +105,15 @@ public class MainLoop {
 
     			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue);
 
-    			// Compute the healthiness value for each cell
-    			for (int j = 0; j < cellIDs.size(); ++j) {
-    				System.out.println("Computation for cell " + cellIDs.get(j) + " started.");
+    			// Compute the healthiness value for each cell (Docker container)
+    			for (int j = 0; j < containerIDs.size(); ++j) {
+    				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
     				float metricValue = 0;
     				try {
     	    			// Retrieve Prometheus metrics
     	    			// get the metric value. e.g. get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
     	    			// NOTE: consider other computation of metric value that may be meaningful
-    					metricValue = prometheusRetriever.getMetric(cellIDs.get(j), metricName, 60, 3600);
+    					metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, 60, 3600);
     				} catch (MetricNotFoundException e) {
     					e.printStackTrace(); // TODO: handle exception
     				}  
@@ -136,7 +136,7 @@ public class MainLoop {
     			}
     			
 //    			System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
-    			ruleHealthiness = totalCellHealthiness/cellIDs.size();
+    			ruleHealthiness = totalCellHealthiness/containerIDs.size();
 //    			System.out.println("ruleHealthiness: " + ruleHealthiness);
     			totalRuleHealthiness += ruleHealthiness * weight;
     			
