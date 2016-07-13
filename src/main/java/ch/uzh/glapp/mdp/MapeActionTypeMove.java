@@ -31,13 +31,17 @@ public class MapeActionTypeMove implements ActionType {
 				for (String newRegion : REGION_LIST) {
 					for (String newTier : TIER_LIST) {
 						
-						// Only generate action to move cell to higher tier host. This reduce the applicable actions from 35 to 12
-						// given the following conditions:
-						// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
-						// (2) current host is at tier 2
-						if (MapeUtils.isNewTierHigher(currentTier, newTier)) {
-//						if (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion) || !newTier.equals(currentTier)) {
-							actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
+						// check if a host from the new provider in the new region and new tier is available
+						if (MapeUtils.isHostAvailable(newProvider, newRegion, newTier)) {
+						
+							// Only generate action to move cell to higher tier host. This reduce the applicable actions from 35 to 12
+							// given the following conditions:
+							// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
+							// (2) current host is at tier 2
+							if (MapeUtils.isNewTierHigher(currentTier, newTier)) {
+//							if (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion) || !newTier.equals(currentTier)) {
+								actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
+							}
 						}
 					}
 				}
