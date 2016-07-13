@@ -61,7 +61,7 @@ public class MapeUtils {
 	
 	/**
 	 * Function to check if a host from given cloud provider, region and tier is available
-	 * @param provider
+	 * @param provider is the new provider
 	 * @param region
 	 * @param tier
 	 * @return true if the host is available and false otherwise
@@ -72,10 +72,12 @@ public class MapeUtils {
 		
 		for (Host host : hosts) {
 			if (host.getLabels().getProvider().equals(provider) && host.getLabels().getRegion().equals(region) && host.getLabels().getTier().equals(tier)){
+				System.out.println("Host at " + provider + ", " + region + ", " + tier + " is available");
 				return true;
 			}
 		}
 		
+//		System.out.println("Host at " + provider + ", " + region + ", " + tier + " is not available");
 		return false;
 	}
 	
