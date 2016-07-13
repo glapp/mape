@@ -48,6 +48,8 @@ public class MapeActionTypeCreate implements ActionType {
 			}
 		}
 		
+		System.out.println("Size of create action list: " + actionList.size());
+		
 		return actionList;
 	}
 

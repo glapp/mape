@@ -48,6 +48,8 @@ public class MapeActionTypeMove implements ActionType {
 			}
 		}
 		
+		System.out.println("Size of move action list: " + actionList.size());
+		
 		return actionList;
 	}
 

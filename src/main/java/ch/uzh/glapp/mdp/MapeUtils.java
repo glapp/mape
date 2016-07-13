@@ -12,6 +12,8 @@ import static ch.uzh.glapp.mdp.MapeWorld.*;
 public class MapeUtils {
 
 	private int countCell = 0;
+	private static List<Host> hosts = null;
+	private static double lastGetHostInfo = 0;
 
 	public int countCellsInOrgan(List<Cell> cells, String organID) {
 		for (Cell cell : cells) {
@@ -67,8 +69,14 @@ public class MapeUtils {
 	 * @return true if the host is available and false otherwise
 	 */
 	public static boolean isHostAvailable(String provider, String region, String tier) {
-		SailsRetriever sa = new SailsRetriever();
-		List<Host> hosts = sa.getHostInfo();
+		double currentTime = System.currentTimeMillis()/1000;
+		
+		// Retrieve information from sails at most once every 60 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+			SailsRetriever sa = new SailsRetriever();
+			hosts = sa.getHostInfo();
+			lastGetHostInfo = currentTime;
+		}
 		
 		for (Host host : hosts) {
 			if (host.getLabels().getProvider().equals(provider) && host.getLabels().getRegion().equals(region) && host.getLabels().getTier().equals(tier)){
