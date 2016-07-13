@@ -60,7 +60,7 @@ public class MapeEnvironment implements Environment {
 				Object tRegion = curState.get(new OOVariableKey(cell.getId(), VAR_REGION));
 				Object tTier = curState.get(new OOVariableKey(cell.getId(), VAR_TIER));
 				Object tCells = curState.get(new OOVariableKey(cell.getId(), VAR_CELLS));
-				System.out.println(tRegion + ", " + tTier + ", " + tCells + ", " + tProvider);
+				System.out.println(tRegion + ", " + tTier + ", " + tCells + ", " + tProvider + ", " + cell.getOrganId().getName());
 			}
 		}
 		return curState;
@@ -72,7 +72,7 @@ public class MapeEnvironment implements Environment {
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
 //		String options = "{\"region\":\"us\",\"provider\":\"digitalocean\"}";// TODO: is still hardcoded. Have to get the values from action.
-		String options = null;
+		String options;
 		String provider;
 		String region;
 		String tier;
@@ -87,13 +87,15 @@ public class MapeEnvironment implements Environment {
 			provider = ((MapeActionMove) action).getProvider();
 			region = ((MapeActionMove) action).getRegion();
 			tier = ((MapeActionMove) action).getTier();
-			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +" \"}";
+			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
+			System.out.println(options);
 			sailsRetriever.postMove(cellId, options);
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			provider = ((MapeActionCreate) action).getProvider();
 			region = ((MapeActionCreate) action).getRegion();
 			tier = ((MapeActionCreate) action).getTier();
-			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +" \"}";
+			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
+			System.out.println(options);
 			sailsRetriever.postCreate(organId, options);
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove #".equals(action.getClass().getName())) {
 			sailsRetriever.postRemove(organId, cellId);

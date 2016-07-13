@@ -17,7 +17,7 @@ public class MapeActionTypeMove implements ActionType {
 	public List<Action> allApplicableActions(State state) {
 		
 		List<Action> actionList = new ArrayList<Action>();
-		
+
 		List<ObjectInstance> cells = ((DeepOOState)state).objectsOfClass(CLASS_CELL);
 		for (ObjectInstance cell : cells) {
 			// String cellName, String provider, String region, String tier
@@ -47,7 +47,7 @@ public class MapeActionTypeMove implements ActionType {
 				}
 			}
 		}
-		
+
 		return actionList;
 	}
 

@@ -69,6 +69,7 @@ public class MapeUtils {
 	public static boolean isHostAvailable(String provider, String region, String tier) {
 		SailsRetriever sa = new SailsRetriever();
 		List<Host> hosts = sa.getHostInfo();
+//		System.out.println("RETREIVE");
 		
 		for (Host host : hosts) {
 			if (host.getLabels().getProvider().equals(provider) && host.getLabels().getRegion().equals(region) && host.getLabels().getTier().equals(tier)){
