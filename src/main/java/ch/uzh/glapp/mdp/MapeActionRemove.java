@@ -23,4 +23,7 @@ public class MapeActionRemove implements Action {
 		return cellName;
 	}
 
+	public void setCellName(String cellName) {
+		this.cellName = cellName;
+	}
 }

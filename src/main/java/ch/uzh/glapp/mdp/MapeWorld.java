@@ -46,12 +46,12 @@ public class MapeWorld implements DomainGenerator {
 		domain.addStateClass(CLASS_CELL, MapeCell.class);
 
 		domain.addActionTypes(
-				new UniversalActionType(ACTION_MOVE),
-				new UniversalActionType(ACTION_CREATE),
-				new UniversalActionType(ACTION_REMOVE)
-//				new MapeActionTypeMove(),
-//				new MapeActionTypeCreate(),
-//				new MapeActionTypeRemove()
+//				new UniversalActionType(ACTION_MOVE),
+//				new UniversalActionType(ACTION_CREATE),
+//				new UniversalActionType(ACTION_REMOVE)
+				new MapeActionTypeMove(),
+				new MapeActionTypeCreate(),
+				new MapeActionTypeRemove()
 		);
 
 		return domain;

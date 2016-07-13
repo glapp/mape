@@ -45,13 +45,13 @@ public class SailsRetriever {
 			e.printStackTrace();
 		}
 
-		System.out.println("str: "+str);
+//		System.out.println("str: "+str);
 	}
 
 	//TODO: like postMove....
 	public void postCreate (String organId, String options) {
-		String paramSails = "organ_id=" + organId + "&options=" + options;
-			System.out.println(urlOrganScaleUp + "" + paramSails);
+		String paramSails = "{\"organ_id\":\"" + organId + "\",\"options\":" + options + "}";
+//			System.out.println(urlOrganScaleUp + "" + paramSails);
 		String str = null;
 		try {
 			str = con.POSTConnection(urlOrganScaleUp, paramSails);
@@ -59,12 +59,12 @@ public class SailsRetriever {
 			e.printStackTrace();
 		}
 
-		System.out.println(str);
+//		System.out.println(str);
 	}
 
 	public void postRemove (String organId, String cellId) {
-		String paramSails = "organ_id=" + organId + "&cell_id=" + cellId;
-			System.out.println(urlOrganScaleDown + "" + paramSails);
+		String paramSails = "{\"organ_id\":\"" + organId + "{\"cell_id\":\"" + cellId + "}";
+//			System.out.println(urlOrganScaleDown + "" + paramSails);
 		String str = null;
 		try {
 			str = con.POSTConnection(urlOrganScaleDown, paramSails);
@@ -72,7 +72,7 @@ public class SailsRetriever {
 			e.printStackTrace();
 		}
 
-		System.out.println(str);
+//		System.out.println(str);
 	}
 
 

@@ -71,16 +71,17 @@ public class MapeEnvironment implements Environment {
 
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
-		String options = "{\"region\":\"us\",\"provider\":\"amazonec2\"}";// TODO: is still hardcoded. Have to get the values from action.
+		String options = "{\"region\":\"us\",\"provider\":\"digitalocean\"}";// TODO: is still hardcoded. Have to get the values from action.
 		SailsRetriever sailsRetriever = new SailsRetriever();
 
 		System.out.println(action.actionName());
+		System.out.println(action.getClass().getName());
 
-		if (action.actionName() == "move") {
+		if ("ch.uzh.glapp.mdp.MapeActionMove".equals(action.getClass().getName())) {
 			sailsRetriever.postMove(cellId, options);
-		} else if (action.actionName() == "Pcreate") {
+		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			sailsRetriever.postCreate(organId, options);
-		} else if (action.actionName() == "Premove") {
+		} else if ("ch.uzh.glapp.mdp.MapeActionRemove #".equals(action.getClass().getName())) {
 			sailsRetriever.postRemove(organId, cellId);
 		} else {
 			System.err.println("action name is wrong!");
