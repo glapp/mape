@@ -21,7 +21,7 @@ public class MapeActionTypeRemove implements ActionType {
 		
 		for (ObjectInstance cell : cells) {
 			if((int)(((MapeCell)cell).get(VAR_CELLS)) > 1) {
-				System.out.println("MapeActionTypeRemove(): cell number: "+ (int)(((MapeCell)cell).get(VAR_CELLS)));
+//				System.out.println("MapeActionTypeRemove(): cell number: "+ (int)(((MapeCell)cell).get(VAR_CELLS)));
 				actionList.add(new MapeActionRemove(cell.name()));
 			}
 		}

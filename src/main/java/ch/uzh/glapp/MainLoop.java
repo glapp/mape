@@ -148,11 +148,11 @@ public class MainLoop {
     		System.out.println("Application healthiness value (weighted): " + appHealthiness);
     		System.out.println();
 
-    		if (config.getProperty("ForceMDP").equals("true")) {
-    			ruleViolated = true; // For testing, force trigger MDP
-    		} else {
-    			ruleViolated = false;
-    		}
+//    		if (config.getProperty("ForceMDP").equals("true")) {
+//    			ruleViolated = true; // For testing, force trigger MDP
+//    		} else {
+//    			ruleViolated = false;
+//    		}
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action

@@ -88,16 +88,16 @@ public class MapeEnvironment implements Environment {
 			region = ((MapeActionMove) action).getRegion();
 			tier = ((MapeActionMove) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
-			System.out.println(options);
+//			System.out.println(options);
 			sailsRetriever.postMove(cellId, options);
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			provider = ((MapeActionCreate) action).getProvider();
 			region = ((MapeActionCreate) action).getRegion();
 			tier = ((MapeActionCreate) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
-			System.out.println(options);
+//			System.out.println(options);
 			sailsRetriever.postCreate(organId, options);
-		} else if ("ch.uzh.glapp.mdp.MapeActionRemove #".equals(action.getClass().getName())) {
+		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
 			sailsRetriever.postRemove(organId, cellId);
 		} else {
 			System.err.println("action name is wrong!");

@@ -80,7 +80,7 @@ public class MapeUtils {
 		
 		for (Host host : hosts) {
 			if (host.getLabels().getProvider().equals(provider) && host.getLabels().getRegion().equals(region) && host.getLabels().getTier().equals(tier)){
-				System.out.println("Host at " + provider + ", " + region + ", " + tier + " is available");
+//				System.out.println("Host at " + provider + ", " + region + ", " + tier + " is available");
 				return true;
 			}
 		}
