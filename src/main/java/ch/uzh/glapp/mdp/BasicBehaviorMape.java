@@ -46,25 +46,25 @@ public class BasicBehaviorMape {
 	}
 
 
-	public static void main (String[] args) {
-
-		// policy triggers MDP
-		// need following infos from triggering policy:
-		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
-
-		String metric = "process_cpu_seconds_total";
-		String cellId = "577b925a9babc96e2fa21106";
-		String organId = "577b89f65127a7f32799b427";
-		String appId = "577b89f55127a7f32799b425";
-		float healthyValue = 0;
-
-		ObjectForMdp o = new ObjectForMdp(metric, cellId, organId, appId, healthyValue);
-
-		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
-		String outputPath = "output/"; // directory to record results
-
-		basicBehaviorMape.MyQLearningFunc(outputPath);
-
-	}
+//	public static void main (String[] args) {
+//
+//		// policy triggers MDP
+//		// need following infos from triggering policy:
+//		//      proetheus metric, healthy value app level, cell ID, organ ID, app ID
+//
+//		String metric = "process_cpu_seconds_total";
+//		String cellId = "577b925a9babc96e2fa21106";
+//		String organId = "577b89f65127a7f32799b427";
+//		String appId = "577b89f55127a7f32799b425";
+//		float healthyValue = 0;
+//
+//		ObjectForMdp o = new ObjectForMdp(metric, cellId, organId, appId, healthyValue);
+//
+//		BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
+//		String outputPath = "output/"; // directory to record results
+//
+//		basicBehaviorMape.MyQLearningFunc(outputPath);
+//
+//	}
 
 }

@@ -71,15 +71,29 @@ public class MapeEnvironment implements Environment {
 
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
-		String options = "{\"region\":\"us\",\"provider\":\"digitalocean\"}";// TODO: is still hardcoded. Have to get the values from action.
+//		String options = "{\"region\":\"us\",\"provider\":\"digitalocean\"}";// TODO: is still hardcoded. Have to get the values from action.
+		String options = null;
+		String provider;
+		String region;
+		String tier;
+
+
 		SailsRetriever sailsRetriever = new SailsRetriever();
 
 		System.out.println(action.actionName());
-		System.out.println(action.getClass().getName());
+		System.out.println(action);
 
 		if ("ch.uzh.glapp.mdp.MapeActionMove".equals(action.getClass().getName())) {
+			provider = ((MapeActionMove) action).getProvider();
+			region = ((MapeActionMove) action).getRegion();
+			tier = ((MapeActionMove) action).getTier();
+			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +" \"}";
 			sailsRetriever.postMove(cellId, options);
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
+			provider = ((MapeActionCreate) action).getProvider();
+			region = ((MapeActionCreate) action).getRegion();
+			tier = ((MapeActionCreate) action).getTier();
+			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +" \"}";
 			sailsRetriever.postCreate(organId, options);
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove #".equals(action.getClass().getName())) {
 			sailsRetriever.postRemove(organId, cellId);
@@ -107,4 +121,5 @@ public class MapeEnvironment implements Environment {
 	public void resetEnvironment() {
 
 	}
+
 }
