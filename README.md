@@ -23,6 +23,7 @@ Sample content:
 #!text
 prometheusServerIP=146.185.171.54
 prometheusServerPort=19090
+ForceMDP=false
 violoatedMetric=process_cpu_seconds_total
 violatedCellId=57725130644b311b20c4d8a2
 violatedOrganId=57724fef644b311b20c4d898
