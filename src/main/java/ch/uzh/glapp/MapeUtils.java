@@ -126,17 +126,17 @@ public class MapeUtils {
 	 * @param organID is the ID of the organ to which the cells belong  
 	 * @return a list of cell IDs of the cells belonging to a given organ. Cell IDs refer to container IDs in Docker.
 	 */
-	public static List<String> getCellIDs(List<Cell> cells, String organID) {
-		List<String> cellIDs = new ArrayList<String>();
+	public static List<String> getContainerIDs(List<Cell> cells, String organID) {
+		List<String> containerIDs = new ArrayList<String>();
 		
 		for (Cell cell : cells) {
 			if (cell.getOrganId().getId().equals(organID)) {
-				cellIDs.add(cell.getContainerId());
-				System.out.println("cell.getContainerId(): " + cell.getContainerId());
+				containerIDs.add(cell.getContainerId());
+//				System.out.println("cell.getContainerId(): " + cell.getContainerId());
 			}
 		}
 		
-		return cellIDs;
+		return containerIDs;
 	}
 	
 }
