@@ -50,9 +50,9 @@ public class MapeUtils {
 	 * @return true if the new tier is higher than the old tier and false otherwise.
 	 */
 	public static boolean isNewTierHigher(String oldTier, String newTier) {
-		if (oldTier.equals(TIER3) && (newTier.equals(TIER2) || newTier.equals(TIER1))) {
+		if (oldTier.equals(TIER1) && (newTier.equals(TIER2) || newTier.equals(TIER3))) {
 			return true;
-		} else if (oldTier.equals(TIER2) && newTier.equals(TIER1)) {
+		} else if (oldTier.equals(TIER2) && newTier.equals(TIER3)) {
 			return true;
 		} else {
 			return false;
