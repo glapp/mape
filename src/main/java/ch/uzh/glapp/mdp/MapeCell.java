@@ -21,7 +21,7 @@ public class MapeCell implements ObjectInstance, MutableState {
 	private String proxy_provider;
 	private String proxy_region;
 	
-	private final static List<Object> keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS, VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
+	private final static List<Object> keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS/*, VAR_PROXY_PROVIDER, VAR_PROXY_REGION*/);
 
 	public MapeCell(String cellName) {
 		this.cellName = cellName;
@@ -79,12 +79,12 @@ public class MapeCell implements ObjectInstance, MutableState {
 		else if(variableKey.equals(VAR_CELLS)){
 			return cells;
 		}
-		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-			return proxy_provider;
-		}
-		else if(variableKey.equals(VAR_PROXY_REGION)){
-			return proxy_region;
-		}
+//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+//			return proxy_provider;
+//		}
+//		else if(variableKey.equals(VAR_PROXY_REGION)){
+//			return proxy_region;
+//		}
 		throw new UnknownKeyException(variableKey);
 	}
 
@@ -107,12 +107,13 @@ public class MapeCell implements ObjectInstance, MutableState {
 		else if(variableKey.equals(VAR_CELLS)){
 			cells  = StateUtilities.stringOrNumber(value).intValue();
 		}
-		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-			proxy_provider = (String)value;
-		}
-		else if(variableKey.equals(VAR_PROXY_REGION)){
-			proxy_region  = (String)value;
-		} else {
+//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+//			proxy_provider = (String)value;
+//		}
+//		else if(variableKey.equals(VAR_PROXY_REGION)){
+//			proxy_region  = (String)value;
+//		}
+		else {
 			throw new UnknownKeyException(variableKey);
 		}
 		return this;

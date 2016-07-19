@@ -25,7 +25,7 @@ public class MapeState implements MutableState {
 	public String proxy_region;
 
 	private final static List<Object> keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER,
-			VAR_CELLS, VAR_PROXY_PROVIDER, VAR_PROXY_REGION);
+			VAR_CELLS/*, VAR_PROXY_PROVIDER, VAR_PROXY_REGION*/);
 
 	public MapeState(){}
 
@@ -62,12 +62,12 @@ public class MapeState implements MutableState {
 		else if(variableKey.equals(VAR_CELLS)){
 			this.cells = StateUtilities.stringOrNumber(value).intValue();
 		}
-		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-			this.proxy_provider = (String)value;
-		}
-		else if(variableKey.equals(VAR_PROXY_REGION)){
-			this.proxy_region = (String)value;
-		}
+//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+//			this.proxy_provider = (String)value;
+//		}
+//		else if(variableKey.equals(VAR_PROXY_REGION)){
+//			this.proxy_region = (String)value;
+//		}
 		else{
 			throw new UnknownKeyException(variableKey);
 		}
@@ -114,12 +114,12 @@ public class MapeState implements MutableState {
 		else if(variableKey.equals(VAR_CELLS)){
 			return cells;
 		}
-		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
-			return proxy_provider;
-		}
-		else if(variableKey.equals(VAR_PROXY_REGION)){
-			return proxy_region;
-		}
+//		else if(variableKey.equals(VAR_PROXY_PROVIDER)){
+//			return proxy_provider;
+//		}
+//		else if(variableKey.equals(VAR_PROXY_REGION)){
+//			return proxy_region;
+//		}
 		throw new UnknownKeyException(variableKey);
 	}
 

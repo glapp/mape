@@ -30,8 +30,8 @@ public class MapeWorld implements DomainGenerator {
 	public static final String[] TIER_LIST = {TIER1, TIER2, TIER3};
 
 	public static final String VAR_CELLS = "cells";
-	public static final String VAR_PROXY_PROVIDER = "proxy_provider";
-	public static final String VAR_PROXY_REGION = "proxy_region";
+//	public static final String VAR_PROXY_PROVIDER = "proxy_provider";
+//	public static final String VAR_PROXY_REGION = "proxy_region";
 
 	public static final String ACTION_MOVE = "move"; // with additional parameters like: AWS, Tier 1, US.
 	public static final String ACTION_CREATE = "create"; // with additional parameters like: AWS, Tier 1, US.
