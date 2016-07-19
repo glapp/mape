@@ -190,7 +190,7 @@ public class MapeUtils {
 			double weight = Double.parseDouble(rule.getWeight());
 			totalWeight += weight;
 
-			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue);
+			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 
 			// Compute the healthiness value for each cell (Docker container)
 			for (int j = 0; j < containerIDs.size(); ++j) {
@@ -231,6 +231,7 @@ public class MapeUtils {
 
         // application healthiness value which is an weighted average of healthiness value of all rules.
 		appHealthiness = totalRuleHealthiness / totalWeight;
+		System.out.println("Total weight: " + totalWeight);
 		System.out.println("Application healthiness value (weighted): " + appHealthiness);
 		System.out.println();
 		
