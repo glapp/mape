@@ -58,21 +58,21 @@ public class MapeCell implements ObjectInstance, MutableState {
 		}
 		else if(variableKey.equals(VAR_REGION)){
 //			return region;
-			if (provider.equals(MapeWorld.NA)) {
+			if (region.equals(MapeWorld.NA)) {
 				return 1;
-			} else if (provider.equals(MapeWorld.EU)) {
+			} else if (region.equals(MapeWorld.EU)) {
 				return 2;
-			} else if (provider.equals(MapeWorld.ASIA)) {
+			} else if (region.equals(MapeWorld.ASIA)) {
 				return 3;
 			}
 		}
 		else if(variableKey.equals(VAR_TIER)){
 //			return tier;
-			if (provider.equals(MapeWorld.TIER1)) {
+			if (tier.equals(MapeWorld.TIER1)) {
 				return 1;
-			} else if (provider.equals(MapeWorld.TIER2)) {
+			} else if (tier.equals(MapeWorld.TIER2)) {
 				return 2;
-			} else if (provider.equals(MapeWorld.TIER3)) {
+			} else if (tier.equals(MapeWorld.TIER3)) {
 				return 3;
 			}
 		}
