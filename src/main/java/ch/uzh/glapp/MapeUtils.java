@@ -154,6 +154,8 @@ public class MapeUtils {
 		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
 		
 		List<Rule> ruleList;
+		
+		// TODO: add a checking for if application cannot be found for the appId
     	ruleList = sa.getRules(appId);
     	double totalRuleHealthiness = 0;
     	double appHealthiness;
