@@ -12,7 +12,7 @@ import java.util.List;
 
 import static ch.uzh.glapp.mdp.MapeWorld.*;
 
-public class MapeUtils {
+public class MdpUtils {
 
 	private int countCell = 0;
 	private static List<Host> hosts = null;

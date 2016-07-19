@@ -7,9 +7,9 @@ public class ObjectForMdp {
 	private String cellId;
 	private String organId;
 	private String appId;
-	private float healthinessValue;
+	private double healthinessValue;
 
-	public ObjectForMdp(String metric, String cellId, String organId, String appId, float healthinessValue) {
+	public ObjectForMdp(String metric, String cellId, String organId, String appId, double healthinessValue) {
 		this.metric = metric;
 		this.cellId = cellId;
 		this.organId = organId;
@@ -49,11 +49,11 @@ public class ObjectForMdp {
 		this.appId = appId;
 	}
 
-	public float getHealthyValue() {
+	public double getHealthyValue() {
 		return healthinessValue;
 	}
 
-	public void setHealthyValue(float healthyValue) {
+	public void setHealthyValue(double healthyValue) {
 		this.healthinessValue = healthyValue;
 	}
 }

@@ -6,6 +6,7 @@ import burlap.mdp.core.oo.state.OOVariableKey;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
+import ch.uzh.glapp.MapeUtils;
 import ch.uzh.glapp.SailsRetriever;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.ObjectForMdp;
@@ -34,8 +35,8 @@ public class MapeEnvironment implements Environment {
 		List<Cell> cells = new SailsRetriever().getCellInfo();
 		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 
-		MapeUtils mapeUtils = new MapeUtils();
-		HashMap numOfCellsList = mapeUtils.countCellsInAllOrgans(cells);
+		MdpUtils mdpUtils = new MdpUtils();
+		HashMap numOfCellsList = mdpUtils.countCellsInAllOrgans(cells);
 
 		System.out.println("##### " + objectForMpd.getMetric());
 
@@ -105,8 +106,12 @@ public class MapeEnvironment implements Environment {
 		}
 
 		//TODO: calculate the reward (difference in healthiness values)
+		MapeUtils mapeUtils = new MapeUtils();
+		double appHealthinessAfter = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600);
+		double deltaHealthiness = objectForMpd.getHealthyValue() - appHealthinessAfter;
+
 		nextState = currentObservation();
-		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, 0.8, true);
+		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, deltaHealthiness, true);
 		return envOutCome;
 	}
 

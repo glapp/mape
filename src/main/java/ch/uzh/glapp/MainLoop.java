@@ -61,7 +61,7 @@ public class MainLoop {
 
 		// Start processing the applications one by one
         for (int i = 0; i < appList.size(); ++i) {
-        	boolean ruleViolated = false;
+        	ruleViolated = false;
         	
         	appId = appList.get(i);
         	
@@ -94,7 +94,7 @@ public class MainLoop {
     			String violatedAppId = config.getProperty("violatedAppId");
     			float healthinessValue = Float.parseFloat(config.getProperty("healthinessValue"));
 
-    			ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, healthinessValue);
+    			ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, appHealthiness);
 
     			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
     			String outputPath = "output/" + appId + "/"; // directory to record results
