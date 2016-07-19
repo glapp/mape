@@ -76,11 +76,11 @@ public class MainLoop {
         	// get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
         	double appHealthiness = MapeUtils.healthiness(appId, 60, 3600, false);
 
-//    		if (config.getProperty("ForceMDP").equals("true")) {
-//    			ruleViolated = true; // For testing, force trigger MDP
+    		if (config.getProperty("ForceMDP").equals("true")) {
+    			ruleViolated = true; // For testing, force trigger MDP
 //    		} else {
 //    			ruleViolated = false;
-//    		}
+    		}
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action

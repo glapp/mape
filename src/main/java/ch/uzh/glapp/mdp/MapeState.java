@@ -80,13 +80,36 @@ public class MapeState implements MutableState {
 			return violated_policy;
 		}
 		else if(variableKey.equals(VAR_PROVIDER)){
-			return provider;
+//			return provider;
+			if (provider.equals(MapeWorld.AWS)) {
+				return 1;
+			} else if (provider.equals(MapeWorld.DO)) {
+				return 2;
+			} else if (provider.equals(MapeWorld.AZURE)) {
+				return 3;
+			} else if (provider.equals(MapeWorld.GOOGLE)) {
+				return 4;
+			}
 		}
 		else if(variableKey.equals(VAR_REGION)){
-			return region;
+//			return region;
+			if (provider.equals(MapeWorld.NA)) {
+				return 1;
+			} else if (provider.equals(MapeWorld.EU)) {
+				return 2;
+			} else if (provider.equals(MapeWorld.ASIA)) {
+				return 3;
+			}
 		}
 		else if(variableKey.equals(VAR_TIER)){
-			return tier;
+//			return tier;
+			if (provider.equals(MapeWorld.TIER1)) {
+				return 1;
+			} else if (provider.equals(MapeWorld.TIER2)) {
+				return 2;
+			} else if (provider.equals(MapeWorld.TIER3)) {
+				return 3;
+			}
 		}
 		else if(variableKey.equals(VAR_CELLS)){
 			return cells;
