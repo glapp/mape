@@ -107,9 +107,10 @@ public class MapeEnvironment implements Environment {
 
 		//TODO: calculate the reward (difference in healthiness values)
 		MapeUtils mapeUtils = new MapeUtils();
-		double appHealthinessAfter = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600);
+		double appHealthinessAfter = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600, true);
 		double deltaHealthiness = objectForMpd.getHealthyValue() - appHealthinessAfter;
 
+		System.out.println("Healthyness before: " + objectForMpd.getHealthyValue() + " ----- after: " + appHealthinessAfter);
 		nextState = currentObservation();
 		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, deltaHealthiness, true);
 		return envOutCome;

@@ -74,7 +74,7 @@ public class MainLoop {
         	// get the application healthiness value
         	// for metric data, range=60 and duration=3600 means
         	// get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
-        	double appHealthiness = MapeUtils.healthiness(appId, 60, 3600);
+        	double appHealthiness = MapeUtils.healthiness(appId, 60, 3600, false);
 
 //    		if (config.getProperty("ForceMDP").equals("true")) {
 //    			ruleViolated = true; // For testing, force trigger MDP
@@ -91,7 +91,7 @@ public class MainLoop {
     			String violoatedMetric = config.getProperty("violoatedMetric");
     			String violatedCellId = config.getProperty("violatedCellId");
     			String violatedOrganId = config.getProperty("violatedOrganId");
-    			String violatedAppId = config.getProperty("violatedAppId");
+    			String violatedAppId = appId;
     			float healthinessValue = Float.parseFloat(config.getProperty("healthinessValue"));
 
     			ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, appHealthiness);
@@ -99,11 +99,12 @@ public class MainLoop {
     			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
     			String outputPath = "output/" + appId + "/"; // directory to record results
 
-    			// solve MDP (Q-Learning)
+    			// solve MDP
     			basicBehaviorMape.MyQLearningFunc(outputPath);
-    		
+//    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
 
-	    		// TODO: (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
+
+	    		// TODO: DONE! (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
 	    		// Stage 3: Send actions to the platform
 	    		// GETConnection to sails API.
 	    		// pass three pieces of information:

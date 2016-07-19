@@ -1,8 +1,14 @@
 package ch.uzh.glapp.mdp;
 
+import burlap.behavior.functionapproximation.DifferentiableStateActionValue;
+import burlap.behavior.functionapproximation.dense.ConcatenatedObjectFeatures;
+import burlap.behavior.functionapproximation.dense.NumericVariableFeatures;
+import burlap.behavior.functionapproximation.sparse.tilecoding.TileCodingFeatures;
+import burlap.behavior.functionapproximation.sparse.tilecoding.TilingArrangement;
 import burlap.behavior.singleagent.Episode;
 import burlap.behavior.singleagent.learning.LearningAgent;
 import burlap.behavior.singleagent.learning.tdmethods.QLearning;
+import burlap.behavior.singleagent.learning.tdmethods.vfa.GradientDescentSarsaLam;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.oo.OOSADomain;
@@ -44,6 +50,80 @@ public class BasicBehaviorMape {
 //		env.resetEnvironment();
 
 	}
+
+	public void MySarsaLearningFunc (String outputPath) {
+
+		ConcatenatedObjectFeatures inputFeatures = new ConcatenatedObjectFeatures()
+				.addObjectVectorizion(MapeWorld.CLASS_CELL, new NumericVariableFeatures());
+
+		int nTilings = 3;
+		double providerWidth = MapeWorld.PROVIDER_LIST.length;
+		double regionWidth = MapeWorld.REGION_LIST.length;
+		double tierWidth = MapeWorld.TIER_LIST.length;
+
+		TileCodingFeatures tilecoding = new TileCodingFeatures(inputFeatures);
+		tilecoding.addTilingsForAllDimensionsWithWidths(
+				new double[] {providerWidth, regionWidth, tierWidth},
+				nTilings,
+				TilingArrangement.RANDOM_JITTER);
+
+		double defaultQ = 0.5;
+		DifferentiableStateActionValue vfa = tilecoding.generateVFA(defaultQ/nTilings);
+		GradientDescentSarsaLam agent = new GradientDescentSarsaLam(domain, 0.99, vfa, 0.02, 0.5);
+		Episode episode = agent.runLearningEpisode(env, 1);
+
+		episode.write(outputPath + "ql_0");
+		System.out.println("Steps in episode: " + episode.maxTimeStep());
+
+	}
+
+
+//	public static void LLSARSA(){
+//
+//		LunarLanderDomain lld = new LunarLanderDomain();
+//		OOSADomain domain = lld.generateDomain();
+//
+//		LLState s = new LLState(new LLAgent(5, 0, 0), new LLBlock.LLPad(75, 95, 0, 10, "pad"));
+//
+//		ConcatenatedObjectFeatures inputFeatures = new ConcatenatedObjectFeatures()
+//				.addObjectVectorizion(LunarLanderDomain.CLASS_AGENT, new NumericVariableFeatures());
+//
+//		int nTilings = 5;
+//		double resolution = 10.;
+//
+//		double xWidth = (lld.getXmax() - lld.getXmin()) / resolution;
+//		double yWidth = (lld.getYmax() - lld.getYmin()) / resolution;
+//		double velocityWidth = 2 * lld.getVmax() / resolution;
+//		double angleWidth = 2 * lld.getAngmax() / resolution;
+//
+//
+//
+//		TileCodingFeatures tilecoding = new TileCodingFeatures(inputFeatures);
+//		tilecoding.addTilingsForAllDimensionsWithWidths(
+//				new double []{xWidth, yWidth, velocityWidth, velocityWidth, angleWidth},
+//				nTilings,
+//				TilingArrangement.RANDOM_JITTER);
+//
+//
+//
+//
+//		double defaultQ = 0.5;
+//		DifferentiableStateActionValue vfa = tilecoding.generateVFA(defaultQ/nTilings);
+//		GradientDescentSarsaLam agent = new GradientDescentSarsaLam(domain, 0.99, vfa, 0.02, 0.5);
+//
+//		SimulatedEnvironment env = new SimulatedEnvironment(domain, s);
+//		List<Episode> episodes = new ArrayList<Episode>();
+//		for(int i = 0; i < 5000; i++){
+//			Episode ea = agent.runLearningEpisode(env);
+//			episodes.add(ea);
+//			System.out.println(i + ": " + ea.maxTimeStep());
+//			env.resetEnvironment();
+//		}
+//
+//		Visualizer v = LLVisualizer.getVisualizer(lld.getPhysParams());
+//		new EpisodeSequenceVisualizer(v, domain, episodes);
+//
+//	}
 
 
 

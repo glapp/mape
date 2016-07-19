@@ -3,6 +3,7 @@ package ch.uzh.glapp;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.sails.ruleinfo.Organ;
@@ -149,7 +150,18 @@ public class MapeUtils {
 	 * @param duration is the duration of time (in seconds) of the data points.
 	 * @return healthiness value of the application specified by appId
 	 */
-	public static double healthiness(String appId, int range, int duration) {
+	public static double healthiness(String appId, int range, int duration, boolean wait) {
+
+		// waiting a bit for prometheus getting the data of the new container.
+		if (wait) {
+			try {
+				TimeUnit.SECONDS.sleep(15);
+				System.out.println("Sleep 15 secs.");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		SailsRetriever sa = new SailsRetriever();
 		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
 		
