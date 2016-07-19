@@ -102,6 +102,8 @@ public class PrometheusRetriever {
 //            return Float.parseFloat(result);
         } else {
 //        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
+        	
+        	// TODO: consider handling for newly created cell where metric data is not available yet
         	throw new MetricNotFoundException("Metric for cell (container ID: " + cellID + ") not found.");
         }
     }
