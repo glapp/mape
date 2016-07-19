@@ -65,6 +65,24 @@ public class MdpUtils {
 	}
 	
 	/**
+	 * Function to check if the new tier is higher than or equal to the old tier
+	 * @param oldTier is the old tier of the host
+	 * @param newTier is the new tier of the host
+	 * @return true if the new tier is higher than the old tier and false otherwise.
+	 */
+	public static boolean isNewTierHigherOrEqual(String oldTier, String newTier) {
+		if (oldTier.equals(TIER1)) {
+			return true;
+		} else if (oldTier.equals(TIER2) && (newTier.equals(TIER2) || newTier.equals(TIER3))) {
+			return true;
+		} else if (oldTier.equals(TIER3) && (newTier.equals(TIER3))){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Function to check if a host from given cloud provider, region and tier is available
 	 * @param provider is the new provider
 	 * @param region
