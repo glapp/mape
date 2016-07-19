@@ -104,6 +104,7 @@ public class MapeEnvironment implements Environment {
 			System.exit(199);
 		}
 
+		//TODO: calculate the reward (difference in healthiness values)
 		nextState = currentObservation();
 		EnvironmentOutcome envOutCome = new EnvironmentOutcome(curState, action, nextState, 0.8, true);
 		return envOutCome;

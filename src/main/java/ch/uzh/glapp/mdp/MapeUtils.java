@@ -3,7 +3,10 @@ package ch.uzh.glapp.mdp;
 import ch.uzh.glapp.SailsRetriever;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.sails.hostinfo.Host;
+import ch.uzh.glapp.model.sails.ruleinfo.Organ;
+import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,10 +90,5 @@ public class MapeUtils {
 		
 //		System.out.println("Host at " + provider + ", " + region + ", " + tier + " is not available");
 		return false;
-	}
-	
-	public double healthiness() {
-		
-		return 0;
 	}
 }
