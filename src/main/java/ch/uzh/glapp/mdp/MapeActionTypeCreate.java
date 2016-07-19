@@ -33,6 +33,8 @@ public class MapeActionTypeCreate implements ActionType {
 						// check if a host from the new provider in the new region and new tier is available
 						if (MdpUtils.isHostAvailable(newProvider, newRegion, newTier)) {
 							
+//							System.out.print("Checking provider: " + newProvider + ", region: " + newRegion + ", tier: " + newTier + " / ");
+							
 							// Only generate action to create new cell at higher tier host or same tier(if it is already at max tier). This reduce the applicable actions from 36 to 12
 							// given the following conditions:
 							// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
@@ -41,6 +43,8 @@ public class MapeActionTypeCreate implements ActionType {
 								actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
 							} else if (currentTier.equals(TIER3) && (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion))) {
 								actionList.add(new MapeActionCreate(cellName, newProvider, newRegion, newTier));
+							} else {
+//								System.out.println("invalid action");
 							}
 						}
 					}
