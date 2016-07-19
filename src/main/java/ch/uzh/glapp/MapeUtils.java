@@ -207,6 +207,7 @@ public class MapeUtils {
 			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 
 			// Compute the healthiness value for each cell (Docker container)
+			// TODO: do not include Porxies
 			for (int j = 0; j < containerIDs.size(); ++j) {
 				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
 				float metricValue = 0;
