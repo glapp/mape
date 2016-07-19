@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class ConsulRetriever {
 
-    // TODO: this class is only a stub and has to be finished.
+    // TODO: this class is only a stub and has to be finished. But maybe it is nor needed at all.
 
     public static void main (String[] args) {
 

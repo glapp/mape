@@ -48,7 +48,6 @@ public class SailsRetriever {
 //		System.out.println("str: "+str);
 	}
 
-	//TODO: like postMove....
 	public void postCreate (String organId, String options) {
 		String paramSails = "{\"organ_id\":\"" + organId + "\",\"options\":" + options + "}";
 //			System.out.println(urlOrganScaleUp + "" + paramSails);
