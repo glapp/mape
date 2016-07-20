@@ -2,6 +2,7 @@ package ch.uzh.glapp;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -167,6 +168,18 @@ public class MapeUtils {
 		SailsRetriever sa = new SailsRetriever();
 		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
 		
+		// get the cell information
+		List<Cell> cells = sa.getCellInfo();
+		
+		// create maps of container IDs to cell IDs and organ IDs
+		HashMap<String, String> containerIDtoCellID = new HashMap<String, String>();
+		HashMap<String, String> containerIDtoOrganID = new HashMap<String, String>();
+		
+		for (Cell cell : cells) {
+			containerIDtoCellID.put(cell.getContainerId(), cell.getId());
+			containerIDtoOrganID.put(cell.getContainerId(), cell.getOrganId().getId());
+		}
+		
 		List<Rule> ruleList;
 		
 		// TODO: add a checking for if application cannot be found for the appId
@@ -175,7 +188,7 @@ public class MapeUtils {
     	double appHealthiness;
     	double totalWeight = 0;
 
-		List <Violation> violationList = null;
+		List <Violation> violationList = new ArrayList<Violation>();
 		MdpTriggerObject mdpTriggerObj = null;
     	
     	// Compute the healthiness value for each rule
@@ -190,13 +203,14 @@ public class MapeUtils {
 			
 			// get the organ that current rule is applicable to
 			List<Organ> organs = rule.getOrgans();
+			
     		for (Organ organ : organs) {
     			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
-    			List<Cell> cells = sa.getCellInfo();
     			
     			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
     			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
     		}
+    		
     		
     		System.out.println("Applicable cells and corresponding cell IDs:");
 			for (String containerID : containerIDs) {
@@ -234,8 +248,9 @@ public class MapeUtils {
     			if (cellHealthiness < 0) {
     				System.out.println("Not compliant, will trigger MDP.");
     				MainLoop.ruleViolated = true;
+    				String containerID = containerIDs.get(j);
 				    Violation violation = new Violation(
-						    cell.getId(), containerIDs.get(j), cell.getOrganId(), appId, rule.getId(), metricName
+						    containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
 				    );
 				    violationList.add(violation);
 				    
