@@ -100,8 +100,8 @@ public class MainLoop {
     			String outputPath = "output/" + appId + "/"; // directory to record results
 
     			// solve MDP
-//    			basicBehaviorMape.MyQLearningFunc(outputPath);
-    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
+    			basicBehaviorMape.MyQLearningFunc(outputPath);
+//    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
 
 
 	    		// DONE! (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
