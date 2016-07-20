@@ -18,8 +18,7 @@ import java.util.Properties;
 public class MainLoop {
 	public static String prometheusServerIP;
 	public static int prometheusServerPort;
-	public static boolean ruleViolated;
-	
+
     public static void main (String[] args) throws IOException {
     	
     	// Read the config file
@@ -30,8 +29,7 @@ public class MainLoop {
     	
     	prometheusServerIP = config.getProperty("prometheusServerIP");
     	prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
-    	ruleViolated = false;
-    	
+
     	MapeUtils mapeUtils = new MapeUtils();
     	SailsRetriever sa = new SailsRetriever();
     	
@@ -62,8 +60,7 @@ public class MainLoop {
 
 		// Start processing the applications one by one
         for (int i = 0; i < appList.size(); ++i) {
-        	ruleViolated = false;
-        	
+
         	appId = appList.get(i);
         	
         	System.out.println("MAPE started for app ID: " + appList.get(i) + "\n");
@@ -77,34 +74,40 @@ public class MainLoop {
         	// get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
         	MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 60, 3600, false);
 
-    		if (config.getProperty("ForceMDP").equals("true")) {
-    			ruleViolated = true; // For testing, force trigger MDP
-    		}
+//    		if (config.getProperty("ForceMDP").equals("true")) {
+//    			ruleViolated = true; // For testing, force trigger MDP
+//    		}
 //		    else {
 //    			ruleViolated = false;
 //    		}
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action
-    		if (ruleViolated) {
+    		if (mdpTriggerObject.getViolationList() != null || config.getProperty("ForceMDP").equals("true")) {
         		System.out.println("Stage 2: Perform MDP");
+			    ObjectForMdp objectForMdp;
     			
-    			// Simulate a violated rule
-    			String violoatedMetric = config.getProperty("violoatedMetric");
-    			String violatedCellId = config.getProperty("violatedCellId");
-    			String violatedOrganId = config.getProperty("violatedOrganId");
-    			String violatedAppId = appId;
-    			float healthinessValue = Float.parseFloat(config.getProperty("healthinessValue"));
+			    if (mdpTriggerObject.getViolationList() != null)  {
+				    objectForMdp = new ObjectForMdp(
+						    mdpTriggerObject.getViolationList().get(0).getMetric(),
+						    mdpTriggerObject.getViolationList().get(0).getCellId(),
+						    mdpTriggerObject.getViolationList().get(0).getOrganId(),
+						    mdpTriggerObject.getViolationList().get(0).getAppId(),
+						    mdpTriggerObject.getAppHealthiness()
+				    );
+			    } else {
+				    // Simulate a violated rule
+				    objectForMdp = new ObjectForMdp(
+						    config.getProperty("violoatedMetric"),
+						    config.getProperty("violatedCellId"),
+						    config.getProperty("violatedOrganId"),
+						    appId,
+						    Float.parseFloat(config.getProperty("healthinessValue"))
+				    );
+			    }
 
-    			ObjectForMdp o = new ObjectForMdp(
-					    mdpTriggerObject.getViolationList().get(0).getMetric(),
-					    mdpTriggerObject.getViolationList().get(0).getCellId(),
-					    mdpTriggerObject.getViolationList().get(0).getOrganId(),
-					    mdpTriggerObject.getViolationList().get(0).getAppId(),
-					    mdpTriggerObject.getAppHealthiness()
-			    );
 
-    			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
+    			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(objectForMdp);
     			String outputPath = "output/" + appId + "/"; // directory to record results
 
     			// solve MDP

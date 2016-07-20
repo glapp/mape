@@ -247,7 +247,6 @@ public class MapeUtils {
     			System.out.print("Comparison result: ");
     			if (cellHealthiness < 0) {
     				System.out.println("Not compliant, will trigger MDP.");
-    				MainLoop.ruleViolated = true;
     				String containerID = containerIDs.get(j);
 				    Violation violation = new Violation(
 						    containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
@@ -278,7 +277,7 @@ public class MapeUtils {
 		if (violationList.size() > 0) {
 			mdpTriggerObj = new MdpTriggerObject(violationList, appHealthiness);
 		} else {
-			mdpTriggerObj = null;
+			mdpTriggerObj = new MdpTriggerObject(null, appHealthiness);
 		}
 		
 		return mdpTriggerObj;

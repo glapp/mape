@@ -8,6 +8,7 @@ import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
 import ch.uzh.glapp.MapeUtils;
 import ch.uzh.glapp.SailsRetriever;
+import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.ObjectForMdp;
 
@@ -107,7 +108,8 @@ public class MapeEnvironment implements Environment {
 
 		//TODO: calculate the reward (difference in healthiness values)
 		MapeUtils mapeUtils = new MapeUtils();
-		double appHealthinessAfter = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600, true);
+		MdpTriggerObject mdpTriggerObject = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600, true);
+		double appHealthinessAfter = mdpTriggerObject.getAppHealthiness();
 		double deltaHealthiness = objectForMpd.getHealthyValue() - appHealthinessAfter;
 
 		System.out.println("Healthyness before: " + objectForMpd.getHealthyValue() + " ----- after: " + appHealthinessAfter);
