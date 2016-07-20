@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import ch.uzh.glapp.model.Violation;
+import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.sails.ruleinfo.Organ;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
@@ -132,7 +134,7 @@ public class MapeUtils {
 	 */
 	public static List<String> getContainerIDs(List<Cell> cells, String organID) {
 		List<String> containerIDs = new ArrayList<String>();
-		
+
 		for (Cell cell : cells) {
 			if (cell.getOrganId().getId().equals(organID)) {
 				containerIDs.add(cell.getContainerId());
@@ -150,13 +152,13 @@ public class MapeUtils {
 	 * @param duration is the duration of time (in seconds) of the data points.
 	 * @return healthiness value of the application specified by appId
 	 */
-	public static double healthiness(String appId, int range, int duration, boolean wait) {
+	public static MdpTriggerObject healthiness(String appId, int range, int duration, boolean wait) {
 
 		// waiting a bit for prometheus getting the data of the new container.
 		if (wait) {
 			try {
-				TimeUnit.SECONDS.sleep(15);
 				System.out.println("Sleep 15 secs.");
+				TimeUnit.SECONDS.sleep(15);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -172,6 +174,9 @@ public class MapeUtils {
     	double totalRuleHealthiness = 0;
     	double appHealthiness;
     	double totalWeight = 0;
+
+		List <Violation> violationList = null;
+		MdpTriggerObject mdpTriggerObj = null;
     	
     	// Compute the healthiness value for each rule
 		for (Rule rule : ruleList) {
@@ -229,6 +234,11 @@ public class MapeUtils {
     			if (cellHealthiness < 0) {
     				System.out.println("Not compliant, will trigger MDP.");
     				MainLoop.ruleViolated = true;
+				    Violation violation = new Violation(
+						    cell.getId(), containerIDs.get(j), cell.getOrganId(), appId, rule.getId(), metricName
+				    );
+				    violationList.add(violation);
+				    
     			} else {
     				System.out.println("Compliant, proceed to next cell/rule.");
     			}
@@ -249,8 +259,14 @@ public class MapeUtils {
 		System.out.println("Total weight: " + totalWeight);
 		System.out.println("Application healthiness value (weighted): " + appHealthiness);
 		System.out.println();
+
+		if (violationList.size() > 0) {
+			mdpTriggerObj = new MdpTriggerObject(violationList, appHealthiness);
+		} else {
+			mdpTriggerObj = null;
+		}
 		
-		return appHealthiness;
+		return mdpTriggerObj;
 	}
 	
 }

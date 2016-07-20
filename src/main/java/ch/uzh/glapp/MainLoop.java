@@ -1,5 +1,6 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.sails.ruleinfo.Organ;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
@@ -74,13 +75,14 @@ public class MainLoop {
         	// get the application healthiness value
         	// for metric data, range=60 and duration=3600 means
         	// get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
-        	double appHealthiness = MapeUtils.healthiness(appId, 60, 3600, false);
+        	MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 60, 3600, false);
 
     		if (config.getProperty("ForceMDP").equals("true")) {
     			ruleViolated = true; // For testing, force trigger MDP
-//    		} else {
-//    			ruleViolated = false;
     		}
+//		    else {
+//    			ruleViolated = false;
+//    		}
     		
     		// Stage 2: MDP
     		// if any rule is violated, perform MDP to find an adaptation action
@@ -94,7 +96,13 @@ public class MainLoop {
     			String violatedAppId = appId;
     			float healthinessValue = Float.parseFloat(config.getProperty("healthinessValue"));
 
-    			ObjectForMdp o = new ObjectForMdp(violoatedMetric, violatedCellId, violatedOrganId, violatedAppId, appHealthiness);
+    			ObjectForMdp o = new ObjectForMdp(
+					    mdpTriggerObject.getViolationList().get(0).getMetric(),
+					    mdpTriggerObject.getViolationList().get(0).getCellId(),
+					    mdpTriggerObject.getViolationList().get(0).getOrganId(),
+					    mdpTriggerObject.getViolationList().get(0).getAppId(),
+					    mdpTriggerObject.getAppHealthiness()
+			    );
 
     			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(o);
     			String outputPath = "output/" + appId + "/"; // directory to record results

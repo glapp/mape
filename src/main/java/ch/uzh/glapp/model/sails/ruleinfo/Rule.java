@@ -61,20 +61,9 @@ public class Rule {
 	public void setWeight(String weight) {
 		this.weight = weight;
 	}
-	/**
-	*
-	* @return
-	* The organs
-	*/
 	public List<Organ> getOrgans() {
 		return organs;
 	}
-
-	/**
-	*
-	* @param organs
-	* The organs
-	*/
 	public void setOrgans(List<Organ> organs) {
 		this.organs = organs;
 	}
