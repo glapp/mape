@@ -54,7 +54,7 @@ public class BasicBehaviorMape {
 	public void MySarsaLearningFunc (String outputPath) {
 
 		ConcatenatedObjectFeatures inputFeatures = new ConcatenatedObjectFeatures()
-				.addObjectVectorizion(MapeWorld.CLASS_CELL, new NumericVariableFeatures());
+				.addObjectVectorizion(MapeWorld.CLASS_CELL, new NominalFeatures());
 
 		int nTilings = 3;
 		double providerWidth = MapeWorld.PROVIDER_LIST.length;

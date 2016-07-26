@@ -88,6 +88,7 @@ public class MainLoop {
 			    ObjectForMdp objectForMdp;
     			
 			    if (mdpTriggerObject.getViolationList() != null)  {
+				    System.out.println("Take real ObjectForMdp");
 				    objectForMdp = new ObjectForMdp(
 						    mdpTriggerObject.getViolationList().get(0).getMetric(),
 						    mdpTriggerObject.getViolationList().get(0).getCellId(),
@@ -97,6 +98,7 @@ public class MainLoop {
 				    );
 			    } else {
 				    // Simulate a violated rule
+				    System.out.println("Simulate a violated rule");
 				    objectForMdp = new ObjectForMdp(
 						    config.getProperty("violoatedMetric"),
 						    config.getProperty("violatedCellId"),
@@ -111,8 +113,8 @@ public class MainLoop {
     			String outputPath = "output/" + appId + "/"; // directory to record results
 
     			// solve MDP
-    			basicBehaviorMape.MyQLearningFunc(outputPath);
-//    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
+//    			basicBehaviorMape.MyQLearningFunc(outputPath);
+    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
 
 
 	    		// DONE! (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
