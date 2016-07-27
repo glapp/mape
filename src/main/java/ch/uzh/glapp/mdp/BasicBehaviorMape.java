@@ -23,8 +23,10 @@ public class BasicBehaviorMape {
 	DeepOOState initialState;
 	HashableStateFactory hashingFactory;
 	Environment env;
+	private static ObjectForMdp objectForMdp;
 
 	public BasicBehaviorMape (ObjectForMdp objectForMdp) {
+		this.objectForMdp = objectForMdp;
 		mwdg = new MapeWorld();
 		domain = mwdg.generateDomain();
 		initialState = new DeepOOState();
@@ -76,6 +78,11 @@ public class BasicBehaviorMape {
 		System.out.println("Steps in episode: " + episode.maxTimeStep());
 
 	}
+
+	public static ObjectForMdp getObjectForMdp() {
+		return objectForMdp;
+	}
+
 
 
 //	public static void LLSARSA(){
