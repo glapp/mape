@@ -181,7 +181,6 @@ public class MapeUtils {
 		
 		List<Rule> ruleList;
 		
-		// TODO: add a checking for if application cannot be found for the appId
     	ruleList = sa.getRules(appId);
     	double totalRuleHealthiness = 0;
     	double appHealthiness;
@@ -223,8 +222,8 @@ public class MapeUtils {
 			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 
 			// Compute the healthiness value for each cell (Docker container)
-			// TODO: do not include Proxies
 			for (int j = 0; j < containerIDs.size(); ++j) {
+				// TODO: do not include Proxies
 				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
 				float metricValue = 0;
 				try {
@@ -237,29 +236,29 @@ public class MapeUtils {
 					} else { // for other metrics
 						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration);
 					}
-				} catch (MetricNotFoundException e) {
-					e.printStackTrace(); // TODO: handle exception
-				}  
-    			System.out.println("Query result (cell metric value): " + metricValue);
+					System.out.println("Query result (cell metric value): " + metricValue);
 
-    			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
-    			// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
-    			double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
-    			totalCellHealthiness += cellHealthiness;
-    			
-    			System.out.print("Comparison result: ");
-    			if (cellHealthiness < 0) {
-    				System.out.println("Not compliant, will trigger MDP.");
-    				String containerID = containerIDs.get(j);
-				    Violation violation = new Violation(
-						    containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
-				    );
-				    violationList.add(violation);
-				    
-    			} else {
-    				System.out.println("Compliant, proceed to next cell/rule.");
-    			}
-    			
+					// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
+					// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
+					double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
+					totalCellHealthiness += cellHealthiness;
+
+					System.out.print("Comparison result: ");
+					if (cellHealthiness < 0) {
+						System.out.println("Not compliant, will trigger MDP.");
+						String containerID = containerIDs.get(j);
+						Violation violation = new Violation(
+								containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
+						);
+						violationList.add(violation);
+
+					} else {
+						System.out.println("Compliant, proceed to next cell/rule.");
+					}
+				} catch (MetricNotFoundException e) {
+					e.printStackTrace();
+				}
+
     			// TODO: determine if a rule is violated based on the number of violating cells among all the cells   
     			
     			System.out.println();

@@ -26,6 +26,7 @@ public class MainLoop {
     	configFile.close();
     	
     	prometheusServerIP = config.getProperty("prometheusServerIP");
+//    	prometheusServerIP = System.getenv("PROMETHEUS_HOST");
     	prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
 
     	MapeUtils mapeUtils = new MapeUtils();

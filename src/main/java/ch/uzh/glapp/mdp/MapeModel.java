@@ -32,7 +32,6 @@ public class MapeModel implements SampleModel {
 
 	@Override
 	public boolean terminal(State state) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

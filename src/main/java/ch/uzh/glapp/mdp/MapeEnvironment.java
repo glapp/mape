@@ -73,7 +73,6 @@ public class MapeEnvironment implements Environment {
 
 		String cellId = objectForMpd.getCellId();
 		String organId = objectForMpd.getOrganId();
-//		String options = "{\"region\":\"us\",\"provider\":\"digitalocean\"}";// TODO: is still hardcoded. Have to get the values from action.
 		String options;
 		String provider;
 		String region;
