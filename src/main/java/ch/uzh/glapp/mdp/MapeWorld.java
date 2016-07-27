@@ -49,9 +49,10 @@ public class MapeWorld implements DomainGenerator {
 //				new UniversalActionType(ACTION_MOVE),
 //				new UniversalActionType(ACTION_CREATE),
 //				new UniversalActionType(ACTION_REMOVE)
-				new MapeActionTypeMove(),
-				new MapeActionTypeCreate(),
-				new MapeActionTypeRemove()
+//				new MapeActionTypeMove(),
+//				new MapeActionTypeCreate(),
+//				new MapeActionTypeRemove()
+				new MapeActionTypeHeuristic()
 		);
 
 		return domain;
