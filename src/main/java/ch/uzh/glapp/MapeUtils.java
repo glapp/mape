@@ -174,7 +174,6 @@ public class MapeUtils {
 		// create maps of container IDs to cell IDs and organ IDs
 		HashMap<String, String> containerIDtoCellID = new HashMap<String, String>();
 		HashMap<String, String> containerIDtoOrganID = new HashMap<String, String>();
-		
 		for (Cell cell : cells) {
 			containerIDtoCellID.put(cell.getContainerId(), cell.getId());
 			containerIDtoOrganID.put(cell.getContainerId(), cell.getOrganId().getId());
@@ -203,14 +202,12 @@ public class MapeUtils {
 			
 			// get the organ that current rule is applicable to
 			List<Organ> organs = rule.getOrgans();
-			
     		for (Organ organ : organs) {
     			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
     			
     			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
     			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
     		}
-    		
     		
     		System.out.println("Applicable cells and corresponding cell IDs:");
 			for (String containerID : containerIDs) {
@@ -226,7 +223,7 @@ public class MapeUtils {
 			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 
 			// Compute the healthiness value for each cell (Docker container)
-			// TODO: do not include Porxies
+			// TODO: do not include Proxies
 			for (int j = 0; j < containerIDs.size(); ++j) {
 				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
 				float metricValue = 0;
@@ -239,7 +236,7 @@ public class MapeUtils {
 				}  
     			System.out.println("Query result (cell metric value): " + metricValue);
 
-    			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, there will be a 20% difference above threshold.
+    			// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
     			// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
     			double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
     			totalCellHealthiness += cellHealthiness;
@@ -256,6 +253,8 @@ public class MapeUtils {
     			} else {
     				System.out.println("Compliant, proceed to next cell/rule.");
     			}
+    			
+    			// TODO: determine if a rule is violated based on the number of violating cells among all the cells   
     			
     			System.out.println();
 			}
