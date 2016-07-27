@@ -5,6 +5,7 @@ import burlap.mdp.core.action.ActionType;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
+import ch.uzh.glapp.model.ObjectForMdp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,29 @@ public class MapeActionTypeHeuristic implements ActionType {
 			String currentTier = ((MapeCell)cell).getTier();
 			
 			// get violation details
+			
+			ObjectForMdp objectForMdp = BasicBehaviorMape.getObjectForMdp();
+			String violation = objectForMdp.getMetric();
+			
 			// if CPU violation => move to bigger machine
+			if (violation.equals("container_cpu_usage_seconds_total")) {
+				if (currentTier.equals(TIER1)) {
+					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+				} else if (currentTier.equals(TIER2)) {
+					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+				} else if (currentTier.equals(TIER3)) {
+					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, TIER3));
+				}
+			} else if (violation.equals("memory_utilization")) {
+				if (currentTier.equals(TIER1)) {
+					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+				} else if (currentTier.equals(TIER2)) {
+					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+				} else if (currentTier.equals(TIER3)) {
+					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, TIER3));
+				}
+			}
+			
 			// if memory violation => move to bigger machine, other checking to decide if to create another cell
 			// if network violation(packet dropped), ?
 			// if cost, ?
