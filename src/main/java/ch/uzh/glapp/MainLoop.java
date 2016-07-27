@@ -1,5 +1,6 @@
 package ch.uzh.glapp;
 
+import ch.uzh.glapp.model.Violation;
 import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
 import ch.uzh.glapp.model.sails.ruleinfo.Organ;
@@ -99,13 +100,21 @@ public class MainLoop {
 			    } else {
 				    // Simulate a violated rule
 				    System.out.println("Simulate a violated rule");
-				    objectForMdp = new ObjectForMdp(
-						    config.getProperty("violoatedMetric"),
+				    List<Violation> dummyViolationList = null;
+
+				    Violation violation = new Violation(
 						    config.getProperty("violatedCellId"),
+						    "0",
 						    config.getProperty("violatedOrganId"),
 						    appId,
-						    Float.parseFloat(config.getProperty("healthinessValue"))
+						    "0",
+						    config.getProperty("violoatedMetric")
 				    );
+				    dummyViolationList.add(violation);
+
+				    mdpTriggerObject = new MdpTriggerObject(dummyViolationList, Double.parseDouble(config.getProperty("healthinessValue")));
+
+
 			    }
 
 
