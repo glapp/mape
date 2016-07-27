@@ -2,10 +2,6 @@ package ch.uzh.glapp;
 
 import ch.uzh.glapp.model.Violation;
 import ch.uzh.glapp.model.sails.MdpTriggerObject;
-import ch.uzh.glapp.model.sails.cellinfo.Cell;
-import ch.uzh.glapp.model.sails.ruleinfo.Organ;
-import ch.uzh.glapp.model.sails.ruleinfo.Rule;
-import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
 

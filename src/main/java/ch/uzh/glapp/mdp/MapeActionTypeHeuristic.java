@@ -41,15 +41,27 @@ public class MapeActionTypeHeuristic implements ActionType {
 			
 			if (violation.equals("container_cpu_usage_seconds_total")) { // if CPU violation => move to bigger machine
 				if (currentTier.equals(TIER1)) {
-					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+					} else if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+					}
 				} else if (currentTier.equals(TIER2)) {
-					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+					}
 				} else if (currentTier.equals(TIER3)) {
-					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, TIER3));
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+						actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, TIER3));
+					}
 				}
 			} else if (violation.equals("memory_utilization")) { // if memory violation => move to bigger machine, other checking to decide if to create another cell
 				if (currentTier.equals(TIER1)) {
-					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+					} else if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+					}
 				} else if (currentTier.equals(TIER2)) {
 					actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
 				} else if (currentTier.equals(TIER3)) {
@@ -95,5 +107,5 @@ public class MapeActionTypeHeuristic implements ActionType {
 	public String typeName() {
 		return ACTION_MOVE;
 	}
-
+	
 }

@@ -230,7 +230,13 @@ public class MapeUtils {
 				try {
 	    			// Retrieve Prometheus metrics
 	    			// NOTE: consider other computation of metric value that may be meaningful
-					metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration);
+					
+					// computation for "memory_utilization"
+					if (metricName.equals("memory_utilization")) {
+						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), "container_memory_rss", range, duration) / prometheusRetriever.getMetric(containerIDs.get(j), "container_spec_memory_limit_bytes", range, duration);
+					} else { // for other metrics
+						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration);
+					}
 				} catch (MetricNotFoundException e) {
 					e.printStackTrace(); // TODO: handle exception
 				}  
