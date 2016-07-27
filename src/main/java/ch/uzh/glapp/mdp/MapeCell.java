@@ -13,7 +13,7 @@ import burlap.mdp.core.state.UnknownKeyException;
 
 public class MapeCell implements ObjectInstance, MutableState {
 	
-	private String cellName;
+	private String cellName; // cell ID, not container ID
 	private String provider;
 	private String region;
 	private String tier;
