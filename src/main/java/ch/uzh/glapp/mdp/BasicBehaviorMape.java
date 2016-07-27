@@ -15,6 +15,7 @@ import burlap.mdp.singleagent.oo.OOSADomain;
 import burlap.statehashing.HashableStateFactory;
 import burlap.statehashing.simple.SimpleHashableStateFactory;
 import ch.uzh.glapp.model.ObjectForMdp;
+import ch.uzh.glapp.model.sails.MdpTriggerObject;
 
 public class BasicBehaviorMape {
 
@@ -23,10 +24,10 @@ public class BasicBehaviorMape {
 	DeepOOState initialState;
 	HashableStateFactory hashingFactory;
 	Environment env;
-	private static ObjectForMdp objectForMdp;
+	private static MdpTriggerObject mdpTriggerObject;
 
-	public BasicBehaviorMape (ObjectForMdp objectForMdp) {
-		this.objectForMdp = objectForMdp;
+	public BasicBehaviorMape (MdpTriggerObject mdpTriggerObject) {
+		this.mdpTriggerObject = mdpTriggerObject;
 		mwdg = new MapeWorld();
 		domain = mwdg.generateDomain();
 		initialState = new DeepOOState();
@@ -37,6 +38,14 @@ public class BasicBehaviorMape {
 //		initialState.addObject(new MapeCell("Organ_57077ea32f9806267c71b4f9_Cell_1", AWS, EU, TIER2, 1, AWS, EU));
 
 		hashingFactory = new SimpleHashableStateFactory();
+		
+		ObjectForMdp objectForMdp = new ObjectForMdp(
+			    mdpTriggerObject.getViolationList().get(0).getMetric(),
+			    mdpTriggerObject.getViolationList().get(0).getCellId(),
+			    mdpTriggerObject.getViolationList().get(0).getOrganId(),
+			    mdpTriggerObject.getViolationList().get(0).getAppId(),
+			    mdpTriggerObject.getAppHealthiness());
+		
 		env = new MapeEnvironment(domain, objectForMdp);
 	}
 
@@ -79,8 +88,8 @@ public class BasicBehaviorMape {
 
 	}
 
-	public static ObjectForMdp getObjectForMdp() {
-		return objectForMdp;
+	public static MdpTriggerObject getMdpTriggerObject() {
+		return mdpTriggerObject;
 	}
 
 

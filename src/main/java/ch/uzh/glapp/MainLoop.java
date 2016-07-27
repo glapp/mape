@@ -109,7 +109,7 @@ public class MainLoop {
 			    }
 
 
-    			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(objectForMdp);
+    			BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(mdpTriggerObject);
     			String outputPath = "output/" + appId + "/"; // directory to record results
 
     			// solve MDP
