@@ -39,9 +39,9 @@ public class MapeActionTypeHeuristic implements ActionType {
 			
 			// check how many violations
 			String violation = "";
-			if (mdpTriggerObject.getViolationList().size() == 1) {
-//			String violation = mdpTriggerObject.getViolationList().get(0).getMetric();
-			}
+//			if (mdpTriggerObject.getViolationList().size() == 1) {
+			violation = mdpTriggerObject.getViolationList().get(0).getMetric();
+//			}
 			
 			// default action: create another cell on the machine with same specification (provider, region, tier)
 			if (violation.equals("container_cpu_usage_seconds_total")) { // if CPU violation => move to bigger machine
