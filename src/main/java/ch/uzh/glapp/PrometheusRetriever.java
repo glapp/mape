@@ -77,7 +77,7 @@ public class PrometheusRetriever {
         String jsonString = query(paramPrometheus);
         PrometheusDataObject jobj;
 
-        System.out.println("jsonString: "+jsonString);
+//        System.out.println("jsonString: "+jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
         
         List<Result> results = jobj.getData().getResult();
@@ -92,7 +92,7 @@ public class PrometheusRetriever {
         	
             for (int i=0; i< listSize; i++) {
                 sum_value += Float.parseFloat(result.getValues().get(i).get(1));
-                System.out.println("value: "+Float.parseFloat(result.getValues().get(i).get(1))+", sum_value : "+sum_value+", iteration: "+i);
+//                System.out.println("value: "+Float.parseFloat(result.getValues().get(i).get(1))+", sum_value : "+sum_value+", iteration: "+i);
             }
 
             float averge = sum_value/listSize;

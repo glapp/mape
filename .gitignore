@@ -96,4 +96,4 @@ Thumbs.db
 output/
 config.txt
 classes/
-src/main/java/META-INF/
+src/main/resources/META-INF/
