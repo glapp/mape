@@ -53,10 +53,11 @@ public class PrometheusRetriever {
 	 * @param metricName is the name of the metric.
 	 * @param range is the range of time (in seconds) which data are averaged for each metric data point.
 	 * @param duration is the duration of time (in seconds) of the data points.
+	 * @param step is the time step in seconds that the duration will be broken down.
 	 * @return average value of the data points in the specified duration.
 	 * @throws MetricNotFoundException if the metric is not available for the given container
 	 */
-    public float getMetric(String cellID, String metricName, int range, int duration) throws MetricNotFoundException {
+    public float getMetric(String cellID, String metricName, int range, int duration, int step) throws MetricNotFoundException {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
     	
@@ -64,7 +65,7 @@ public class PrometheusRetriever {
 
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - duration;
-        String step = "60s"; // query resolution. e.g. 60 seconds
+//        String step = "60s"; // query resolution. e.g. 60 seconds
         
 
         String paramPrometheus = "/api/v1/query_range" +
@@ -76,7 +77,7 @@ public class PrometheusRetriever {
         String jsonString = query(paramPrometheus);
         PrometheusDataObject jobj;
 
-//        System.out.println("jsonString: "+jsonString);
+        System.out.println("jsonString: "+jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
         
         List<Result> results = jobj.getData().getResult();
@@ -85,12 +86,13 @@ public class PrometheusRetriever {
         if (results.size() != 0) {
         	Result result = results.get(0); // TODO: handle multiple results for the specified container within the specified duration (e.g. different values for eth0, eth1)
             int listSize = result.getValues().size();
-            
-            float sum_value = 0;
+//	        System.out.println("listSize: " + listSize);
+
+	        float sum_value = 0;
         	
             for (int i=0; i< listSize; i++) {
                 sum_value += Float.parseFloat(result.getValues().get(i).get(1));
-//                System.out.println("sum_value iterate: "+sum_value);
+                System.out.println("value: "+Float.parseFloat(result.getValues().get(i).get(1))+", sum_value : "+sum_value+", iteration: "+i);
             }
 
             float averge = sum_value/listSize;

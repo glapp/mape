@@ -74,7 +74,7 @@ public class MainLoop {
 			    // get the application healthiness value
 			    // for metric data, range=60 and duration=3600 means
 			    // get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
-			    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 60, 3600, false);
+			    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 10, 180, 60, false);
 
 //    		if (config.getProperty("ForceMDP").equals("true")) {
 //    			ruleViolated = true; // For testing, force trigger MDP

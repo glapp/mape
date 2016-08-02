@@ -106,7 +106,7 @@ public class MapeEnvironment implements Environment {
 		}
 
 		MapeUtils mapeUtils = new MapeUtils();
-		MdpTriggerObject mdpTriggerObject = mapeUtils.healthiness(objectForMpd.getAppId(), 60, 3600, true);
+		MdpTriggerObject mdpTriggerObject = mapeUtils.healthiness(objectForMpd.getAppId(), 10, 180, 60, true);
 		double appHealthinessAfter = mdpTriggerObject.getAppHealthiness();
 		
 		// deltaHealthiness is the reward

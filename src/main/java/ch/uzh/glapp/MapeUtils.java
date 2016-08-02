@@ -151,9 +151,11 @@ public class MapeUtils {
 	 * @param appId
 	 * @param range is the range of time (in seconds) which data are averaged for each metric data point.
 	 * @param duration is the duration of time (in seconds) of the data points.
+	 * @param step is the time step in seconds that the duration will be broken down.
+	 * @param wait is true if mape has to wait for prometheus gathering data.
 	 * @return healthiness value of the application specified by appId
 	 */
-	public static MdpTriggerObject healthiness(String appId, int range, int duration, boolean wait) {
+	public static MdpTriggerObject healthiness(String appId, int range, int duration, int step, boolean wait) {
 
 		// waiting a bit for prometheus getting the data of the new container.
 		if (wait) {
@@ -232,9 +234,10 @@ public class MapeUtils {
 					
 					// computation for "memory_utilization"
 					if (metricName.equals("memory_utilization")) {
-						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), "container_memory_rss", range, duration) / prometheusRetriever.getMetric(containerIDs.get(j), "container_spec_memory_limit_bytes", range, duration);
+						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), "container_memory_rss", range, duration, step)
+								/ prometheusRetriever.getMetric(containerIDs.get(j), "container_spec_memory_limit_bytes", range, duration, step);
 					} else { // for other metrics
-						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration);
+						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration, step);
 					}
 					System.out.println("Query result (cell metric value): " + metricValue);
 
