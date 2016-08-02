@@ -131,13 +131,13 @@ public class MapeUtils {
 	 * Get the list of IDs of the cells belonging to a given organ
 	 * @param cells is the list of cells in the environment
 	 * @param organID is the ID of the organ to which the cells belong  
-	 * @return a list of container IDs of the cells belonging to a given organ.
+	 * @return a list of container IDs of the cells belonging to a given organ. (without proxy cells)
 	 */
 	public static List<String> getContainerIDs(List<Cell> cells, String organID) {
 		List<String> containerIDs = new ArrayList<String>();
 
 		for (Cell cell : cells) {
-			if (cell.getOrganId().getId().equals(organID)) {
+			if (cell.getOrganId().getId().equals(organID) && !cell.getIsProxy()) {
 				containerIDs.add(cell.getContainerId());
 //				System.out.println("cell.getContainerId(): " + cell.getContainerId());
 			}
@@ -225,7 +225,6 @@ public class MapeUtils {
 
 			// Compute the healthiness value for each cell (Docker container)
 			for (int j = 0; j < containerIDs.size(); ++j) {
-				// TODO: do not include Proxies
 				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
 				float metricValue = 0;
 				try {
