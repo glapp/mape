@@ -61,7 +61,14 @@ public class PrometheusRetriever {
 
         //String query2 = "rate(process_cpu_seconds_total[30s])";
     	
-    	String query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
+//    	String query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
+    	String query;
+    	if (metricName.equals("cost")) {
+    		// TODO: retriving the cost metric
+    		query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
+    	} else {
+    		query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
+    	}
 
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - duration;
