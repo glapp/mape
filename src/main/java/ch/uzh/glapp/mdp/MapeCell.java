@@ -21,7 +21,7 @@ public class MapeCell implements ObjectInstance, MutableState {
 	private String proxy_provider;
 	private String proxy_region;
 	
-	private final static List<Object> keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS/*, VAR_PROXY_PROVIDER, VAR_PROXY_REGION*/);
+	private final static List keys = Arrays.asList(VAR_PROVIDER, VAR_REGION, VAR_TIER, VAR_CELLS/*, VAR_PROXY_PROVIDER, VAR_PROXY_REGION*/);
 
 	public MapeCell(String cellName) {
 		this.cellName = cellName;

@@ -24,7 +24,7 @@ public class MapeState implements MutableState {
 	public String proxy_provider;
 	public String proxy_region;
 
-	private final static List<Object> keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER,
+	private final static List keys = Arrays.asList(VAR_VIOLATED_POLICY, VAR_PROVIDER, VAR_REGION, VAR_TIER,
 			VAR_CELLS/*, VAR_PROXY_PROVIDER, VAR_PROXY_REGION*/);
 
 	public MapeState(){}
