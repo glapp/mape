@@ -26,8 +26,11 @@ public class MainLoop {
     	configFile.close();
     	
     	prometheusServerIP = config.getProperty("prometheusServerIP");
+	    prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
+
+	    // TODO: use environment variables instead of the config file
 //    	prometheusServerIP = System.getenv("PROMETHEUS_HOST");
-    	prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
+
 
     	MapeUtils mapeUtils = new MapeUtils();
     	SailsRetriever sa = new SailsRetriever();
