@@ -17,12 +17,12 @@ import java.util.Map;
 
 public class SailsRetriever {
 
-	private String urlSails = "http://localhost:1337";
-	private String urlCellMove = "http://localhost:1337/cell/move";
-	private String urlOrganScaleUp = "http://localhost:1337/organ/scaleUp";
-	private String urlOrganScaleDown = "http://localhost:1337/organ/scaleDown";
-
-	HttpRequest con = new HttpRequest();
+	private String localhost = System.getenv("SWARM_HOST");
+	private String urlSails = "http://" + localhost + ":1337";
+	private String urlCellMove = "http://" + localhost + ":1337/cell/move";
+	private String urlOrganScaleUp = "http://" + localhost + ":1337/organ/scaleUp";
+	private String urlOrganScaleDown = "http://" + localhost + ":1337/organ/scaleDown";
+	private HttpRequest con = new HttpRequest();
 
 
 	private String callSailsGET(String paramSails) {

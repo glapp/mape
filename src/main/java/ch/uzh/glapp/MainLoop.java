@@ -5,6 +5,7 @@ import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,8 +19,12 @@ public class MainLoop {
 	public static int prometheusServerPort;
 
     public static void main (String[] args) throws IOException {
-    	
-    	// Read the config file
+
+	    SailsRetriever sa = new SailsRetriever();
+
+
+
+	    // Read the config file
     	FileInputStream configFile = new FileInputStream("config.txt");
     	Properties config = new Properties();
     	config.load(configFile);
@@ -30,10 +35,11 @@ public class MainLoop {
 
 	    // TODO: use environment variables instead of the config file
 //    	prometheusServerIP = System.getenv("PROMETHEUS_HOST");
+//	    prometheusServerPort = 19090;
 
 
     	MapeUtils mapeUtils = new MapeUtils();
-    	SailsRetriever sa = new SailsRetriever();
+
     	
 //    	prometheusRetriever.findContainerID("bcf548d11ab3");
 
