@@ -25,7 +25,6 @@ public class SailsRetriever {
 	private String urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
 	private HttpRequest con = new HttpRequest();
 
-
 	public String getPrometheusUrl () {
 
 		String pUrl = "";
