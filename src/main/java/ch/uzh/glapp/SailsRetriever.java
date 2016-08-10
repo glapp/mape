@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class SailsRetriever {
 
-	private String sailsHost = System.getenv("SAILS_HOST");
-//	private String sailsHost = "localhost";
+//	private String sailsHost = System.getenv("SAILS_HOST");
+	private String sailsHost = "localhost";
 	private String urlSails = "http://" + sailsHost + ":1337";
 	private String urlCellMove = "http://" + sailsHost + ":1337/cell/move";
 	private String urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";

@@ -20,26 +20,23 @@ public class MainLoop {
 
     public static void main (String[] args) throws IOException {
 
-	    SailsRetriever sa = new SailsRetriever();
-
-	    sa.getPrometheusUrl();
 
 
 	    // Read the config file
-    	FileInputStream configFile = new FileInputStream("config.txt");
-    	Properties config = new Properties();
-    	config.load(configFile);
-    	configFile.close();
-    	
-    	prometheusServerIP = config.getProperty("prometheusServerIP");
-	    prometheusServerPort = Integer.parseInt(config.getProperty("prometheusServerPort"));
+	    FileInputStream configFile = new FileInputStream("config.txt");
+	    Properties config = new Properties();
+	    config.load(configFile);
+	    configFile.close();
 
-	    // TODO: use environment variables instead of the config file
-//    	prometheusServerIP = System.getenv("PROMETHEUS_HOST");
-//	    prometheusServerPort = 19090;
+	    SailsRetriever sa = new SailsRetriever();
+//	    prometheusServerIP = sa.getPrometheusUrl();
+	    prometheusServerIP = config.getProperty("prometheusServerIP");
+	    prometheusServerPort = 19090;
 
 
-    	MapeUtils mapeUtils = new MapeUtils();
+
+
+//    	MapeUtils mapeUtils = new MapeUtils();
 
     	
 //    	prometheusRetriever.findContainerID("bcf548d11ab3");
