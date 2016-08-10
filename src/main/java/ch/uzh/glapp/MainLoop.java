@@ -88,11 +88,11 @@ public class MainLoop {
 
 			    // Stage 2: MDP
 			    // if any rule is violated, perform MDP to find an adaptation action
-			    if (mdpTriggerObject.getViolationList() != null || config.getProperty("ForceMDP").equals("true")) {
+			    if (mdpTriggerObject.isRuleViolated() || config.getProperty("ForceMDP").equals("true")) {
 				    System.out.println("Stage 2: Perform MDP");
 				    ObjectForMdp objectForMdp;
 
-				    if (mdpTriggerObject.getViolationList() != null) {
+				    if (mdpTriggerObject.isRuleViolated()) {
 					    System.out.println("Take real ObjectForMdp");
 					    objectForMdp = new ObjectForMdp(
 							    mdpTriggerObject.getViolationList().get(0).getMetric(),
@@ -116,7 +116,7 @@ public class MainLoop {
 					    );
 					    dummyViolationList.add(violation);
 
-					    mdpTriggerObject = new MdpTriggerObject(dummyViolationList, Double.parseDouble(config.getProperty("healthinessValue")));
+					    mdpTriggerObject = new MdpTriggerObject(dummyViolationList, Double.parseDouble(config.getProperty("healthinessValue")), true);
 
 
 				    }
@@ -130,8 +130,7 @@ public class MainLoop {
 //    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
 
 
-				    // DONE! (Riccardo) implement the call to Sails platform to execute the action from MDP (implement in MapeEnviroment class)
-				    // Stage 3: Send actions to the platform
+				    // Stage 3: Send actions to the platform to execute the action from MDP (implement in MapeEnviroment class)
 				    // GETConnection to sails API.
 				    // pass three pieces of information:
 				    // 1. action (move, delete, create cell)

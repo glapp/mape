@@ -8,10 +8,12 @@ public class MdpTriggerObject {
 
 	private List<Violation> violationList;
 	private double appHealthiness;
+	private boolean isRuleViolated;
 
-	public MdpTriggerObject(List<Violation> violationList, double appHealthiness) {
+	public MdpTriggerObject(List<Violation> violationList, double appHealthiness, boolean isRuleViolated) {
 		this.violationList = violationList;
 		this.appHealthiness = appHealthiness;
+		this.isRuleViolated = isRuleViolated;
 	}
 
 	public List<Violation> getViolationList() {
@@ -28,5 +30,18 @@ public class MdpTriggerObject {
 
 	public void setAppHealthiness(double appHealthiness) {
 		this.appHealthiness = appHealthiness;
+	}
+
+	/**
+	 * Check if a rule is violated.
+	 * Definition: more than a defined percentage of cells violating a rule
+	 * @return true if the rule is violated, false otherwise.
+	 */
+	public boolean isRuleViolated() {
+		return isRuleViolated;
+	}
+
+	public void setRuleViolated(boolean isRuleViolated) {
+		this.isRuleViolated = isRuleViolated;
 	}
 }

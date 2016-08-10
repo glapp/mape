@@ -188,13 +188,17 @@ public class MapeUtils {
     	double appHealthiness;
     	double totalWeight = 0;
 
-		List <Violation> violationList = new ArrayList<Violation>();
+		List <Violation> overallViolationList = new ArrayList<Violation>();
 		MdpTriggerObject mdpTriggerObj = null;
     	
     	// Compute the healthiness value for each rule
 		for (Rule rule : ruleList) {
 			double ruleHealthiness = 0;
 			double totalCellHealthiness = 0;
+			int numOfCellsInRule = 0; // number of cells applicable to a specific rule
+			int numOfViolatedCellsInRule = 0; // number of violated cells applicable to a specific rule
+			double ruleViolationRatio = 0; // indicate ratio of the cells that violated a specific rule
+			List <Violation> ruleViolationList = new ArrayList<Violation>();
 			
 			String metricName = rule.getMetric();
 			List<String> containerIDs = new ArrayList<String>();
@@ -208,7 +212,11 @@ public class MapeUtils {
     			
     			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
     			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
+    			
+    			// TODO: check if the number of cells is 0 (i.e. the list "containerIDs" is empty)
     		}
+    		
+    		numOfCellsInRule = containerIDs.size();
     		
     		System.out.println("Applicable cells and corresponding cell IDs:");
 			for (String containerID : containerIDs) {
@@ -252,7 +260,10 @@ public class MapeUtils {
 						Violation violation = new Violation(
 								containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
 						);
-						violationList.add(violation);
+						ruleViolationList.add(violation);
+						
+						// increment the counter if a cell if found to be violating a specific rule
+						numOfViolatedCellsInRule += 1;
 
 					} else {
 						System.out.println("Compliant, proceed to next cell/rule.");
@@ -261,8 +272,6 @@ public class MapeUtils {
 					e.printStackTrace();
 				}
 
-    			// TODO: determine if a rule is violated based on the number of violating cells among all the cells   
-    			
     			System.out.println();
 			}
 			
@@ -270,6 +279,18 @@ public class MapeUtils {
 			ruleHealthiness = totalCellHealthiness/containerIDs.size();
 //			System.out.println("ruleHealthiness: " + ruleHealthiness);
 			totalRuleHealthiness += ruleHealthiness * weight;
+			
+			ruleViolationRatio = numOfViolatedCellsInRule/numOfCellsInRule;
+			System.out.println("ruleViolationRatio: " + ruleViolationRatio);
+			
+			// determine if a rule is violated based on the number of violating cells among all the cells   
+			// define the threshold to determine if a rule is violated (percentage of cells violated the rule)
+			// using a pre-defined threshold of 0.25 (i.e. more than 25% of applicable cells violated the rule)
+			// e.g. if 0.25 (25%) of the cells violated the rule, the rule is not considered violated
+			if (ruleViolationRatio > 0.25) {
+				// add the violation list of a specific rule to the overall violation list
+				overallViolationList.addAll(ruleViolationList);
+			}
 			
 			System.out.println();
 		}
@@ -280,10 +301,10 @@ public class MapeUtils {
 		System.out.println("Application healthiness value (weighted): " + appHealthiness);
 		System.out.println();
 
-		if (violationList.size() > 0) {
-			mdpTriggerObj = new MdpTriggerObject(violationList, appHealthiness);
+		if (overallViolationList.size() > 0) {
+			mdpTriggerObj = new MdpTriggerObject(overallViolationList, appHealthiness, true);
 		} else {
-			mdpTriggerObj = new MdpTriggerObject(null, appHealthiness);
+			mdpTriggerObj = new MdpTriggerObject(null, appHealthiness, false);
 		}
 		
 		return mdpTriggerObj;
