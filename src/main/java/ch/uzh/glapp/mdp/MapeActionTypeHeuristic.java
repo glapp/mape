@@ -35,6 +35,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 			String currentProvider = ((MapeCell)cell).getProvider();
 			String currentRegion = ((MapeCell)cell).getRegion();
 			String currentTier = ((MapeCell)cell).getTier();
+			int currentNumOfCells = ((MapeCell)cell).getCells();
 			
 			
 			// check how many violations
@@ -80,15 +81,34 @@ public class MapeActionTypeHeuristic implements ActionType {
 				} else if (currentTier.equals(TIER3)) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 				}
-			} else if (violation.equals("cost")) {
+			} else if (violation.equals("money_spent")) {
+				// if there is cost violation AND no other violation, scale down
+				// => there is only 1 cell => move to a smaller machine (what if no smaller machine available?)
+				// => if there are more than 2 cells => remove a cell
 				
+				if (currentTier.equals(TIER3)) {
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+					} else if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER1)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER1));
+					} else if (currentNumOfCells > 1) {
+						actionList.add(new MapeActionRemove(cellName));
+					}
+				} else if (currentTier.equals(TIER2)) {
+					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER1)) {
+						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER1));
+					} else if (currentNumOfCells > 1) {
+						actionList.add(new MapeActionRemove(cellName));
+					}
+				} else if (currentTier.equals(TIER1)) {
+					if (currentNumOfCells > 1) {
+						actionList.add(new MapeActionRemove(cellName));
+					}
+				}
 			}
 			
 			
-			// if network violation(packet dropped), ?
-			// if cost AND no other violation, scale down
-			// => there is only 1 cell => move to a smaller machine
-			// => if there are more than 2 cells => delete a cell
+
 			
 		
 //		}

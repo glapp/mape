@@ -252,6 +252,9 @@ public class MapeUtils {
 					
 					try {
 						totalCost += prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
+						
+						Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName);
+						ruleViolationList.add(violation);
 					} catch (MetricNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -263,8 +266,8 @@ public class MapeUtils {
 				if (ruleHealthiness < 0) {
 					costViolation = true;
 					
-					// create violation and trigger action
-//					overallViolationList.add(new Violation())
+					// if there is a cost violation, add all applicable cells into the overall violation list
+					overallViolationList.addAll(ruleViolationList);
 				}
 			} else {
 				// Compute the healthiness value for each cell (Docker container)
@@ -316,20 +319,20 @@ public class MapeUtils {
 				
 				ruleViolationRatio = numOfViolatedCellsInRule/numOfCellsInRule;
 				System.out.println("ruleViolationRatio: " + ruleViolationRatio);
+				
+				// determine if a rule is violated based on the number of violating cells among all the cells   
+				// define the threshold to determine if a rule is violated (percentage of cells violated the rule)
+				// using a pre-defined threshold of 0.25 (i.e. more than 25% of applicable cells violated the rule)
+				// e.g. if 0.25 (25%) of the cells violated the rule, the rule is not considered violated
+				if (ruleViolationRatio > 0.25) {
+					// add the violation list of a specific rule to the overall violation list
+					overallViolationList.addAll(ruleViolationList);
+				}
 			}
 
 			System.out.println("ruleHealthiness: " + ruleHealthiness);
 			totalRuleHealthiness += ruleHealthiness * weight;
 
-			// determine if a rule is violated based on the number of violating cells among all the cells   
-			// define the threshold to determine if a rule is violated (percentage of cells violated the rule)
-			// using a pre-defined threshold of 0.25 (i.e. more than 25% of applicable cells violated the rule)
-			// e.g. if 0.25 (25%) of the cells violated the rule, the rule is not considered violated
-			if (costViolation || ruleViolationRatio > 0.25) {
-				// add the violation list of a specific rule to the overall violation list
-				overallViolationList.addAll(ruleViolationList);
-			}
-			
 			System.out.println();
 		}
 
