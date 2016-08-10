@@ -1,10 +1,14 @@
 package ch.uzh.glapp;
 
 import ch.uzh.glapp.model.prometheus.PrometheusDataObject;
+import ch.uzh.glapp.model.prometheus.QueryResultInstantVectors;
 import ch.uzh.glapp.model.prometheus.Result;
+import ch.uzh.glapp.model.prometheus.ResultInstantVectors;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -49,7 +53,7 @@ public class PrometheusRetriever {
 	/**
 	 * Calculates the per-second average rate of increase of the time series (i.e. a metric value) in the range vector.
 	 * Using Prometheus provided rate function {@link https://prometheus.io/docs/querying/functions/#rate()}.
-	 * @param cellID is the Docker container ID
+	 * @param containerID is the Docker container ID
 	 * @param metricName is the name of the metric.
 	 * @param range is the range of time (in seconds) which data are averaged for each metric data point.
 	 * @param duration is the duration of time (in seconds) of the data points.
@@ -57,29 +61,21 @@ public class PrometheusRetriever {
 	 * @return average value of the data points in the specified duration.
 	 * @throws MetricNotFoundException if the metric is not available for the given container
 	 */
-    public float getMetric(String cellID, String metricName, int range, int duration, int step) throws MetricNotFoundException {
+    public float getMetric(String containerID, String metricName, int range, int duration, int step) throws MetricNotFoundException {
 
-        //String query2 = "rate(process_cpu_seconds_total[30s])";
-    	
-//    	String query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
+    	String paramPrometheus;
     	String query;
-    	if (metricName.equals("cost")) {
-    		// TODO: retriving the cost metric
-    		query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
-    	} else {
-    		query = "rate(" + metricName + "{id=\"/docker/" + cellID + "\"}[" + range + "s])";
-    	}
-
+    	
         long currTime = System.currentTimeMillis()/1000;
         long startTime = currTime - duration;
-//        String step = "60s"; // query resolution. e.g. 60 seconds
-        
-
-        String paramPrometheus = "/api/v1/query_range" +
-                "?query=" + query +         // or query2
-                "&start=" + startTime +
-                "&end=" + currTime +
-                "&step=" + step;
+    	
+        query = "rate(" + metricName + "{id=\"/docker/" + containerID + "\"}[" + range + "s])";
+    		
+        paramPrometheus = "/api/v1/query_range" +
+        		"?query=" + query +
+        		"&start=" + startTime +
+        		"&end=" + currTime +
+        		"&step=" + step;
 
         String jsonString = query(paramPrometheus);
         PrometheusDataObject jobj;
@@ -112,7 +108,42 @@ public class PrometheusRetriever {
         } else {
 //        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
         	
-        	throw new MetricNotFoundException("Metric for cell (container ID: " + cellID + ") not found.");
+        	throw new MetricNotFoundException("Metric for cell (container ID: " + containerID + ") not found.");
+        }
+    }
+    
+    /**
+	 * Get the cost metrics.
+	 * Using Prometheus query function {@link https://prometheus.io/docs/querying/api/#instant-queries}.
+	 * @param metricName is the name of the metric.
+	 * @return cost metric specified.
+	 * @throws MetricNotFoundException if the metric is not available for the given container
+	 */
+    public float getCostMetric(String metricName) throws MetricNotFoundException {
+
+    	String paramPrometheus;
+//        long currTime = System.currentTimeMillis()/1000;
+        paramPrometheus = "/api/v1/query" +
+        		"?query=" + metricName;// +
+//        		"&time=" + currTime;
+
+        String jsonString = query(paramPrometheus);
+        QueryResultInstantVectors jobj;
+
+        jobj = new Gson().fromJson(jsonString, QueryResultInstantVectors.class);
+        
+        List<ResultInstantVectors> results = jobj.getData().getResult();
+        
+        if (results.size() != 0) {
+        	ResultInstantVectors result = results.get(0);
+            String resultStr = result.getValue().get(1);
+            
+//            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+//            System.out.println(result.getValue().get(0) + ", " + formater.format(Math.round(Double.parseDouble(result.getValue().get(0))*1000)) + ", " + result.getValue().get(1));
+            
+            return Float.parseFloat(resultStr);
+        } else {
+        	throw new MetricNotFoundException("Metric \"" + metricName + "\") not found.");
         }
     }
     

@@ -13,6 +13,8 @@ import ch.uzh.glapp.model.sails.ruleinfo.Organ;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
 
+import static ch.uzh.glapp.mdp.MapeWorld.*;
+
 public class MapeUtils {
 
     // metric is an array with the values of the last time period
@@ -128,7 +130,7 @@ public class MapeUtils {
 
 
 	/**
-	 * Get the list of IDs of the cells belonging to a given organ
+	 * Get the list of IDs of the cells belonging to a given organ. Proxy cells are excluded.
 	 * @param cells is the list of cells in the environment
 	 * @param organID is the ID of the organ to which the cells belong  
 	 * @return a list of container IDs of the cells belonging to a given organ. (without proxy cells)
@@ -148,11 +150,11 @@ public class MapeUtils {
 	
 	/**
 	 * Compute the healthiness value of an application
-	 * @param appId
+	 * @param appId is the ID of the application
 	 * @param range is the range of time (in seconds) which data are averaged for each metric data point.
 	 * @param duration is the duration of time (in seconds) of the data points.
 	 * @param step is the time step in seconds that the duration will be broken down.
-	 * @param wait is true if mape has to wait for prometheus gathering data.
+	 * @param wait is true if MAPE has to wait for Prometheus gathering data.
 	 * @return healthiness value of the application specified by appId
 	 */
 	public static MdpTriggerObject healthiness(String appId, int range, int duration, int step, boolean wait) {
@@ -176,9 +178,15 @@ public class MapeUtils {
 		// create maps of container IDs to cell IDs and organ IDs
 		HashMap<String, String> containerIDtoCellID = new HashMap<String, String>();
 		HashMap<String, String> containerIDtoOrganID = new HashMap<String, String>();
+		HashMap<String, String> containerIDtoProvider = new HashMap<String, String>();
+		HashMap<String, String> containerIDtoRegion = new HashMap<String, String>();
+		HashMap<String, String> containerIDtoTier = new HashMap<String, String>();
 		for (Cell cell : cells) {
 			containerIDtoCellID.put(cell.getContainerId(), cell.getId());
 			containerIDtoOrganID.put(cell.getContainerId(), cell.getOrganId().getId());
+			containerIDtoProvider.put(cell.getContainerId(), cell.getHost().getLabels().getProvider());
+			containerIDtoRegion.put(cell.getContainerId(), cell.getHost().getLabels().getRegion());
+			containerIDtoTier.put(cell.getContainerId(), cell.getHost().getLabels().getTier());
 		}
 		
 		List<Rule> ruleList;
@@ -203,12 +211,12 @@ public class MapeUtils {
 			String metricName = rule.getMetric();
 			List<String> containerIDs = new ArrayList<String>();
 			
-			System.out.println("Processing rule (ID: " + rule.getId() + ")");
+			System.out.println("Processing rule (Rule ID: " + rule.getId() + ")");
 			
 			// get the organ that current rule is applicable to
 			List<Organ> organs = rule.getOrgans();
     		for (Organ organ : organs) {
-    			System.out.println("Applicable organ(s) (ID: " + organ.getId() + ")");
+    			System.out.println("Applicable organ(s) (Organ ID: " + organ.getId() + ")");
     			
     			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
     			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
@@ -218,7 +226,7 @@ public class MapeUtils {
     		
     		numOfCellsInRule = containerIDs.size();
     		
-    		System.out.println("Applicable cells and corresponding cell IDs:");
+    		System.out.println("Applicable cell(s) and corresponding container ID(s):");
 			for (String containerID : containerIDs) {
 				System.out.println(containerID);
 			}
@@ -233,38 +241,40 @@ public class MapeUtils {
 
 			// Compute the healthiness value for each cell (Docker container)
 			for (int j = 0; j < containerIDs.size(); ++j) {
-				System.out.println("Computation for cell (container ID: " + containerIDs.get(j) + ") started.");
+				String containerID = containerIDs.get(j);
+				System.out.println("Computation for cell (container ID: " + containerID + ") started.");
 				float metricValue = 0;
 				try {
 	    			// Retrieve Prometheus metrics
 	    			// NOTE: consider other computation of metric value that may be meaningful
 					
 					// computation for "memory_utilization"
-					if (metricName.equals("memory_utilization")) {
-						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), "container_memory_rss", range, duration, step)
-								/ prometheusRetriever.getMetric(containerIDs.get(j), "container_spec_memory_limit_bytes", range, duration, step);
+					if (metricName.equals("cost")) {
+						metricValue = prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
+					} else if (metricName.equals("memory_utilization")) {
+						metricValue = prometheusRetriever.getMetric(containerID, "container_memory_rss", range, duration, step)
+								/ prometheusRetriever.getMetric(containerID, "container_spec_memory_limit_bytes", range, duration, step);
 					} else { // for other metrics
-						metricValue = prometheusRetriever.getMetric(containerIDs.get(j), metricName, range, duration, step);
+						metricValue = prometheusRetriever.getMetric(containerID, metricName, range, duration, step);
 					}
 					System.out.println("Query result (cell metric value): " + metricValue);
 
 					// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
 					// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
+					// a positive value means healthy and a negative value means unhealthy
 					double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
 					totalCellHealthiness += cellHealthiness;
 
 					System.out.print("Comparison result: ");
 					if (cellHealthiness < 0) {
-						System.out.println("Not compliant, will trigger MDP.");
-						String containerID = containerIDs.get(j);
+						// increment the counter if a cell if found to be violating a specific rule
+						numOfViolatedCellsInRule += 1;
+						
+						System.out.println("Not compliant, current number of violating cell: " + numOfViolatedCellsInRule);
 						Violation violation = new Violation(
 								containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
 						);
 						ruleViolationList.add(violation);
-						
-						// increment the counter if a cell if found to be violating a specific rule
-						numOfViolatedCellsInRule += 1;
-
 					} else {
 						System.out.println("Compliant, proceed to next cell/rule.");
 					}
@@ -310,4 +320,12 @@ public class MapeUtils {
 		return mdpTriggerObj;
 	}
 	
+	/**
+	 * 
+	 */
+	private static String getPrometheusMetricName(String provider, String region, String tier) {
+		String prometheusMetricName = "cost_" + provider + "_" + region + "_tier" + tier;
+//		System.out.println(prometheusMetricName);
+		return prometheusMetricName;
+	}
 }
