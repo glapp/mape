@@ -1,109 +1,158 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.Cell;
-import ch.uzh.glapp.model.Rules;
+import ch.uzh.glapp.model.Violation;
+import ch.uzh.glapp.model.sails.MdpTriggerObject;
+import ch.uzh.glapp.mdp.BasicBehaviorMape;
+import ch.uzh.glapp.model.ObjectForMdp;
+
+import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class MainLoop {
-
-	private static final int RULE = 0;
+	public static String prometheusServerIP;
+	public static int prometheusServerPort;
 
     public static void main (String[] args) throws IOException {
 
 
-	    List<Cell> cells = new SailsRetriever().getCellInfo();
-	    for (Cell c : cells) {
-		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
+
+	    // Read the config file
+	    FileInputStream configFile = new FileInputStream("config.txt");
+	    Properties config = new Properties();
+	    config.load(configFile);
+	    configFile.close();
+
+	    SailsRetriever sa = new SailsRetriever();
+//	    prometheusServerIP = sa.getPrometheusUrl();
+	    prometheusServerIP = config.getProperty("prometheusServerIP");
+	    prometheusServerPort = 19090;
+
+
+
+
+//    	MapeUtils mapeUtils = new MapeUtils();
+
+    	
+//    	prometheusRetriever.findContainerID("bcf548d11ab3");
+
+//	    List<Cell> cells = sa.getCellInfo();
+//	    for (Cell c : cells) {
+//		    System.out.println("Cell ID: " + c.getHost().getLabels().getRegion());
+//	    }
+
+	    while (true) {
+
+
+		    Map<String, String> appMap;
+		    List<String> appList = new ArrayList<>();
+		    String appId;
+
+		    appMap = sa.getAppIds();
+
+		    // Display app status
+		    System.out.println("Application status:");
+		    for (String appKey : appMap.keySet()) {
+			    String value = appMap.get(appKey);
+			    System.out.println(appKey + " " + value);
+			    if ("deployed".equals(value)) {
+				    appList.add(appKey);
+			    }
+
+		    }
+		    System.out.println();
+
+		    // Start processing the applications one by one
+		    for (int i = 0; i < appList.size(); ++i) {
+
+			    appId = appList.get(i);
+
+			    System.out.println("MAPE started for app ID: " + appList.get(i) + "\n");
+			    System.out.println("Stage 1: Get data and compute healthiness value");
+
+			    // Stage 1: Get data and compute healthiness value
+			    // 1. Retrieve user defined policy (a set of rules)
+
+			    // get the application healthiness value
+			    // for metric data, range=60 and duration=3600 means
+			    // get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
+			    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 10, 180, 60, false);
+
+//    		if (config.getProperty("ForceMDP").equals("true")) {
+//    			ruleViolated = true; // For testing, force trigger MDP
+//    		}
+//		    else {
+//    			ruleViolated = false;
+//    		}
+
+			    // Stage 2: MDP
+			    // if any rule is violated, perform MDP to find an adaptation action
+			    if (mdpTriggerObject.isRuleViolated() || config.getProperty("ForceMDP").equals("true")) {
+				    System.out.println("Stage 2: Perform MDP");
+				    ObjectForMdp objectForMdp;
+
+				    if (mdpTriggerObject.isRuleViolated()) {
+					    System.out.println("Take real ObjectForMdp");
+					    objectForMdp = new ObjectForMdp(
+							    mdpTriggerObject.getViolationList().get(0).getMetric(),
+							    mdpTriggerObject.getViolationList().get(0).getCellId(),
+							    mdpTriggerObject.getViolationList().get(0).getOrganId(),
+							    mdpTriggerObject.getViolationList().get(0).getAppId(),
+							    mdpTriggerObject.getAppHealthiness()
+					    );
+				    } else {
+					    // Simulate a violated rule
+					    System.out.println("Simulate a violated rule");
+					    List<Violation> dummyViolationList = null;
+
+					    Violation violation = new Violation(
+							    config.getProperty("violatedCellId"),
+							    "0",
+							    config.getProperty("violatedOrganId"),
+							    appId,
+							    "0",
+							    config.getProperty("violoatedMetric")
+					    );
+					    dummyViolationList.add(violation);
+
+					    mdpTriggerObject = new MdpTriggerObject(dummyViolationList, Double.parseDouble(config.getProperty("healthinessValue")), true);
+
+
+				    }
+
+
+				    BasicBehaviorMape basicBehaviorMape = new BasicBehaviorMape(mdpTriggerObject);
+				    String outputPath = "output/" + appId + "/"; // directory to record results
+
+				    // solve MDP
+				    basicBehaviorMape.MyQLearningFunc(outputPath);
+//    			basicBehaviorMape.MySarsaLearningFunc(outputPath);
+
+
+				    // Stage 3: Send actions to the platform to execute the action from MDP (implement in MapeEnviroment class)
+				    // GETConnection to sails API.
+				    // pass three pieces of information:
+				    // 1. action (move, delete, create cell)
+				    // 2. application, organ, cell information
+				    // 3. Infrastructure information.
+				    // store the (improved) healthiness value somewhere, after taking the action.
+				    // (improved) healthiness value = value of new node.
+			    }
+		    }
+
+		    // sleep some time.
+		    try {
+			    System.out.println("####### Wait 5 secs before starting next MAPE loop.");
+			    TimeUnit.SECONDS.sleep(5);
+		    } catch (InterruptedException e) {
+			    e.printStackTrace();
+		    }
+
 	    }
-
-        Map<String, String> appMap;
-		List<String> appList = new ArrayList<>();
-		String appId;
-
-        appMap = new SailsRetriever().getAppIds();
-
-		for (String appKey: appMap.keySet()){
-			String value = appMap.get(appKey);
-			System.out.println(appKey + " " + value);
-			if ("deployed".equals(value)) {
-				appList.add(appKey);
-			}
-
-		}
-
-        int appListSize = appList.size();
-        for (int i = 0; i< appListSize; i++) {
-            System.out.println("App ID: " + appList.get(i));
-        }
-//        String appId = "572f2524ebff73e916d194e2";
-        appId = appList.get(0);
-        // TODO apply code below on all App IDs (not only on index 0)
-
-
-
-        // TODO: Stage 1 get Data:
-        // 1. user defined policies
-        // 2. Prometheus metrics
-        // 3. infrastructure details
-        // at the end of Stage 1 we hve a list of healthiness values.
-        // overall healthiness value is between 0 and 1. It's an average of all rules. A rule has 0 or 1.
-
-        // Healthiness, App ID, list of actions and transitions.
-
-
-        List<Rules> rulesList;
-        double value = 0.017;
-		int function = 2;  // 1 = greater than, 2 = smaller than, 3 = equal
-
-        SailsRetriever sailsRetriever = new SailsRetriever();
-        rulesList = sailsRetriever.getRules(appId);
-        value = Double.parseDouble(rulesList.get(RULE).getValue());
-        function = Integer.parseInt(rulesList.get(RULE).getOperator());
-
-
-        System.out.println("Sails API call (value): "+value +
-				", Function is set to: "+function + " ||| 1 = greater than, 2 = smaller than, 3 = equal");
-
-        String ruleName = rulesList.get(RULE).getMetric();
-        String smoothed = "[30s]";
-        String query = "rate(" + ruleName + smoothed+ ")"; // rate(process_cpu_seconds_total[30s])
-
-        PrometheusRetriever prometheusRetriever = new PrometheusRetriever();
-        float metric = prometheusRetriever.retrieveInt(query);
-        System.out.println("Result from Prometheus API call (metric): " + metric);
-
-
-        MapeUtils mapeUtils = new MapeUtils();
-        boolean compare = mapeUtils.compareInt(value, metric, function);
-        System.out.println("Comparison: " + compare);
-        if (!compare) {
-            System.out.println("Change something in the infrastructure. Send command to Sails!");
-        } else {
-            System.out.println("Everything OK. :-)");
-        }
-
-		// TODO: Stage 2 MDP calculations.
-		// get state from stage 1
-		// solve MDP --> policies (policy iteration)
-        // Possible statuses: HEALTHY, WARNING, UNHEALTHY
-        // HEALTHY means: all rules are satisfied.
-		// 1. give a random healthiness values to the set of next states or update the value based
-		// 		on previous iterations.
-		// 2. choose the action that lead to the state with the highest healthiness value
-
-
-		// TODO: Stage 3 send actions to the platform.
-		// connect to sails API.
-		// pass three pieces of information:
-		// 1. action (move, delete, create container)
-		// 2. application, organ, cell information
-		// 3. Infrastructure information.
-		// store the (improved) healthiness value somewhere, after taking the action.
-		// (improved) healthiness value = value of new node.
-
     }
-
 }

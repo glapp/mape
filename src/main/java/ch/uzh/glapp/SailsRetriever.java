@@ -1,6 +1,12 @@
 package ch.uzh.glapp;
 
-import ch.uzh.glapp.model.*;
+import ch.uzh.glapp.model.sails.appinfo.AppDataObject;
+import ch.uzh.glapp.model.sails.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.cellinfo.CellDataObject;
+import ch.uzh.glapp.model.sails.hostinfo.Host;
+import ch.uzh.glapp.model.sails.hostinfo.HostDataObject;
+import ch.uzh.glapp.model.sails.ruleinfo.RuleDataObject;
+import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -11,30 +17,115 @@ import java.util.Map;
 
 public class SailsRetriever {
 
-	private String urlSails = "http://localhost:1337";
+//	private String sailsHost = System.getenv("SAILS_HOST");
+	private String sailsHost = "localhost";
+	private String urlSails = "http://" + sailsHost + ":1337";
+	private String urlCellMove = "http://" + sailsHost + ":1337/cell/move";
+	private String urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";
+	private String urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
+	private HttpRequest con = new HttpRequest();
+
+
+	public String getPrometheusUrl () {
+
+		String pUrl = "";
+
+		String paramSails = "/host/getPrometheusUrl";
+		String str = callSailsGET(paramSails);
+
+		str = str.substring(21, str.length()-8);
+//		System.out.println(str);
+
+		return pUrl;
+	}
+
+	private String callSailsGET(String paramSails) {
+		String str = null;
+		try {
+//			System.out.println(urlSails);
+//			System.out.println(paramSails);
+			str = con.GETConnection(urlSails, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
+
+		public void postMove (String cellId, String options) {
+		String paramSails = "{\"cell_id\":\"" + cellId + "\",\"options\":" + options + "}";
+//			System.out.println(urlCellMove + "" + paramSails);
+		String str = null;
+		try {
+			str = con.POSTConnection(urlCellMove, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+//		System.out.println("str: "+str);
+	}
+
+	public void postCreate (String organId, String options) {
+		String paramSails = "{\"organ_id\":\"" + organId + "\",\"options\":" + options + "}";
+//			System.out.println(urlOrganScaleUp + "" + paramSails);
+		String str = null;
+		try {
+			str = con.POSTConnection(urlOrganScaleUp, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+//		System.out.println(str);
+	}
+
+	public void postRemove (String organId, String cellId) {
+		String paramSails = "{\"organ_id\":\"" + organId + "{\"cell_id\":\"" + cellId + "}";
+//			System.out.println(urlOrganScaleDown + "" + paramSails);
+		String str = null;
+		try {
+			str = con.POSTConnection(urlOrganScaleDown, paramSails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+//		System.out.println(str);
+	}
+
+
+	public List<Host> getHostInfo () {
+
+		String paramSails = "/host/infoMape";
+		List<Host> hostList = new ArrayList<>();
+		String str = callSailsGET(paramSails);
+
+		String jsonString;
+		HostDataObject jobj;
+
+		jsonString = str;
+		//System.out.println(jsonString);
+		jobj = new Gson().fromJson(jsonString, HostDataObject.class);
+
+		int sizeHosts = jobj.getHosts().size();
+		for (int i = 0; i<sizeHosts; i++) {
+			hostList.add(jobj.getHosts().get(i));
+//			System.out.println("Get Host: "+ hostList.get(i));
+		}
+
+		return hostList;
+	}
 
 
 	public Map<String, String> getAppIds () {
 
 		String paramSails = "/application/getAppInfo";
 		Map appIdMap = new HashMap<>();
-
-//		System.out.println(urlSails+paramSails);
-
-		HttpRequest con = new HttpRequest();
-		String str = "";
-		try {
-			str = con.connect(urlSails, paramSails);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String str = callSailsGET(paramSails);
 
 		String jsonString;
-		Applications jobj;
+		AppDataObject jobj;
 
 		jsonString = str;
 //		System.out.println(jsonString);
-		jobj = new Gson().fromJson(jsonString, Applications.class);
+		jobj = new Gson().fromJson(jsonString, AppDataObject.class);
 
 		int sizeApplications = jobj.getApps().size();
 //		System.out.println();
@@ -47,25 +138,18 @@ public class SailsRetriever {
 	}
 
 
-    public List<Rules> getRules (String appId) {
+    public List<Rule> getRules (String appId) {
 
 		String paramSails = "/policy?app_id=" + appId;
-		List<Rules> myList = new ArrayList<>();
-
-        HttpRequest con = new HttpRequest();
-        String str = "";
-        try {
-            str = con.connect(urlSails, paramSails);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		List<Rule> myList = new ArrayList<>();
+	    String str = callSailsGET(paramSails);
 
         String jsonString;
-        PolicyDataObject jobj;
+        RuleDataObject jobj;
 
         jsonString = str;
-        //System.out.println(jsonString);
-        jobj = new Gson().fromJson(jsonString, PolicyDataObject.class);
+//        System.out.println(jsonString);
+        jobj = new Gson().fromJson(jsonString, RuleDataObject.class);
 
 		int sizeRules = jobj.getRules().size();
 		for (int i = 0; i<sizeRules; i++) {
@@ -82,27 +166,14 @@ public class SailsRetriever {
 
 		String paramSails = "/application/getCellInfo";
 		List<Cell> cellList = new ArrayList<>();
-		String provider;
-		String region;
-		String tier;
-		int cells;
-
-//		System.out.println(urlSails+paramSails);
-
-		HttpRequest con = new HttpRequest();
-		String str = "";
-		try {
-			str = con.connect(urlSails, paramSails);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		String str = callSailsGET(paramSails);
 
 		String jsonString;
-		Cells jobj;
+		CellDataObject jobj;
 
 		jsonString = str;
 //		System.out.println(jsonString);
-		jobj = new Gson().fromJson(jsonString, Cells.class);
+		jobj = new Gson().fromJson(jsonString, CellDataObject.class);
 
 		int sizeCells = jobj.getCells().size();
 //		System.out.println(sizeCells);
