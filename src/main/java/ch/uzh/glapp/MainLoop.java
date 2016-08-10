@@ -22,6 +22,7 @@ public class MainLoop {
 
 	    SailsRetriever sa = new SailsRetriever();
 
+	    sa.getPrometheusUrl();
 
 
 	    // Read the config file

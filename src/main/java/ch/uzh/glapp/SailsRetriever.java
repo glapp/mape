@@ -17,17 +17,33 @@ import java.util.Map;
 
 public class SailsRetriever {
 
-	private String localhost = System.getenv("SWARM_HOST");
-	private String urlSails = "http://" + localhost + ":1337";
-	private String urlCellMove = "http://" + localhost + ":1337/cell/move";
-	private String urlOrganScaleUp = "http://" + localhost + ":1337/organ/scaleUp";
-	private String urlOrganScaleDown = "http://" + localhost + ":1337/organ/scaleDown";
+	private String sailsHost = System.getenv("SAILS_HOST");
+//	private String sailsHost = "localhost";
+	private String urlSails = "http://" + sailsHost + ":1337";
+	private String urlCellMove = "http://" + sailsHost + ":1337/cell/move";
+	private String urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";
+	private String urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
 	private HttpRequest con = new HttpRequest();
 
+
+	public String getPrometheusUrl () {
+
+		String pUrl = "";
+
+		String paramSails = "/host/getPrometheusUrl";
+		String str = callSailsGET(paramSails);
+
+		str = str.substring(21, str.length()-8);
+//		System.out.println(str);
+
+		return pUrl;
+	}
 
 	private String callSailsGET(String paramSails) {
 		String str = null;
 		try {
+//			System.out.println(urlSails);
+//			System.out.println(paramSails);
 			str = con.GETConnection(urlSails, paramSails);
 		} catch (IOException e) {
 			e.printStackTrace();
