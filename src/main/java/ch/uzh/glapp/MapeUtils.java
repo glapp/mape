@@ -206,6 +206,8 @@ public class MapeUtils {
 			int numOfCellsInRule = 0; // number of cells applicable to a specific rule
 			int numOfViolatedCellsInRule = 0; // number of violated cells applicable to a specific rule
 			double ruleViolationRatio = 0; // indicate ratio of the cells that violated a specific rule
+			boolean costViolation = false;
+			
 			List <Violation> ruleViolationList = new ArrayList<Violation>();
 			
 			String metricName = rule.getMetric();
@@ -238,66 +240,92 @@ public class MapeUtils {
 			totalWeight += weight;
 
 			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
-
-			// Compute the healthiness value for each cell (Docker container)
-			for (int j = 0; j < containerIDs.size(); ++j) {
-				String containerID = containerIDs.get(j);
-				System.out.println("Computation for cell (container ID: " + containerID + ") started.");
-				float metricValue = 0;
-				try {
-	    			// Retrieve Prometheus metrics
-	    			// NOTE: consider other computation of metric value that may be meaningful
+			
+			float totalCost = 0;
+			
+			if (metricName.equals("money_spent")) {
+//			if (metricName.equals("cost")) {
+				System.out.println("Cost rule:");
+				
+				for (int j = 0; j < containerIDs.size(); ++j) {
+					String containerID = containerIDs.get(j);
 					
-					// computation for "memory_utilization"
-					if (metricName.equals("cost")) {
-						metricValue = prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
-					} else if (metricName.equals("memory_utilization")) {
-						metricValue = prometheusRetriever.getMetric(containerID, "container_memory_rss", range, duration, step)
-								/ prometheusRetriever.getMetric(containerID, "container_spec_memory_limit_bytes", range, duration, step);
-					} else { // for other metrics
-						metricValue = prometheusRetriever.getMetric(containerID, metricName, range, duration, step);
+					try {
+						totalCost += prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
+					} catch (MetricNotFoundException e) {
+						e.printStackTrace();
 					}
-					System.out.println("Query result (cell metric value): " + metricValue);
-
-					// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
-					// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
-					// a positive value means healthy and a negative value means unhealthy
-					double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
-					totalCellHealthiness += cellHealthiness;
-
-					System.out.print("Comparison result: ");
-					if (cellHealthiness < 0) {
-						// increment the counter if a cell if found to be violating a specific rule
-						numOfViolatedCellsInRule += 1;
-						
-						System.out.println("Not compliant, current number of violating cell: " + numOfViolatedCellsInRule);
-						Violation violation = new Violation(
-								containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
-						);
-						ruleViolationList.add(violation);
-					} else {
-						System.out.println("Compliant, proceed to next cell/rule.");
-					}
-				} catch (MetricNotFoundException e) {
-					e.printStackTrace();
 				}
+				
+				System.out.println("Total cost: " + totalCost + " / threshold: " + thresholdValue);
+				
+				ruleHealthiness = (thresholdValue - totalCost) / thresholdValue;
+				if (ruleHealthiness < 0) {
+					costViolation = true;
+					
+					// create violation and trigger action
+//					overallViolationList.add(new Violation())
+				}
+			} else {
+				// Compute the healthiness value for each cell (Docker container)
+				for (int j = 0; j < containerIDs.size(); ++j) {
+					String containerID = containerIDs.get(j);
+					System.out.println("Computation for cell (container ID: " + containerID + ") started.");
+					float metricValue = 0;
+					try {
+						// Retrieve Prometheus metrics
+						// NOTE: consider other computation of metric value that may be meaningful
 
-    			System.out.println();
+						// computation for "memory_utilization"
+						if (metricName.equals("memory_utilization")) {
+							metricValue = prometheusRetriever.getMetric(containerID, "container_memory_rss", range, duration, step)
+									/ prometheusRetriever.getMetric(containerID, "container_spec_memory_limit_bytes", range, duration, step);
+						} else { // for other metrics
+							metricValue = prometheusRetriever.getMetric(containerID, metricName, range, duration, step);
+						}
+						System.out.println("Query result (cell metric value): " + metricValue);
+
+						// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
+						// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
+						// a positive value means healthy and a negative value means unhealthy
+						double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
+						totalCellHealthiness += cellHealthiness;
+
+						System.out.print("Comparison result: ");
+						if (cellHealthiness < 0) {
+							// increment the counter if a cell if found to be violating a specific rule
+							numOfViolatedCellsInRule += 1;
+
+							System.out.println("Not compliant, current number of violating cell: " + numOfViolatedCellsInRule);
+							Violation violation = new Violation(
+									containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
+									);
+							ruleViolationList.add(violation);
+						} else {
+							System.out.println("Compliant, proceed to next cell/rule.");
+						}
+					} catch (MetricNotFoundException e) {
+						e.printStackTrace();
+					}
+
+					System.out.println();
+				}
+				
+//				System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
+				ruleHealthiness = totalCellHealthiness/containerIDs.size();
+				
+				ruleViolationRatio = numOfViolatedCellsInRule/numOfCellsInRule;
+				System.out.println("ruleViolationRatio: " + ruleViolationRatio);
 			}
-			
-//			System.out.println("totalCellHealthiness: " + totalCellHealthiness + " number of cells: " + cellIDs.size());
-			ruleHealthiness = totalCellHealthiness/containerIDs.size();
-//			System.out.println("ruleHealthiness: " + ruleHealthiness);
+
+			System.out.println("ruleHealthiness: " + ruleHealthiness);
 			totalRuleHealthiness += ruleHealthiness * weight;
-			
-			ruleViolationRatio = numOfViolatedCellsInRule/numOfCellsInRule;
-			System.out.println("ruleViolationRatio: " + ruleViolationRatio);
-			
+
 			// determine if a rule is violated based on the number of violating cells among all the cells   
 			// define the threshold to determine if a rule is violated (percentage of cells violated the rule)
 			// using a pre-defined threshold of 0.25 (i.e. more than 25% of applicable cells violated the rule)
 			// e.g. if 0.25 (25%) of the cells violated the rule, the rule is not considered violated
-			if (ruleViolationRatio > 0.25) {
+			if (costViolation || ruleViolationRatio > 0.25) {
 				// add the violation list of a specific rule to the overall violation list
 				overallViolationList.addAll(ruleViolationList);
 			}

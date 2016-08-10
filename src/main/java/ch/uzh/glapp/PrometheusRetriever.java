@@ -141,6 +141,8 @@ public class PrometheusRetriever {
 //            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 //            System.out.println(result.getValue().get(0) + ", " + formater.format(Math.round(Double.parseDouble(result.getValue().get(0))*1000)) + ", " + result.getValue().get(1));
             
+            System.out.println("Cost: " + Float.parseFloat(resultStr));
+            
             return Float.parseFloat(resultStr);
         } else {
         	throw new MetricNotFoundException("Metric \"" + metricName + "\") not found.");
