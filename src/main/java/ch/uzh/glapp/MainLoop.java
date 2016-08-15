@@ -5,7 +5,6 @@ import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.mdp.BasicBehaviorMape;
 import ch.uzh.glapp.model.ObjectForMdp;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,8 +27,8 @@ public class MainLoop {
 	    config.load(configFile);
 	    configFile.close();
 
-	    SailsRetriever sa = new SailsRetriever();
 
+	    SailsRetriever sa = new SailsRetriever();
 	    if (sa.getPrometheusUrl() != "") {
 		    prometheusServerIP = sa.getPrometheusUrl();
 		    System.out.println("Prometheus IP form infrastructure: " + prometheusServerIP);
@@ -38,7 +37,6 @@ public class MainLoop {
 		    System.out.println("Prometheus IP form file: " + prometheusServerIP);
 	    }
 	    prometheusServerPort = 19090;
-
 
 
 
