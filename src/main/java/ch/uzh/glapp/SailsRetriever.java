@@ -17,13 +17,28 @@ import java.util.Map;
 
 public class SailsRetriever {
 
-//	private String sailsHost = System.getenv("SAILS_HOST");
-	private String sailsHost = "localhost";
-	private String urlSails = "http://" + sailsHost + ":1337";
-	private String urlCellMove = "http://" + sailsHost + ":1337/cell/move";
-	private String urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";
-	private String urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
+	private String sailsHost;
+	private String urlSails;
+	private String urlCellMove;
+	private String urlOrganScaleUp;
+	private String urlOrganScaleDown;
 	private HttpRequest con = new HttpRequest();
+
+
+	public SailsRetriever() {
+		if (System.getenv("SAILS_HOST") == null) {
+			this.sailsHost = "localhost";
+			System.out.println("Environment variable SAILS_HOST is not set.");
+		} else {
+			this.sailsHost = System.getenv("SAILS_HOST");
+			System.out.println("Environment variable SAILS_HOST is set to: " + sailsHost);
+		}
+
+		this.urlSails = "http://" + sailsHost + ":1337";
+		this.urlCellMove = "http://" + sailsHost + ":1337/cell/move";
+		this.urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";
+		this.urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
+	}
 
 	public String getPrometheusUrl () {
 

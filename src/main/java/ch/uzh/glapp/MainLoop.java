@@ -29,8 +29,14 @@ public class MainLoop {
 	    configFile.close();
 
 	    SailsRetriever sa = new SailsRetriever();
-//	    prometheusServerIP = sa.getPrometheusUrl();
-	    prometheusServerIP = config.getProperty("prometheusServerIP");
+
+	    if (sa.getPrometheusUrl() != "") {
+		    prometheusServerIP = sa.getPrometheusUrl();
+		    System.out.println("Prometheus IP form infrastructure: " + prometheusServerIP);
+	    } else {
+		    prometheusServerIP = config.getProperty("prometheusServerIP");
+		    System.out.println("Prometheus IP form file: " + prometheusServerIP);
+	    }
 	    prometheusServerPort = 19090;
 
 
