@@ -42,15 +42,11 @@ public class SailsRetriever {
 
 	public String getPrometheusUrl () {
 
-		String pUrl = "";
-
 		String paramSails = "/host/getPrometheusUrl";
 		String str = callSailsGET(paramSails);
-
 		str = str.substring(21, str.length()-8);
-//		System.out.println(str);
-
-		return pUrl;
+//		System.out.println("getPrometheusUrl: " + str);
+		return str;
 	}
 
 	private String callSailsGET(String paramSails) {
