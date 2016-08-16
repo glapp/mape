@@ -22,10 +22,15 @@ public class MainLoop {
 
 
 	    // Read the config file
-	    FileInputStream configFile = new FileInputStream("config.txt");
 	    Properties config = new Properties();
-	    config.load(configFile);
-	    configFile.close();
+	    try {
+		    FileInputStream configFile = new FileInputStream("config.txt");
+		    config.load(configFile);
+		    configFile.close();
+	    } catch (Exception e) {
+		    System.out.println("WARNING: config.txt not found");
+	    }
+
 
 
 	    SailsRetriever sa = new SailsRetriever();
