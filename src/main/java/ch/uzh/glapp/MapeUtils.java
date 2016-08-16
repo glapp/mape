@@ -220,7 +220,8 @@ public class MapeUtils {
     		for (Organ organ : organs) {
     			System.out.println("Applicable organ(s) (Organ ID: " + organ.getId() + ")");
     			
-    			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
+    			// get the ID of corresponding container that belongs to an organ specified by organ ID.
+			    // Each GLA cell is a Docker container.
     			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
     			
     			// TODO: check if the number of cells is 0 (i.e. the list "containerIDs" is empty)
@@ -239,7 +240,11 @@ public class MapeUtils {
 			double weight = Double.parseDouble(rule.getWeight());
 			totalWeight += weight;
 
-			System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
+			System.out.println("Rule: Metric: "+ metricName +
+					", Function: " + function +
+					" (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue +
+					", Weight: " + weight +
+					", Total weight: " + totalWeight);
 			
 			float totalCost = 0;
 			
@@ -251,9 +256,13 @@ public class MapeUtils {
 					String containerID = containerIDs.get(j);
 					
 					try {
-						totalCost += prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
+						totalCost += prometheusRetriever.getCostMetric(
+								getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(
+										containerID), containerIDtoTier.get(containerID)));
 						
-						Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName);
+						Violation violation = new Violation(containerIDtoCellID.get(
+								containerID), containerID, containerIDtoOrganID.get(
+										containerID), appId, rule.getId(), metricName);
 						ruleViolationList.add(violation);
 					} catch (MetricNotFoundException e) {
 						e.printStackTrace();
@@ -281,14 +290,17 @@ public class MapeUtils {
 
 						// computation for "memory_utilization"
 						if (metricName.equals("memory_utilization")) {
-							metricValue = prometheusRetriever.getMetric(containerID, "container_memory_rss", range, duration, step)
-									/ prometheusRetriever.getMetric(containerID, "container_spec_memory_limit_bytes", range, duration, step);
+							metricValue = prometheusRetriever.getMetric(
+									containerID, "container_memory_rss", range, duration, step)
+									/ prometheusRetriever.getMetric(
+											containerID, "container_spec_memory_limit_bytes", range, duration, step);
 						} else { // for other metrics
 							metricValue = prometheusRetriever.getMetric(containerID, metricName, range, duration, step);
 						}
 						System.out.println("Query result (cell metric value): " + metricValue);
 
-						// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
+						// e.g. a rule specifying threshold = 50% means when the utilization is at 70%,
+						// it is (70%-50%)/50% difference above the threshold.
 						// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
 						// a positive value means healthy and a negative value means unhealthy
 						double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
@@ -301,8 +313,8 @@ public class MapeUtils {
 
 							System.out.println("Not compliant, current number of violating cell: " + numOfViolatedCellsInRule);
 							Violation violation = new Violation(
-									containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), appId, rule.getId(), metricName
-									);
+									containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(
+											containerID), appId, rule.getId(), metricName);
 							ruleViolationList.add(violation);
 						} else {
 							System.out.println("Compliant, proceed to next cell/rule.");

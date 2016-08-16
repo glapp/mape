@@ -7,8 +7,6 @@ import ch.uzh.glapp.model.prometheus.ResultInstantVectors;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -33,7 +31,7 @@ public class PrometheusRetriever {
 	 * @param paramPrometheus is the query string
 	 * @return the metric data per query in the form of JSON response
 	 */
-	private String query(String paramPrometheus) {
+	private String doQuery(String paramPrometheus) {
       HttpRequest con = new HttpRequest();
       String urlPrometheus = "http://" + prometheusServerIP + ":" + prometheusServerPort;
       String response = "";
@@ -61,7 +59,8 @@ public class PrometheusRetriever {
 	 * @return average value of the data points in the specified duration.
 	 * @throws MetricNotFoundException if the metric is not available for the given container
 	 */
-    public float getMetric(String containerID, String metricName, int range, int duration, int step) throws MetricNotFoundException {
+    public float getMetric(String containerID, String metricName, int range, int duration, int step)
+		    throws MetricNotFoundException {
 
     	String paramPrometheus;
     	String query;
@@ -77,7 +76,7 @@ public class PrometheusRetriever {
         		"&end=" + currTime +
         		"&step=" + step;
 
-        String jsonString = query(paramPrometheus);
+        String jsonString = doQuery(paramPrometheus);
         PrometheusDataObject jobj;
 
 //        System.out.println("jsonString: "+jsonString);
@@ -127,7 +126,7 @@ public class PrometheusRetriever {
         		"?query=" + metricName;// +
 //        		"&time=" + currTime;
 
-        String jsonString = query(paramPrometheus);
+        String jsonString = doQuery(paramPrometheus);
         QueryResultInstantVectors jobj;
 
         jobj = new Gson().fromJson(jsonString, QueryResultInstantVectors.class);

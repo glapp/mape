@@ -27,7 +27,7 @@ public class SailsRetriever {
 
 	public SailsRetriever() {
 		if (System.getenv("SAILS_HOST") == null) {
-			this.sailsHost = "localhost";
+			this.sailsHost = "192.168.99.100";
 			System.out.println("Environment variable SAILS_HOST is not set.");
 		} else {
 			this.sailsHost = System.getenv("SAILS_HOST");
