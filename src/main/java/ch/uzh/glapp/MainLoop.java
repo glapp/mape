@@ -34,10 +34,12 @@ public class MainLoop {
 
 
 	    SailsRetriever sa = new SailsRetriever();
-	    if (sa.getPrometheusUrl() != "") {
-		    prometheusServerIP = sa.getPrometheusUrl();
+	    prometheusServerIP = sa.getPrometheusUrl();
+
+	    if (prometheusServerIP != "") {
 		    System.out.println("Prometheus IP form infrastructure: " + prometheusServerIP);
 	    } else {
+		    System.out.println("retreived prometheusServerIP: " + prometheusServerIP);
 		    prometheusServerIP = config.getProperty("prometheusServerIP");
 		    System.out.println("Prometheus IP form file: " + prometheusServerIP);
 	    }
