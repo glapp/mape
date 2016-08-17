@@ -6,6 +6,7 @@ import burlap.mdp.core.oo.state.OOVariableKey;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.singleagent.environment.Environment;
 import burlap.mdp.singleagent.environment.EnvironmentOutcome;
+import ch.uzh.glapp.MainLoop;
 import ch.uzh.glapp.MapeUtils;
 import ch.uzh.glapp.SailsRetriever;
 import ch.uzh.glapp.model.sails.MdpTriggerObject;
@@ -39,7 +40,7 @@ public class MapeEnvironment implements Environment {
 		MdpUtils mdpUtils = new MdpUtils();
 		HashMap numOfCellsList = mdpUtils.countCellsInAllOrgans(cells);
 
-		System.out.println("##### " + objectForMpd.getMetric());
+		System.out.println("MapeEnvironment.currentObservication(): objectForMpd.getMetric(): " + objectForMpd.getMetric());
 
 		for (Cell cell : cells) {
 
@@ -62,7 +63,7 @@ public class MapeEnvironment implements Environment {
 				Object tRegion = curState.get(new OOVariableKey(cell.getId(), VAR_REGION));
 				Object tTier = curState.get(new OOVariableKey(cell.getId(), VAR_TIER));
 				Object tCells = curState.get(new OOVariableKey(cell.getId(), VAR_CELLS));
-				System.out.println(tRegion + ", " + tTier + ", " + tCells + ", " + tProvider + ", " + cell.getOrganId().getName());
+				System.out.println("Provider: " + tProvider + ", Region: " + tRegion + ", Tier: " + tTier + ", Number of cells: " + tCells + ", Organ: " + cell.getOrganId().getName());
 			}
 		}
 		return curState;
@@ -78,11 +79,9 @@ public class MapeEnvironment implements Environment {
 		String region;
 		String tier;
 
-
 		SailsRetriever sailsRetriever = new SailsRetriever();
-
-		System.out.println(action.actionName());
-		System.out.println(action);
+		
+		System.out.println("MapeEnviroment: " + action.actionName());
 
 		if ("ch.uzh.glapp.mdp.MapeActionMove".equals(action.getClass().getName())) {
 			provider = ((MapeActionMove) action).getProvider();
@@ -90,16 +89,28 @@ public class MapeEnvironment implements Environment {
 			tier = ((MapeActionMove) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
-			sailsRetriever.postMove(cellId, options);
+			if (MainLoop.suppressActionToSails) {
+				System.out.println("Move action (cell ID: " + cellId + ", options: " + options + ")");
+			} else {
+				sailsRetriever.postMove(cellId, options);
+			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			provider = ((MapeActionCreate) action).getProvider();
 			region = ((MapeActionCreate) action).getRegion();
 			tier = ((MapeActionCreate) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
-			sailsRetriever.postCreate(organId, options);
+			if (MainLoop.suppressActionToSails) {
+				System.out.println("Create action (organ ID: " + organId + ", options: " + options + ")");
+			} else {
+				sailsRetriever.postCreate(organId, options);
+			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
-			sailsRetriever.postRemove(organId, cellId);
+			if (MainLoop.suppressActionToSails) {
+				System.out.println("Remove action (cell ID: " + cellId + ")");
+			} else {
+				sailsRetriever.postRemove(organId, cellId);
+			}
 		} else {
 			System.err.println("action name is wrong!");
 			System.exit(199);

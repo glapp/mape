@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import ch.uzh.glapp.model.Violation;
 import ch.uzh.glapp.model.sails.MdpTriggerObject;
 import ch.uzh.glapp.model.sails.cellinfo.Cell;
+import ch.uzh.glapp.model.sails.hostinfo.Host;
 import ch.uzh.glapp.model.sails.ruleinfo.Organ;
 import ch.uzh.glapp.model.sails.ruleinfo.Rule;
 import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
@@ -16,6 +17,9 @@ import ch.uzh.glapp.PrometheusRetriever.MetricNotFoundException;
 import static ch.uzh.glapp.mdp.MapeWorld.*;
 
 public class MapeUtils {
+	
+	private static List<Host> hosts = null;
+	private static double lastGetHostInfo = 0;
 
     // metric is an array with the values of the last time period
     // 1 = greater than, 2 = smaller than, 3 = equal
@@ -79,6 +83,111 @@ public class MapeUtils {
 
 
     /**
+	 * Function to check if the new tier is higher than the old tier
+	 * @param oldTier is the old tier of the host
+	 * @param newTier is the new tier of the host
+	 * @return true if the new tier is higher than the old tier and false otherwise.
+	 */
+	public static boolean isNewTierHigher(String oldTier, String newTier) {
+		if (oldTier.equals(TIER1) && (newTier.equals(TIER2) || newTier.equals(TIER3))) {
+			return true;
+		} else if (oldTier.equals(TIER2) && newTier.equals(TIER3)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	/**
+	 * Function to check if the new tier is higher than or equal to the old tier
+	 * @param oldTier is the old tier of the host
+	 * @param newTier is the new tier of the host
+	 * @return true if the new tier is higher than the old tier and false otherwise.
+	 */
+	public static boolean isNewTierHigherOrEqual(String oldTier, String newTier) {
+		if (oldTier.equals(TIER1)) {
+			return true;
+		} else if (oldTier.equals(TIER2) && (newTier.equals(TIER2) || newTier.equals(TIER3))) {
+			return true;
+		} else if (oldTier.equals(TIER3) && (newTier.equals(TIER3))){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+    /**
+	 * Function to check if the new tier is lower than the old tier
+	 * @param oldTier is the old tier of the host
+	 * @param newTier is the new tier of the host
+	 * @return true if the new tier is lower than the old tier and false otherwise.
+	 */
+	public static boolean isNewTierLower(String oldTier, String newTier) {
+		if (oldTier.equals(TIER3) && (newTier.equals(TIER2) || newTier.equals(TIER1))) {
+			return true;
+		} else if (oldTier.equals(TIER2) && newTier.equals(TIER1)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	/**
+	 * Function to check if a host from given cloud provider, region and tier is available
+	 * @param provider is the new provider
+	 * @param region
+	 * @param tier
+	 * @return true if the host is available and false otherwise
+	 */
+	public static boolean isHostAvailable(String provider, String region, String tier) {
+		double currentTime = System.currentTimeMillis()/1000;
+		
+		// Retrieve information from sails at most once every 60 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+			SailsRetriever sa = new SailsRetriever();
+			hosts = sa.getHostInfo();
+			lastGetHostInfo = currentTime;
+		}
+		
+		for (Host host : hosts) {
+			if (host.getLabels().getProvider().equals(provider) && host.getLabels().getRegion().equals(region) && host.getLabels().getTier().equals(tier)){
+//				System.out.println("Host at " + provider + ", " + region + ", " + tier + " is available");
+				return true;
+			}
+		}
+		
+//		System.out.println("Host at " + provider + ", " + region + ", " + tier + " is not available");
+		return false;
+	}
+	
+	/**
+	 * Find a server of which the tier is lower than the current tier
+	 * @param currentTier
+	 * @return a Host object containing the information of the server
+	 */
+	public static Host findLowerTierServer(String currentTier) {
+		double currentTime = System.currentTimeMillis()/1000;
+		
+		// Retrieve information from sails at most once every 60 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+			SailsRetriever sa = new SailsRetriever();
+			hosts = sa.getHostInfo();
+			lastGetHostInfo = currentTime;
+		}
+		
+		for (Host host : hosts) {
+			if (isNewTierLower(currentTier, host.getLabels().getTier())){
+				return host;
+			}
+		}
+		
+		return null;
+	}
+
+
+	/**
      * Compute the healthiness value for a given metric value.
      * @param thresholdValue is the threshold value of the rule.
      * @param metricValue is the current value of the metric.
@@ -251,10 +360,10 @@ public class MapeUtils {
 				// TODO: change the metric name to "cost" once the front end is updated
 				if (metricName.equals("money_spent")) {
 	//			if (metricName.equals("cost")) {
-					System.out.println("Cost rule:");
-					
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
+						
+						System.out.println("Querying cost metric for cell (container ID: " + containerID + ")");
 						
 						try {
 							totalCost += prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
@@ -375,11 +484,67 @@ public class MapeUtils {
 	}
 	
 	/**
-	 * 
+	 * Return the string representation of the cost metric of a specified cloud server
+	 * @param provider is the cloud provider of the server
+	 * @param region is the region that the server resides
+	 * @param tier is the tier of the server
+	 * @return the string representation of the cost metric of a specified cloud server
 	 */
 	private static String getPrometheusMetricName(String provider, String region, String tier) {
 		String prometheusMetricName = "cost_" + provider + "_" + region + "_tier" + tier;
-//		System.out.println(prometheusMetricName);
 		return prometheusMetricName;
+	}
+	
+	/**
+	 * Merge sort the violations according to its healthiness value
+	 * @param violations is the input violation list
+	 * @return violations sorted in ascending order of its healthiness value
+	 */
+	public static List<Violation> mergeSort(List<Violation> violations) {
+		if (violations.size() <= 1) {
+			return violations;
+		}
+		
+		List<Violation> first = new ArrayList<Violation>(violations.subList(0, violations.size() / 2));
+		List<Violation> second = new ArrayList<Violation>(violations.subList(violations.size() / 2, violations.size()));
+		
+		mergeSort(first);
+		mergeSort(second);
+		
+		merge(first, second, violations);
+		return violations;
+	}
+	
+	/**
+	 * Merge function of the merge sort
+	 * @param first is the first half of the list to be merge
+	 * @param second is the first second of the list to be merge
+	 * @param result is the merged list
+	 */
+	private static void merge(List<Violation> first, List<Violation> second, List<Violation> result) {
+		int iFirst = 0;
+		int iSecond = 0;
+		int iMerged = 0;
+		
+		while (iFirst < first.size() && iSecond < second.size()) {
+			if (first.get(iFirst).getWeightedHealthiness() < second.get(iSecond).getWeightedHealthiness()) {
+				result.set(iMerged, first.get(iFirst));
+				++iFirst;
+			} else {
+				result.set(iMerged, second.get(iSecond));
+				++iSecond;
+			}
+			++iMerged;
+			
+			result.subList(iMerged, result.size()).clear();
+			
+			if (iFirst < first.size()) {
+				result.addAll(iMerged, first.subList(iFirst, first.size()));
+			}
+			
+			if (iSecond < second.size()) {
+				result.addAll(iMerged, second.subList(iSecond, second.size()));
+			}
+		}
 	}
 }

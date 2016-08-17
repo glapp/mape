@@ -8,6 +8,7 @@ import burlap.mdp.core.action.ActionType;
 import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
+import ch.uzh.glapp.MapeUtils;
 
 import static ch.uzh.glapp.mdp.MapeWorld.*;
 
@@ -32,7 +33,7 @@ public class MapeActionTypeMove implements ActionType {
 					for (String newTier : TIER_LIST) {
 						
 						// check if a host from the new provider in the new region and new tier is available
-						if (MdpUtils.isHostAvailable(newProvider, newRegion, newTier)) {
+						if (MapeUtils.isHostAvailable(newProvider, newRegion, newTier)) {
 							
 //							System.out.println("Checking provider: " + newProvider + ", region: " + newRegion + ", tier: " + newTier);
 						
@@ -40,7 +41,7 @@ public class MapeActionTypeMove implements ActionType {
 							// given the following conditions:
 							// (1) there are 4 available providers, 3 available tiers and 3 available regions to choose from
 							// (2) current host is at tier 2
-							if (MdpUtils.isNewTierHigherOrEqual(currentTier, newTier)) {
+							if (MapeUtils.isNewTierHigherOrEqual(currentTier, newTier)) {
 //							if (!newProvider.equals(currentProvider) || !newRegion.equals(currentRegion) || !newTier.equals(currentTier)) {
 								actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
 							} else {

@@ -17,6 +17,7 @@ public class MainLoop {
 	public static String prometheusServerIP;
 	public static int prometheusServerPort;
 	public static String sailsServerIP;
+	public static boolean suppressActionToSails;
 
     public static void main (String[] args) throws IOException {
 
@@ -32,11 +33,12 @@ public class MainLoop {
 		    System.out.println("WARNING: config.txt not found");
 	    }
 
-
 	    sailsServerIP = config.getProperty("sailsServerIP");
+	    suppressActionToSails = Boolean.parseBoolean(config.getProperty("suppressActionToSails"));
+
 	    SailsRetriever sa = new SailsRetriever();
 	    prometheusServerIP = sa.getPrometheusUrl();
-
+	    
 	    if (prometheusServerIP != "") {
 		    System.out.println("Prometheus IP form infrastructure: " + prometheusServerIP);
 	    } else {
