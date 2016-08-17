@@ -7,8 +7,6 @@ import ch.uzh.glapp.model.prometheus.ResultInstantVectors;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
