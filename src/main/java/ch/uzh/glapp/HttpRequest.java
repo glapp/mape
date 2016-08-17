@@ -12,20 +12,18 @@ import java.util.concurrent.TimeUnit;
 public class HttpRequest {
 
     public String GETConnection(String address, String parameter) throws IOException {
+	    String inputLine;
+	    String result = "";
 
+	    // http://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
 	    try {
 		    HttpURLConnection httpConnection = (HttpURLConnection) new URL(address + parameter).openConnection();
-
 		    BufferedReader in = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
-
-		    String inputLine;
-		    String result = "";
 
 		    while ((inputLine = in.readLine()) != null) {
 			    result += inputLine;
 		    }
 		    in.close();
-		    return result;
 
 	    } catch (IOException e) {
 		    System.out.println("Connection could not be established. Retrying in ### secs.");
@@ -43,6 +41,7 @@ public class HttpRequest {
 	    }
 
 
+	    return result;
 
     }
 
