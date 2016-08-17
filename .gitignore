@@ -94,6 +94,6 @@ Thumbs.db
 .project
 .settings
 output/
-config.txt
+#config.txt
 classes/
 src/main/resources/META-INF/

@@ -7,12 +7,14 @@ This is the MAPE loop for the GLAPP
 
 ### How do I get set up? ###
 
-1. Start a Docker Swarm and a Prometheus server.
-2. Run some apps on your Swarm.
-3. ...
+docker run -e SAILS_HOST=<IP address> rpatan/mape
+
+or
+
+`docker compose up` with https://github.com/glapp/gla-sails/blob/master/docker-compose.yml
 
 
-### Config file for MAPE ###
+### Config file for MAPE (olny for dev purposes) ###
 
 File name: config.txt
 
