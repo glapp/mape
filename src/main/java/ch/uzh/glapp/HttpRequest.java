@@ -7,23 +7,41 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.concurrent.TimeUnit;
 
 public class HttpRequest {
 
     public String GETConnection(String address, String parameter) throws IOException {
+	    String inputLine;
+	    String result = "";
 
-	    HttpURLConnection httpConnection = (HttpURLConnection) new URL(address + parameter).openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+	    // http://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
+	    try {
+		    HttpURLConnection httpConnection = (HttpURLConnection) new URL(address + parameter).openConnection();
+		    BufferedReader in = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
 
-        String inputLine;
-        String result = "";
+		    while ((inputLine = in.readLine()) != null) {
+			    result += inputLine;
+		    }
+		    in.close();
 
-        while ((inputLine = in.readLine()) != null) {
-            result += inputLine;
-        }
-        in.close();
+	    } catch (IOException e) {
+		    System.out.println("Connection could not be established. Retrying in ### secs.");
 
-        return result;
+		    // waiting a bit for sails comming up.
+		    try {
+			    System.out.println("Sleep 5 secs.");
+			    TimeUnit.SECONDS.sleep(5);
+		    } catch (InterruptedException ex) {
+			    ex.printStackTrace();
+		    }
+
+		    String str = GETConnection(address, parameter);
+		    return str;
+	    }
+
+
+	    return result;
 
     }
 
