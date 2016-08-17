@@ -30,8 +30,8 @@ public class SailsRetriever {
 		this.sailsHost = System.getenv("SAILS_HOST");
 		System.out.println("Environment variable SAILS_HOST imediatly after call: " + this.sailsHost);
 		if (this.sailsHost == null) {
-			this.sailsHost = "shitty_ip";
-			System.out.println("Environment variable SAILS_HOST was not set. Default IP used: shitty_ip");
+			this.sailsHost = MainLoop.sailsServerIP;
+			System.out.println("Environment variable SAILS_HOST was not set. Default IP used: MainLoop.sailsServerIP: " + MainLoop.sailsServerIP);
 		} else {
 			System.out.println("Environment variable SAILS_HOST is set to: " + this.sailsHost);
 		}
