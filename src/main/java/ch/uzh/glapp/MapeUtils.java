@@ -410,9 +410,9 @@ public class MapeUtils {
 							System.out.println("Query result (cell metric value): " + metricValue);
 							
 							// For "container_cpu_usage_seconds_total" metric, the threshold is converted from percentage representation to a number in [0,1]
-							if (metricName.equals("container_cpu_usage_seconds_total")) {
-								thresholdValue/=100;
-							}
+//							if (metricName.equals("container_cpu_usage_seconds_total")) {
+//								thresholdValue/=100;
+//							}
 	
 							// e.g. a rule specifying threshold = 50% means when the utilization is at 70%,
 							// it is (70%-50%)/50% difference above the threshold.
