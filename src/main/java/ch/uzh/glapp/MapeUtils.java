@@ -241,7 +241,7 @@ public class MapeUtils {
 				
 				double thresholdValue = Double.parseDouble(rule.getValue());
 				int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
-				double weight = Double.parseDouble(rule.getWeight());
+				double weight = Double.parseDouble(rule.getWeight()); // weight of the current rule
 				totalWeight += weight;
 	
 				System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
@@ -274,7 +274,7 @@ public class MapeUtils {
 						costViolation = true;
 						
 						for (Violation v : ruleViolationList) {
-							v.setHealthiness(ruleHealthiness);
+							v.setWeightedHealthiness(ruleHealthiness*weight);
 						}
 						
 						// if there is a cost violation, add all applicable cells into the overall violation list
@@ -320,7 +320,7 @@ public class MapeUtils {
 								System.out.println("Not compliant, current number of violating cell: " + numOfViolatedCellsInRule);
 								Violation violation = new Violation(
 										containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
-										appId, rule.getId(), metricName, cellHealthiness
+										appId, rule.getId(), metricName, cellHealthiness*weight
 										);
 								ruleViolationList.add(violation);
 							} else {

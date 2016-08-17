@@ -29,8 +29,8 @@ public class MapeActionTypeHeuristic implements ActionType {
 			int worstHealthinessIndex = -1;
 			int i = 0;
 			for (Violation v : mdpTriggerObject.getViolationList()) {
-				if (v.getHealthiness() < worstHealthiness) {
-					worstHealthiness = v.getHealthiness();
+				if (v.getWeightedHealthiness() < worstHealthiness) {
+					worstHealthiness = v.getWeightedHealthiness();
 					worstHealthinessIndex = i;
 				}
 				++i;

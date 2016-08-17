@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class MainLoop {
 	public static String prometheusServerIP;
 	public static int prometheusServerPort;
+	public static String sailsServerIP;
 
     public static void main (String[] args) throws IOException {
 
@@ -32,6 +33,7 @@ public class MainLoop {
 	    }
 
 
+	    sailsServerIP = config.getProperty("sailsServerIP");
 	    SailsRetriever sa = new SailsRetriever();
 	    prometheusServerIP = sa.getPrometheusUrl();
 

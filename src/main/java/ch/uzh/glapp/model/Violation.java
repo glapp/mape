@@ -8,7 +8,7 @@ public class Violation {
 	private String appId;
 	private String ruleId;
 	private String metric;
-	private double healthiness; // the healthiness value of the cell that caused violation to a rule
+	private double weightedHealthiness; // the weighted healthiness value of the cell that caused violation to a rule
 
 	public Violation(String cellId, String containerId, String organId, String appId, String ruleId, String metric, double healthiness) {
 		this.cellId = cellId;
@@ -17,7 +17,7 @@ public class Violation {
 		this.appId = appId;
 		this.ruleId = ruleId;
 		this.metric = metric;
-		this.healthiness = healthiness;
+		this.weightedHealthiness = healthiness;
 	}
 
 	public String getCellId() {
@@ -68,11 +68,11 @@ public class Violation {
 		this.metric = metric;
 	}
 
-	public double getHealthiness() {
-		return healthiness;
+	public double getWeightedHealthiness() {
+		return weightedHealthiness;
 	}
 
-	public void setHealthiness(double healthiness) {
-		this.healthiness = healthiness;
+	public void setWeightedHealthiness(double weightedHealthiness) {
+		this.weightedHealthiness = weightedHealthiness;
 	}
 }
