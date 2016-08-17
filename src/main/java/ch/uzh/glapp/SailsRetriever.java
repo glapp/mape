@@ -26,18 +26,19 @@ public class SailsRetriever {
 
 
 	public SailsRetriever() {
-		if (System.getenv("SAILS_HOST") == null) {
-			this.sailsHost = "172.18.0.3";
-			System.out.println("Environment variable SAILS_HOST is not set.");
+		this.sailsHost = System.getenv("SAILS_HOST");
+		System.out.println("Environment variable SAILS_HOST imediatly after call: " + this.sailsHost);
+		if (this.sailsHost == null) {
+			this.sailsHost = "shitty_ip";
+			System.out.println("Environment variable SAILS_HOST was not set. Default IP used: shitty_ip");
 		} else {
-			this.sailsHost = System.getenv("SAILS_HOST");
-			System.out.println("Environment variable SAILS_HOST is set to: " + sailsHost);
+			System.out.println("Environment variable SAILS_HOST is set to: " + this.sailsHost);
 		}
 
-		this.urlSails = "http://" + sailsHost + ":1337";
-		this.urlCellMove = "http://" + sailsHost + ":1337/cell/move";
-		this.urlOrganScaleUp = "http://" + sailsHost + ":1337/organ/scaleUp";
-		this.urlOrganScaleDown = "http://" + sailsHost + ":1337/organ/scaleDown";
+		this.urlSails = "http://" + this.sailsHost + ":1337";
+		this.urlCellMove = "http://" + this.sailsHost + ":1337/cell/move";
+		this.urlOrganScaleUp = "http://" + this.sailsHost + ":1337/organ/scaleUp";
+		this.urlOrganScaleDown = "http://" + this.sailsHost + ":1337/organ/scaleDown";
 	}
 
 	public String getPrometheusUrl () {
@@ -52,8 +53,7 @@ public class SailsRetriever {
 	private String callSailsGET(String paramSails) {
 		String str = null;
 		try {
-//			System.out.println(urlSails);
-//			System.out.println(paramSails);
+			System.out.println(urlSails + "" + paramSails);
 			str = con.GETConnection(urlSails, paramSails);
 		} catch (IOException e) {
 			e.printStackTrace();
