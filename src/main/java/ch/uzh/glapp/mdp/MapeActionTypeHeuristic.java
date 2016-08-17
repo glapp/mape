@@ -92,7 +92,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 				} else if (currentTier.equals(TIER3)) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 				}
-			} else if (violatedMetric.equals("money_spent")) { // TODO: change the metric name to "cost" once the front end is updated
+			} else if (violatedMetric.equals("cost")) { // TODO: change the metric name to "cost" once the front end is updated
 				
 				// extract cost violations from the violation list
 				ArrayList<Violation> tempViolations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());

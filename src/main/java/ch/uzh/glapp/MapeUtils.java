@@ -358,8 +358,7 @@ public class MapeUtils {
 				float totalCost = 0;
 				
 				// TODO: change the metric name to "cost" once the front end is updated
-				if (metricName.equals("money_spent")) {
-	//			if (metricName.equals("cost")) {
+				if (metricName.equals("cost")) {
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
 						
@@ -391,7 +390,19 @@ public class MapeUtils {
 					} else {
 						costViolation = false;
 					}
-				} else {
+				} else if (metricName.equals("click_count")) {
+					try {
+						float metricValue = prometheusRetriever.getCustomMetric(metricName, range, duration, step);
+						
+						// TODO: handling is hardcoded now
+						
+						
+						
+					} catch (MetricNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+				else {
 					// Compute the healthiness value for each cell (Docker container)
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
