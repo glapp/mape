@@ -21,7 +21,8 @@ Location: MAPE root directory
 Sample content:
 ```
 #!text
-prometheusServerIP=146.185.171.54
+sailsServerIP=<IP address of the Sails server>
+prometheusServerIP=<IP address of the Prometheus server>
 prometheusServerPort=19090
 ForceMDP=false
 violoatedMetric=process_cpu_seconds_total
