@@ -6,6 +6,7 @@ import burlap.mdp.core.oo.state.ObjectInstance;
 import burlap.mdp.core.oo.state.generic.DeepOOState;
 import burlap.mdp.core.state.State;
 import ch.uzh.glapp.model.ObjectForMdp;
+import ch.uzh.glapp.model.Violation;
 import ch.uzh.glapp.model.sails.MdpTriggerObject;
 
 import java.util.ArrayList;
@@ -22,30 +23,38 @@ public class MapeActionTypeHeuristic implements ActionType {
 		
 		// get violation details
 		MdpTriggerObject mdpTriggerObject = BasicBehaviorMape.getMdpTriggerObject();
-
-		// get the cell ID of the violating cell (first one if there are multiple)
-		ObjectInstance cell = ((DeepOOState)state).object(mdpTriggerObject.getViolationList().get(0).getCellId());
-		
-//		List<ObjectInstance> cells = ((DeepOOState)state).objectsOfClass(CLASS_CELL);
-//		for (ObjectInstance cell : cells) {
+			
+			// check how many violations
+			double worstHealthiness = 0; // the worst healthiness value = the most negative healthiness value
+			int worstHealthinessIndex = -1;
+			int i = 0;
+			for (Violation v : mdpTriggerObject.getViolationList()) {
+				if (v.getWeightedHealthiness() < worstHealthiness) {
+					worstHealthiness = v.getWeightedHealthiness();
+					worstHealthinessIndex = i;
+				}
+				++i;
+			}
+			
+			
+			String violation = "";
+//			if (mdpTriggerObject.getViolationList().size() == 1) {
+			violation = mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getMetric();
+//			}
+			
+			// get the cell ID of the violating cell
+			// if there are multiple violation, get the one with the worst healthiness value
+			ObjectInstance cell = ((DeepOOState)state).object(mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getCellId());
 			
 			// String cellName, String provider, String region, String tier
-			
 			String cellName = ((MapeCell)cell).name();
 			String currentProvider = ((MapeCell)cell).getProvider();
 			String currentRegion = ((MapeCell)cell).getRegion();
 			String currentTier = ((MapeCell)cell).getTier();
 			int currentNumOfCells = ((MapeCell)cell).getCells();
 			
-			
-			// check how many violations
-			String violation = "";
-//			if (mdpTriggerObject.getViolationList().size() == 1) {
-			violation = mdpTriggerObject.getViolationList().get(0).getMetric();
-//			}
-			
 			// default action: create another cell on the machine with same specification (provider, region, tier)
-			if (violation.equals("container_cpu_usage_seconds_total")) { // if CPU violation => move to bigger machine
+			if (violation.equals("container_cpu_usage_seconds_total")) { // if CPU violation => move to bigger machine (higher tier)
 				if (currentTier.equals(TIER1)) {
 					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
 						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
@@ -81,10 +90,10 @@ public class MapeActionTypeHeuristic implements ActionType {
 				} else if (currentTier.equals(TIER3)) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 				}
-			} else if (violation.equals("money_spent")) {
-				// if there is cost violation AND no other violation, scale down
-				// => there is only 1 cell => move to a smaller machine (what if no smaller machine available?)
-				// => if there are more than 2 cells => remove a cell
+			} else if (violation.equals("money_spent")) { // TODO: change the metric name to "cost" once the front end is updated
+				// if there is cost violation
+				// => if it is possible to move to a smaller machine (lower tier), move to a smaller machine
+				// => else if there are more than 2 cells, remove 1 cell
 				
 				if (currentTier.equals(TIER3)) {
 					if (MdpUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
@@ -106,11 +115,6 @@ public class MapeActionTypeHeuristic implements ActionType {
 					}
 				}
 			}
-			
-			
-
-			
-		
 //		}
 		
 		System.out.println("Size of heuristic action list: " + actionList.size());
