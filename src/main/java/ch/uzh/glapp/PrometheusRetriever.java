@@ -111,6 +111,59 @@ public class PrometheusRetriever {
         }
     }
     
+    public float getCustomMetric(String metricName, int range, int duration, int step)
+		    throws MetricNotFoundException {
+
+    	String paramPrometheus;
+    	String query;
+    	
+        long currTime = System.currentTimeMillis()/1000;
+        long startTime = currTime - duration;
+    	
+        query = "rate(" + metricName + "[" + range + "s])";
+    		
+        paramPrometheus = "/api/v1/query_range" +
+        		"?query=" + query +
+        		"&start=" + startTime +
+        		"&end=" + currTime +
+        		"&step=" + step;
+
+        String jsonString = doQuery(paramPrometheus);
+        PrometheusDataObject jobj;
+
+//        System.out.println("jsonString: "+jsonString);
+        jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
+        
+        List<Result> results = jobj.getData().getResult();
+//        System.out.println("Size of result: " + results.size());
+        
+        if (results.size() != 0) {
+        	Result result = results.get(0); // TODO: handle multiple results for the specified container within the specified duration (e.g. different values for eth0, eth1)
+            int listSize = result.getValues().size();
+//	        System.out.println("listSize: " + listSize);
+
+	        float sum_value = 0;
+        	
+            for (int i=0; i< listSize; i++) {
+                sum_value += Float.parseFloat(result.getValues().get(i).get(1));
+//                System.out.println("value: "+Float.parseFloat(result.getValues().get(i).get(1))+", sum_value : "+sum_value+", iteration: "+i);
+            }
+
+            float averge = sum_value/listSize;
+//            System.out.println("average: "+average);
+
+            return averge;
+
+//            result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
+//            return Float.parseFloat(result);
+        } else {
+//        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
+        	
+        	throw new MetricNotFoundException("Custom metric " + metricName + ") not found.");
+        }
+    }
+    
+    
     /**
 	 * Get the cost metrics.
 	 * Using Prometheus query function {@link https://prometheus.io/docs/querying/api/#instant-queries}.
