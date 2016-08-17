@@ -26,6 +26,7 @@ public class SailsRetriever {
 
 
 	public SailsRetriever() {
+
 		this.sailsHost = System.getenv("SAILS_HOST");
 		System.out.println("Environment variable SAILS_HOST imediatly after call: " + this.sailsHost);
 		if (this.sailsHost == null) {
