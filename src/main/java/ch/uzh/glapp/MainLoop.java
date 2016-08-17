@@ -32,7 +32,6 @@ public class MainLoop {
 	    }
 
 
-
 	    SailsRetriever sa = new SailsRetriever();
 	    prometheusServerIP = sa.getPrometheusUrl();
 
@@ -44,7 +43,6 @@ public class MainLoop {
 		    System.out.println("Prometheus IP form file: " + prometheusServerIP);
 	    }
 	    prometheusServerPort = 19090;
-
 
 
 //    	MapeUtils mapeUtils = new MapeUtils();

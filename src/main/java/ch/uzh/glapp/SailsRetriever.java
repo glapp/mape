@@ -27,7 +27,7 @@ public class SailsRetriever {
 
 	public SailsRetriever() {
 		if (System.getenv("SAILS_HOST") == null) {
-			this.sailsHost = "localhost";
+			this.sailsHost = "172.18.0.3";
 			System.out.println("Environment variable SAILS_HOST is not set.");
 		} else {
 			this.sailsHost = System.getenv("SAILS_HOST");
@@ -42,15 +42,11 @@ public class SailsRetriever {
 
 	public String getPrometheusUrl () {
 
-		String pUrl = "";
-
 		String paramSails = "/host/getPrometheusUrl";
 		String str = callSailsGET(paramSails);
-
 		str = str.substring(21, str.length()-8);
-//		System.out.println(str);
-
-		return pUrl;
+//		System.out.println("getPrometheusUrl: " + str);
+		return str;
 	}
 
 	private String callSailsGET(String paramSails) {

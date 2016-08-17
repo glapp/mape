@@ -221,7 +221,8 @@ public class MapeUtils {
 	    		for (Organ organ : organs) {
 	    			System.out.println("Applicable organ(s) (Organ ID: " + organ.getId() + ")");
 	    			
-	    			// get the ID of corresponding container that belongs to an organ specified by organ ID. Each GLA cell is a Docker container.
+	    			// get the ID of corresponding container that belongs to an organ specified by organ ID.
+	    			// Each GLA cell is a Docker container.
 	    			containerIDs.addAll(MapeUtils.getContainerIDs(cells, organ.getId()));
 	    		}
 	    		
@@ -304,7 +305,8 @@ public class MapeUtils {
 								thresholdValue/=100;
 							}
 	
-							// e.g. a rule specifying threshold = 50% means when the utilization is at 70%, it is (70%-50%)/50% difference above the threshold.
+							// e.g. a rule specifying threshold = 50% means when the utilization is at 70%,
+							// it is (70%-50%)/50% difference above the threshold.
 							// degree of healthiness = difference / threshold = 0.2 / 0.5 = 0.4
 							// a positive value means healthy and a negative value means unhealthy
 							double cellHealthiness = cellHealthiness(thresholdValue, metricValue, function);
