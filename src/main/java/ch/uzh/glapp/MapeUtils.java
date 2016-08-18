@@ -436,7 +436,7 @@ public class MapeUtils {
 						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
 						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
 						
-						if (ratioUS > 500 || ratioUS < 100) {
+						if (ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
@@ -448,7 +448,7 @@ public class MapeUtils {
 							}
 						}
 						
-						if (ratioEU > 500 || ratioEU < 100) {
+						if (ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
