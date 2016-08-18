@@ -1,0 +1,2 @@
+clickCountUS=20000
+clickCountEU=0
