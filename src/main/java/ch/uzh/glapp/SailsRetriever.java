@@ -27,12 +27,15 @@ public class SailsRetriever {
 	public SailsRetriever() {
 
 		this.sailsHost = System.getenv("SAILS_HOST");
-		System.out.println("Environment variable SAILS_HOST imediatly after call: " + this.sailsHost);
+		System.out.println("Environment variable SAILS_HOST immediatly after call: " + this.sailsHost);
 		if (this.sailsHost == null) {
-//			this.sailsHost = MainLoop.sailsServerIP;
-//			System.out.println("Environment variable SAILS_HOST was not set. Default IP used: MainLoop.sailsServerIP: " + MainLoop.sailsServerIP);
-			this.sailsHost = "192.168.99.100";
-			System.out.println("Environment variable SAILS_HOST was not set. Default IP used: 192.168.99.100");
+			this.sailsHost = MainLoop.sailsServerIP;
+			if (this.sailsHost == null) {
+				this.sailsHost = "192.168.99.100";
+				System.out.println("Environment variable SAILS_HOST was not set. Default IP used: 192.168.99.100");
+			} else {
+				System.out.println("Environment variable SAILS_HOST was not set. IP from config file is available: MainLoop.sailsServerIP: " + MainLoop.sailsServerIP);
+			}
 		} else {
 			System.out.println("Environment variable SAILS_HOST is set to: " + this.sailsHost);
 		}
