@@ -436,25 +436,25 @@ public class MapeUtils {
 						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
 						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
 						
-						if (ratioUS > 10000) {
+						if (ratioUS > 10000 || ratioUS < 1000) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
 								if (containerIDtoRegion.get(containerID).equals(NA)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
-											appId, rule.getId(), metricName, -1);
+											appId, rule.getId(), metricName, -1, ratioUS);
 									ruleViolationList.add(violation);
 								}
 							}
 						}
 						
-						if (ratioEU > 10000) {
+						if (ratioEU > 10000 || ratioEU < 1000) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
 								if (containerIDtoRegion.get(containerID).equals(EU)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
-											appId, rule.getId(), metricName, -1);
+											appId, rule.getId(), metricName, -1, ratioEU);
 									ruleViolationList.add(violation);
 								}
 							}

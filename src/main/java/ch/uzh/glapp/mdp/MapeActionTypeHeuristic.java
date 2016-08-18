@@ -26,12 +26,14 @@ public class MapeActionTypeHeuristic implements ActionType {
 		
 		// get violation details
 		MdpTriggerObject mdpTriggerObject = BasicBehaviorMape.getMdpTriggerObject();
+		
+		ArrayList<Violation> violations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());
 			
 			// check how many violations
 			double worstHealthiness = 0; // the worst healthiness value = the most negative healthiness value
 			int worstHealthinessIndex = -1;
 			int i = 0;
-			for (Violation v : mdpTriggerObject.getViolationList()) {
+			for (Violation v : violations) {
 				if (v.getWeightedHealthiness() < worstHealthiness) {
 					worstHealthiness = v.getWeightedHealthiness();
 					worstHealthinessIndex = i;
@@ -39,15 +41,15 @@ public class MapeActionTypeHeuristic implements ActionType {
 				i++;
 			}
 			
-			MapeUtils.printViolation(mdpTriggerObject.getViolationList());
+			MapeUtils.printViolation(violations);
 			
 			String violatedMetric = "";
 			// get the name of the violated metric
 			// if there are multiple violation, get the one with the worst healthiness value
-			violatedMetric = mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getMetric();
+			violatedMetric = violations.get(worstHealthinessIndex).getMetric();
 			
 			// get the cell ID of the violating cell
-			ObjectInstance cell = ((DeepOOState)state).object(mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getCellId());
+			ObjectInstance cell = ((DeepOOState)state).object(violations.get(worstHealthinessIndex).getCellId());
 			
 			// String cellName, String provider, String region, String tier
 			String cellName = ((MapeCell)cell).name();
@@ -96,7 +98,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 			} else if (violatedMetric.equals("cost")) {
 				
 				// extract cost violations from the violation list
-				ArrayList<Violation> tempViolations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());
+				ArrayList<Violation> tempViolations = new ArrayList<Violation>(violations);
 				
 				// sort the cost violation list by healthiness value in descending order
 				MapeUtils.mergeSort(tempViolations);
