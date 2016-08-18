@@ -502,6 +502,14 @@ public class MapeUtils {
 			
 			return mdpTriggerObj;
 		} else {
+			// TODO: when deleting all rules in the voting app it enters in this else.
+			// This results in a NULL pointer exception:
+			// Exception in thread "main" java.lang.NullPointerException
+			// at ch.uzh.glapp.mdp.MapeEnvironment.executeAction(MapeEnvironment.java:121)
+			// at burlap.behavior.singleagent.learning.tdmethods.QLearning.runLearningEpisode(QLearning.java:449)
+			// at ch.uzh.glapp.mdp.BasicBehaviorMape.MyQLearningFunc(BasicBehaviorMape.java:55)
+			// at ch.uzh.glapp.MainLoop.main(MainLoop.java:136)
+
 			System.out.println("MapeUtils.healthiness(): No rule defined.");
 			return null;
 		}

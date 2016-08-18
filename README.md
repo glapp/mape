@@ -7,7 +7,7 @@ This is the MAPE loop for the GLAPP
 
 ### How do I get set up? ###
 
-`docker run -e SAILS_HOST=<IP address> rpatan/mape`
+`docker run --net=<docker network> -e SAILS_HOST=<IP address> rpatan/mape`
 
 or
 
