@@ -1,9 +1,11 @@
 package ch.uzh.glapp;
 
+import java.io.FileInputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import ch.uzh.glapp.model.Violation;
@@ -355,8 +357,6 @@ public class MapeUtils {
 	
 				System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 				
-				System.out.println(metricName.substring(0, 11) + ", " + metricName.substring(0, 11).equals("click_count"));
-				
 				if (metricName.equals("cost")) {
 					float totalCost = 0;
 					
@@ -392,9 +392,26 @@ public class MapeUtils {
 						costViolation = false;
 					}
 				} else if (metricName.substring(0, 11).equals("click_count")) { // processing click count metric
+					Properties clickCountTestInput = new Properties();
+				    try {
+					    FileInputStream clickCountTestInputFile = new FileInputStream("clickCount.txt");
+					    clickCountTestInput.load(clickCountTestInputFile);
+					    clickCountTestInputFile.close();
+				    } catch (Exception e) {
+					    e.printStackTrace();
+				    }
+					
 					try {
 						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), range, duration, step);
 						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), range, duration, step);
+						
+						// Load the value from an input file for testing
+						if (clickCountTestInput.getProperty("clickCountUS") != null) {
+							clickCountUS = Integer.parseInt(clickCountTestInput.getProperty("clickCountUS"));
+						}
+						if (clickCountTestInput.getProperty("clickCountEU") != null) {
+							clickCountEU = Integer.parseInt(clickCountTestInput.getProperty("clickCountEU"));
+						}
 						
 						int numOfCellsUS = 0;
 						int numOfCellsEU = 0;
@@ -415,6 +432,9 @@ public class MapeUtils {
 						if (numOfCellsEU > 0) {
 							ratioEU = clickCountEU / numOfCellsEU;
 						}
+						
+						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
+						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
 						
 						if (ratioUS > 10000) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
@@ -617,11 +637,19 @@ public class MapeUtils {
 	 * Output the list of violations
 	 * @param violations
 	 */
-	private static void printViolation(List<Violation> violations) {
+	public static void printViolation(List<Violation> violations) {
+		System.out.println("\nList of violations:");
+		
+		int count = 0;
+		
 		if (violations.size() > 0) {
-			System.out.println("List of violations:");
 			for (Violation violation : violations) {
-				System.out.println("Organ ID: " + violation.getOrganId() + "Cell ID: " + violation.getCellId() + ", Container ID: " + violation.getContainerId() + ", Metric: " + violation.getMetric());
+				System.out.println("====================");
+				System.out.println("Violation " + count);
+				System.out.println("--------------------");
+				System.out.println("Organ ID: " + violation.getOrganId() + "\nCell ID: " + violation.getCellId() + "\nContainer ID: " + violation.getContainerId() + "\nMetric: " + violation.getMetric());
+				System.out.println("====================");
+				count++;
 			}
 			System.out.println();
 		} else {

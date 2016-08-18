@@ -36,9 +36,10 @@ public class MapeActionTypeHeuristic implements ActionType {
 					worstHealthiness = v.getWeightedHealthiness();
 					worstHealthinessIndex = i;
 				}
-				++i;
+				i++;
 			}
 			
+			MapeUtils.printViolation(mdpTriggerObject.getViolationList());
 			
 			String violatedMetric = "";
 			// get the name of the violated metric
@@ -92,7 +93,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 				} else if (currentTier.equals(TIER3)) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 				}
-			} else if (violatedMetric.equals("cost")) { // TODO: change the metric name to "cost" once the front end is updated
+			} else if (violatedMetric.equals("cost")) {
 				
 				// extract cost violations from the violation list
 				ArrayList<Violation> tempViolations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());
@@ -126,28 +127,11 @@ public class MapeActionTypeHeuristic implements ActionType {
 							actionList.add(new MapeActionRemove(cName));
 						}
 						
-//						if (cTier.equals(TIER3)) {
-//							if (MapeUtils.isHostAvailable(cProvider, cRegion, TIER2)) {
-//								actionList.add(new MapeActionMove(cName, cProvider, cRegion, TIER2));
-//							} else if (MapeUtils.isHostAvailable(cProvider, cRegion, TIER1)) {
-//								actionList.add(new MapeActionMove(cName, cProvider, cRegion, TIER1));
-//							} else if (cNumOfCells > 1) {
-//								actionList.add(new MapeActionRemove(cName));
-//							}
-//						} else if (cTier.equals(TIER2)) {
-//							if (MapeUtils.isHostAvailable(cProvider, cRegion, TIER1)) {
-//								actionList.add(new MapeActionMove(cName, cProvider, cRegion, TIER1));
-//							} else if (cNumOfCells > 1) {
-//								actionList.add(new MapeActionRemove(cName));
-//							}
-//						} else if (cTier.equals(TIER1)) {
-//							if (cNumOfCells > 1) {
-//								actionList.add(new MapeActionRemove(cName));
-//							}
-//						}
 						actionFound = actionList.size() > 0 ? true: false;
 					}
 				}
+			} else if (violatedMetric.equals("click_count")) {
+				actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 			}
 //		}
 		
