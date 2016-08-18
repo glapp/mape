@@ -349,7 +349,7 @@ public class MapeUtils {
 					System.out.println(containerID);
 				}
 				System.out.println();
-				
+
 				double thresholdValue = Double.parseDouble(rule.getValue());
 				int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
 				double weight = Double.parseDouble(rule.getWeight()); // weight of the current rule
@@ -436,7 +436,7 @@ public class MapeUtils {
 						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
 						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
 						
-						if (ratioUS > 10000 || ratioUS < 1000) {
+						if (ratioUS > 500 || ratioUS < 100) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
@@ -448,7 +448,7 @@ public class MapeUtils {
 							}
 						}
 						
-						if (ratioEU > 10000 || ratioEU < 1000) {
+						if (ratioEU > 500 || ratioEU < 100) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
