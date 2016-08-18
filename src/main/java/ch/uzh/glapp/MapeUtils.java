@@ -355,10 +355,11 @@ public class MapeUtils {
 	
 				System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 				
-				float totalCost = 0;
+				System.out.println(metricName.substring(0, 11) + ", " + metricName.substring(0, 11).equals("click_count"));
 				
-				// TODO: change the metric name to "cost" once the front end is updated
 				if (metricName.equals("cost")) {
+					float totalCost = 0;
+					
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
 						
@@ -390,27 +391,59 @@ public class MapeUtils {
 					} else {
 						costViolation = false;
 					}
-				} else if (metricName.substring(0, 11).equals("click_count")) {
+				} else if (metricName.substring(0, 11).equals("click_count")) { // processing click count metric
 					try {
-						float metricValue = prometheusRetriever.getCustomMetric(metricName, range, duration, step);
+						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), range, duration, step);
+						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), range, duration, step);
 						
-						// TODO: handling is hardcoded now
-						String region = metricName.substring(12);
-						double ratio = metricValue / containerIDs.size();
+						int numOfCellsUS = 0;
+						int numOfCellsEU = 0;
 						
-						if (ratio > 10000) {
+						for (String containerID : containerIDs) {
+							if (containerIDtoRegion.get(containerID).equals(NA)) {
+								numOfCellsUS++;
+							} else if (containerIDtoRegion.get(containerID).equals(EU)) {
+								numOfCellsEU++;
+							}
+						}
+						
+						double ratioUS = 0;
+						double ratioEU = 0;
+						if (numOfCellsUS > 0) {
+							ratioUS = clickCountUS / numOfCellsUS;
+						}
+						if (numOfCellsEU > 0) {
+							ratioEU = clickCountEU / numOfCellsEU;
+						}
+						
+						if (ratioUS > 10000) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
-								if (containerIDtoRegion.get(containerID).equals(region)) {
+								if (containerIDtoRegion.get(containerID).equals(NA)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
 											appId, rule.getId(), metricName, -1);
 									ruleViolationList.add(violation);
 								}
 							}
-							
-							overallViolationList.addAll(ruleViolationList);
 						}
+						
+						if (ratioEU > 10000) {
+							for (int j = 0; j < containerIDs.size(); ++j) {
+								String containerID = containerIDs.get(j);
+								
+								if (containerIDtoRegion.get(containerID).equals(EU)) {
+									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
+											appId, rule.getId(), metricName, -1);
+									ruleViolationList.add(violation);
+								}
+							}
+						}
+						
+						overallViolationList.addAll(ruleViolationList);
+						
+						printViolation(overallViolationList);
+						
 					} catch (MetricNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -577,6 +610,22 @@ public class MapeUtils {
 			if (iSecond < second.size()) {
 				result.addAll(iMerged, second.subList(iSecond, second.size()));
 			}
+		}
+	}
+	
+	/**
+	 * Output the list of violations
+	 * @param violations
+	 */
+	private static void printViolation(List<Violation> violations) {
+		if (violations.size() > 0) {
+			System.out.println("List of violations:");
+			for (Violation violation : violations) {
+				System.out.println("Organ ID: " + violation.getOrganId() + "Cell ID: " + violation.getCellId() + ", Container ID: " + violation.getContainerId() + ", Metric: " + violation.getMetric());
+			}
+			System.out.println();
+		} else {
+			System.out.println("List of violation is empty.\n");
 		}
 	}
 }

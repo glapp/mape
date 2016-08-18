@@ -96,8 +96,8 @@ public class MainLoop {
 				    // 1. Retrieve user defined policy (a set of rules)
 	
 				    // get the application healthiness value
-				    // for metric data, range=60 and duration=3600 means
-				    // get a per-second average metric value from a 60-second range in the past hour (3600 seconds)
+				    // for metric data, range=10 and duration=180 means
+				    // get a per-second average metric value from a 10-second range in the 3 minutes (180 seconds)
 				    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 10, 180, 60, false);
 	
 				    // Stage 2: MDP
