@@ -41,15 +41,16 @@ public class MapeActionTypeHeuristic implements ActionType {
 				i++;
 			}
 			
-			MapeUtils.printViolation(violations);
+//			MapeUtils.printViolation(violations);
 			
 			String violatedMetric = "";
 			// get the name of the violated metric
 			// if there are multiple violation, get the one with the worst healthiness value
-			violatedMetric = violations.get(worstHealthinessIndex).getMetric();
+			Violation worstViolation = violations.get(worstHealthinessIndex);
+			violatedMetric = worstViolation.getMetric();
 			
 			// get the cell ID of the violating cell
-			ObjectInstance cell = ((DeepOOState)state).object(violations.get(worstHealthinessIndex).getCellId());
+			ObjectInstance cell = ((DeepOOState)state).object(worstViolation.getCellId());
 			
 			// String cellName, String provider, String region, String tier
 			String cellName = ((MapeCell)cell).name();
@@ -133,7 +134,11 @@ public class MapeActionTypeHeuristic implements ActionType {
 					}
 				}
 			} else if (violatedMetric.equals("click_count")) {
-				actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+				if (worstViolation.getAdditionalValue() > 500) {
+					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+				} else if (worstViolation.getAdditionalValue() < 100 || currentNumOfCells > 1) {
+					actionList.add(new MapeActionRemove(cellName));
+				}
 			}
 //		}
 		
