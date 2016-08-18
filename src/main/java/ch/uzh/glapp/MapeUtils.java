@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -146,8 +147,8 @@ public class MapeUtils {
 	public static boolean isHostAvailable(String provider, String region, String tier) {
 		double currentTime = System.currentTimeMillis()/1000;
 		
-		// Retrieve information from sails at most once every 60 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+		// Retrieve information from sails at most once every 30 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
@@ -172,8 +173,8 @@ public class MapeUtils {
 	public static Host findLowerTierServer(String currentTier) {
 		double currentTime = System.currentTimeMillis()/1000;
 		
-		// Retrieve information from sails at most once every 60 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+		// Retrieve information from sails at most once every 30 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
@@ -655,5 +656,67 @@ public class MapeUtils {
 		} else {
 			System.out.println("List of violation is empty.\n");
 		}
+	}
+	
+	public static HashMap<String, Double> getAllCost() {
+		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
+//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
+		
+		HashMap<String, Double> costMap = new HashMap<String, Double>();
+		
+		for (String provider : PROVIDER_LIST) {
+			for (String region : REGION_LIST) {
+				for (String tier : TIER_LIST) {
+					String metricName = getPrometheusMetricName(provider, region, tier);
+					try {
+						float cost = prometheusRetriever.getCostMetric(metricName);
+						costMap.put(metricName, Double.parseDouble((Float.toString(cost))));
+					} catch (MetricNotFoundException e) {
+						costMap.put(metricName, null);
+					}
+				}
+			}
+		}
+	
+//		for (Entry<String, Double> entry : costMap.entrySet()) {
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+//		}
+		
+		return costMap;
+	}
+	
+	public static String findCheapestServer(String currentProvider, String currentRegion, String currentTier) {
+		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
+//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
+		
+		HashMap<String, Double> costMap = new HashMap<String, Double>();
+		
+		String cheapestServer = null;
+		float cheapestCost = Float.POSITIVE_INFINITY;
+		
+		for (String provider : PROVIDER_LIST) {
+			for (String region : REGION_LIST) {
+				for (String tier : TIER_LIST) {
+					if (isHostAvailable(provider, region, tier) && (!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier))) {
+						String metricName = getPrometheusMetricName(provider, region, tier);
+						try {
+							float cost = prometheusRetriever.getCostMetric(metricName);
+
+							if (cost < cheapestCost) {
+								cheapestCost = cost;
+								cheapestServer = metricName;
+							}
+						} catch (MetricNotFoundException e) {
+						}
+					}
+				}
+			}
+		}
+	
+//		for (Entry<String, Double> entry : costMap.entrySet()) {
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+//		}
+		
+		return cheapestServer;
 	}
 }

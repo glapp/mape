@@ -13,6 +13,7 @@ import ch.uzh.glapp.model.sails.hostinfo.Host;
 import ch.uzh.glapp.model.sails.hostinfo.Labels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static ch.uzh.glapp.mdp.MapeWorld.*;
@@ -122,12 +123,20 @@ public class MapeActionTypeHeuristic implements ActionType {
 						// => if it is possible to move to a smaller machine (lower tier), move to a smaller machine
 						// => else if there are more than 2 cells, remove 1 cell
 						
-						Host h = MapeUtils.findLowerTierServer(cTier);
-						if (h != null) {
-							Labels l = h.getLabels();
-							actionList.add(new MapeActionMove(cName, l.getProvider(), l.getRegion(), l.getTier()));
-						} else if (cNumOfCells > 1) {
-							actionList.add(new MapeActionRemove(cName));
+//						Host h = MapeUtils.findLowerTierServer(cTier);
+//						if (h != null) {
+//							Labels l = h.getLabels();
+//							actionList.add(new MapeActionMove(cName, l.getProvider(), l.getRegion(), l.getTier()));
+//						} else if (cNumOfCells > 1) {
+//							actionList.add(new MapeActionRemove(cName));
+//						}
+						
+						// if there is cost violation:
+						// find the server with lower cost and move there
+						String cheapestServer = MapeUtils.findCheapestServer(cProvider, cRegion, cTier);
+						if (cheapestServer != null) {
+							String[] serverDetails = cheapestServer.split("_");
+							actionList.add(new MapeActionMove(cName, serverDetails[1], serverDetails[2], serverDetails[3]));
 						}
 						
 						actionFound = actionList.size() > 0 ? true: false;
