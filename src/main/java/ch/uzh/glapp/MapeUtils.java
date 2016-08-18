@@ -390,14 +390,27 @@ public class MapeUtils {
 					} else {
 						costViolation = false;
 					}
-				} else if (metricName.equals("click_count")) {
+				} else if (metricName.substring(0, 11).equals("click_count")) {
 					try {
 						float metricValue = prometheusRetriever.getCustomMetric(metricName, range, duration, step);
 						
 						// TODO: handling is hardcoded now
+						String region = metricName.substring(12);
+						double ratio = metricValue / containerIDs.size();
 						
-						
-						
+						if (ratio > 10000) {
+							for (int j = 0; j < containerIDs.size(); ++j) {
+								String containerID = containerIDs.get(j);
+								
+								if (containerIDtoRegion.get(containerID).equals(region)) {
+									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
+											appId, rule.getId(), metricName, -1);
+									ruleViolationList.add(violation);
+								}
+							}
+							
+							overallViolationList.addAll(ruleViolationList);
+						}
 					} catch (MetricNotFoundException e) {
 						e.printStackTrace();
 					}
