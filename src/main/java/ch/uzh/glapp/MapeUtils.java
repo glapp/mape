@@ -402,8 +402,8 @@ public class MapeUtils {
 				    }
 					
 					try {
-						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), range, duration, step);
-						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), range, duration, step);
+						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, step);
+						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, step);
 						
 						// Load the value from an input file for testing
 						if (clickCountTestInput.getProperty("clickCountUS") != null) {
@@ -435,7 +435,7 @@ public class MapeUtils {
 						
 						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
 						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
-						
+
 						if (ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);

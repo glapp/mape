@@ -15,9 +15,9 @@ public class HttpRequest {
 	    String inputLine;
 	    String result = "";
 
-	    // http://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
 	    try {
 		    HttpURLConnection httpConnection = (HttpURLConnection) new URL(address + parameter).openConnection();
+		    System.out.println("URL: "+httpConnection.getURL());
 		    BufferedReader in = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
 
 		    while ((inputLine = in.readLine()) != null) {
@@ -26,11 +26,13 @@ public class HttpRequest {
 		    in.close();
 
 	    } catch (IOException e) {
-		    System.out.println("Connection could not be established. Retrying in ### secs.");
+		    System.out.println("Connection could not be established. Retrying in 5 secs.");
+		    // alternavite is: http://stackoverflow.com/questions/31746182/docker-compose-wait-for-container-x-before-starting-y
+		    e.printStackTrace();
 
 		    // waiting a bit for sails comming up.
 		    try {
-			    System.out.println("Sleep 5 secs.");
+//			    System.out.println("Sleep 5 secs.");
 			    TimeUnit.SECONDS.sleep(5);
 		    } catch (InterruptedException ex) {
 			    ex.printStackTrace();
