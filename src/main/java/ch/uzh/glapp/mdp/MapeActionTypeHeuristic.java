@@ -136,7 +136,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 						String cheapestServer = MapeUtils.findCheapestServer(cProvider, cRegion, cTier);
 						if (cheapestServer != null) {
 							String[] serverDetails = cheapestServer.split("_");
-							actionList.add(new MapeActionMove(cName, serverDetails[1], serverDetails[2], serverDetails[3]));
+							actionList.add(new MapeActionMove(cName, serverDetails[1], serverDetails[2], serverDetails[3].substring(4)));
 						}
 						
 						actionFound = actionList.size() > 0 ? true: false;
