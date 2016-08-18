@@ -102,7 +102,7 @@ public class MainLoop {
 	
 				    // Stage 2: MDP
 				    // if any rule is violated, perform MDP to find an adaptation action
-				    if (mdpTriggerObject.isRuleViolated() || config.getProperty("ForceMDP").equals("true")) {
+				    if (mdpTriggerObject.isRuleViolated()) {
 					    System.out.println("Stage 2: Perform MDP");
 					    ObjectForMdp objectForMdp;
 	

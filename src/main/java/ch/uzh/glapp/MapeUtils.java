@@ -547,8 +547,11 @@ public class MapeUtils {
 			System.out.println("Application healthiness value (weighted): " + appHealthiness);
 			System.out.println();
 
+//			System.out.println(overallViolationList.size());
+
 			if (overallViolationList.size() > 0) {
 				mdpTriggerObj = new MdpTriggerObject(overallViolationList, appHealthiness, true);
+//				System.out.println("here");
 			} else {
 				mdpTriggerObj = new MdpTriggerObject(null, appHealthiness, false);
 			}
