@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -146,8 +147,8 @@ public class MapeUtils {
 	public static boolean isHostAvailable(String provider, String region, String tier) {
 		double currentTime = System.currentTimeMillis()/1000;
 		
-		// Retrieve information from sails at most once every 60 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+		// Retrieve information from sails at most once every 30 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
@@ -172,8 +173,8 @@ public class MapeUtils {
 	public static Host findLowerTierServer(String currentTier) {
 		double currentTime = System.currentTimeMillis()/1000;
 		
-		// Retrieve information from sails at most once every 60 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 60)) {
+		// Retrieve information from sails at most once every 30 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
@@ -349,7 +350,7 @@ public class MapeUtils {
 					System.out.println(containerID);
 				}
 				System.out.println();
-				
+
 				double thresholdValue = Double.parseDouble(rule.getValue());
 				int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
 				double weight = Double.parseDouble(rule.getWeight()); // weight of the current rule
@@ -402,8 +403,8 @@ public class MapeUtils {
 				    }
 					
 					try {
-						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), range, duration, step);
-						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), range, duration, step);
+						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, step);
+						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, step);
 						
 						// Load the value from an input file for testing
 						if (clickCountTestInput.getProperty("clickCountUS") != null) {
@@ -435,26 +436,26 @@ public class MapeUtils {
 						
 						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
 						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
-						
-						if (ratioUS > 10000) {
+
+						if (ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
 								if (containerIDtoRegion.get(containerID).equals(NA)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
-											appId, rule.getId(), metricName, -1);
+											appId, rule.getId(), metricName, -1, ratioUS);
 									ruleViolationList.add(violation);
 								}
 							}
 						}
 						
-						if (ratioEU > 10000) {
+						if (ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
 								if (containerIDtoRegion.get(containerID).equals(EU)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
-											appId, rule.getId(), metricName, -1);
+											appId, rule.getId(), metricName, -1, ratioEU);
 									ruleViolationList.add(violation);
 								}
 							}
@@ -658,5 +659,67 @@ public class MapeUtils {
 		} else {
 			System.out.println("List of violation is empty.\n");
 		}
+	}
+	
+	public static HashMap<String, Double> getAllCost() {
+		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
+//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
+		
+		HashMap<String, Double> costMap = new HashMap<String, Double>();
+		
+		for (String provider : PROVIDER_LIST) {
+			for (String region : REGION_LIST) {
+				for (String tier : TIER_LIST) {
+					String metricName = getPrometheusMetricName(provider, region, tier);
+					try {
+						float cost = prometheusRetriever.getCostMetric(metricName);
+						costMap.put(metricName, Double.parseDouble((Float.toString(cost))));
+					} catch (MetricNotFoundException e) {
+						costMap.put(metricName, null);
+					}
+				}
+			}
+		}
+	
+//		for (Entry<String, Double> entry : costMap.entrySet()) {
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+//		}
+		
+		return costMap;
+	}
+	
+	public static String findCheapestServer(String currentProvider, String currentRegion, String currentTier) {
+		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
+//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
+		
+		HashMap<String, Double> costMap = new HashMap<String, Double>();
+		
+		String cheapestServer = null;
+		float cheapestCost = Float.POSITIVE_INFINITY;
+		
+		for (String provider : PROVIDER_LIST) {
+			for (String region : REGION_LIST) {
+				for (String tier : TIER_LIST) {
+					if (isHostAvailable(provider, region, tier) && (!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier))) {
+						String metricName = getPrometheusMetricName(provider, region, tier);
+						try {
+							float cost = prometheusRetriever.getCostMetric(metricName);
+
+							if (cost < cheapestCost) {
+								cheapestCost = cost;
+								cheapestServer = metricName;
+							}
+						} catch (MetricNotFoundException e) {
+						}
+					}
+				}
+			}
+		}
+	
+//		for (Entry<String, Double> entry : costMap.entrySet()) {
+//			System.out.println(entry.getKey() + ": " + entry.getValue());
+//		}
+		
+		return cheapestServer;
 	}
 }

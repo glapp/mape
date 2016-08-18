@@ -13,6 +13,7 @@ import ch.uzh.glapp.model.sails.hostinfo.Host;
 import ch.uzh.glapp.model.sails.hostinfo.Labels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static ch.uzh.glapp.mdp.MapeWorld.*;
@@ -26,12 +27,14 @@ public class MapeActionTypeHeuristic implements ActionType {
 		
 		// get violation details
 		MdpTriggerObject mdpTriggerObject = BasicBehaviorMape.getMdpTriggerObject();
+		
+		ArrayList<Violation> violations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());
 			
 			// check how many violations
 			double worstHealthiness = 0; // the worst healthiness value = the most negative healthiness value
 			int worstHealthinessIndex = -1;
 			int i = 0;
-			for (Violation v : mdpTriggerObject.getViolationList()) {
+			for (Violation v : violations) {
 				if (v.getWeightedHealthiness() < worstHealthiness) {
 					worstHealthiness = v.getWeightedHealthiness();
 					worstHealthinessIndex = i;
@@ -39,15 +42,16 @@ public class MapeActionTypeHeuristic implements ActionType {
 				i++;
 			}
 			
-			MapeUtils.printViolation(mdpTriggerObject.getViolationList());
+//			MapeUtils.printViolation(violations);
 			
 			String violatedMetric = "";
 			// get the name of the violated metric
 			// if there are multiple violation, get the one with the worst healthiness value
-			violatedMetric = mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getMetric();
+			Violation worstViolation = violations.get(worstHealthinessIndex);
+			violatedMetric = worstViolation.getMetric();
 			
 			// get the cell ID of the violating cell
-			ObjectInstance cell = ((DeepOOState)state).object(mdpTriggerObject.getViolationList().get(worstHealthinessIndex).getCellId());
+			ObjectInstance cell = ((DeepOOState)state).object(worstViolation.getCellId());
 			
 			// String cellName, String provider, String region, String tier
 			String cellName = ((MapeCell)cell).name();
@@ -96,7 +100,7 @@ public class MapeActionTypeHeuristic implements ActionType {
 			} else if (violatedMetric.equals("cost")) {
 				
 				// extract cost violations from the violation list
-				ArrayList<Violation> tempViolations = new ArrayList<Violation>(mdpTriggerObject.getViolationList());
+				ArrayList<Violation> tempViolations = new ArrayList<Violation>(violations);
 				
 				// sort the cost violation list by healthiness value in descending order
 				MapeUtils.mergeSort(tempViolations);
@@ -119,19 +123,31 @@ public class MapeActionTypeHeuristic implements ActionType {
 						// => if it is possible to move to a smaller machine (lower tier), move to a smaller machine
 						// => else if there are more than 2 cells, remove 1 cell
 						
-						Host h = MapeUtils.findLowerTierServer(cTier);
-						if (h != null) {
-							Labels l = h.getLabels();
-							actionList.add(new MapeActionMove(cName, l.getProvider(), l.getRegion(), l.getTier()));
-						} else if (cNumOfCells > 1) {
-							actionList.add(new MapeActionRemove(cName));
+//						Host h = MapeUtils.findLowerTierServer(cTier);
+//						if (h != null) {
+//							Labels l = h.getLabels();
+//							actionList.add(new MapeActionMove(cName, l.getProvider(), l.getRegion(), l.getTier()));
+//						} else if (cNumOfCells > 1) {
+//							actionList.add(new MapeActionRemove(cName));
+//						}
+						
+						// if there is cost violation:
+						// find the server with lower cost and move there
+						String cheapestServer = MapeUtils.findCheapestServer(cProvider, cRegion, cTier);
+						if (cheapestServer != null) {
+							String[] serverDetails = cheapestServer.split("_");
+							actionList.add(new MapeActionMove(cName, serverDetails[1], serverDetails[2], serverDetails[3].substring(4)));
 						}
 						
 						actionFound = actionList.size() > 0 ? true: false;
 					}
 				}
 			} else if (violatedMetric.equals("click_count")) {
-				actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+				if (worstViolation.getAdditionalValue() > 500) {
+					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+				} else if (worstViolation.getAdditionalValue() < 100 && currentNumOfCells > 1) {
+					actionList.add(new MapeActionRemove(cellName));
+				}
 			}
 //		}
 		

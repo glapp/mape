@@ -87,10 +87,11 @@ public class MapeEnvironment implements Environment {
 			provider = ((MapeActionMove) action).getProvider();
 			region = ((MapeActionMove) action).getRegion();
 			tier = ((MapeActionMove) action).getTier();
+			String cellName = ((MapeActionMove) action).getCellName();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Move action (cell ID: " + cellId + ", options: " + options + ")");
+				System.out.println("Move action (cell ID: " + cellName + ", options: " + options + ")");
 			} else {
 				sailsRetriever.postMove(cellId, options);
 			}
@@ -107,7 +108,8 @@ public class MapeEnvironment implements Environment {
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Remove action (cell ID: " + cellId + ")");
+				String cellName = ((MapeActionRemove) action).getCellName();
+				System.out.println("Remove action (cell ID: " + cellName + ")");
 			} else {
 				sailsRetriever.postRemove(organId, cellId);
 			}

@@ -159,7 +159,7 @@ public class PrometheusRetriever {
         } else {
 //        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
         	
-        	throw new MetricNotFoundException("Custom metric " + metricName + ") not found.");
+        	throw new MetricNotFoundException("Custom metric (" + metricName + ") not found.");
         }
     }
     
