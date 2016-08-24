@@ -87,31 +87,39 @@ public class MapeEnvironment implements Environment {
 			provider = ((MapeActionMove) action).getProvider();
 			region = ((MapeActionMove) action).getRegion();
 			tier = ((MapeActionMove) action).getTier();
-			String cellName = ((MapeActionMove) action).getCellName();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
+			
+			String cellName = ((MapeActionMove) action).getCellName();
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Move action (cell ID: " + cellName + ", options: " + options + ")");
+				System.out.println("Move action (cell ID: " + cellName + ", container ID: " + sailsRetriever.getSpecificCellInfo(cellName).getContainerId() +  ", options: " + options + ")");
 			} else {
-				sailsRetriever.postMove(cellId, options);
+				// MAPE sending request to Sails based on the action object instead of objectForMpd
+				sailsRetriever.postMove(cellName, options);
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			provider = ((MapeActionCreate) action).getProvider();
 			region = ((MapeActionCreate) action).getRegion();
 			tier = ((MapeActionCreate) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
+			
 //			System.out.println(options);
+			String cellName = ((MapeActionCreate) action).getCellName();
+			String organID = MapeUtils.cellIDToOrganID(cellName);
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Create action (organ ID: " + organId + ", options: " + options + ")");
+				System.out.println("Create action (organ ID: " + organID + ", options: " + options + ")");
 			} else {
-				sailsRetriever.postCreate(organId, options);
+				sailsRetriever.postCreate(organID, options);
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
+			String cellName = ((MapeActionRemove) action).getCellName();
+			String organID = MapeUtils.cellIDToOrganID(cellName);
 			if (MainLoop.suppressActionToSails) {
-				String cellName = ((MapeActionRemove) action).getCellName();
 				System.out.println("Remove action (cell ID: " + cellName + ")");
 			} else {
-				sailsRetriever.postRemove(organId, cellId);
+				// MAPE sending request to Sails based on the action object instead of objectForMpd
+				// TODO: may need to get the organ ID based on the cell name of the action object
+				sailsRetriever.postRemove(organID, cellName);
 			}
 		} else {
 			System.err.println("action name is wrong!");

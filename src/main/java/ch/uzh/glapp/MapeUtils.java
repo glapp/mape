@@ -23,6 +23,7 @@ public class MapeUtils {
 	
 	private static List<Host> hosts = null;
 	private static double lastGetHostInfo = 0;
+	private static final int MIN_POLLING_INTERVAL = 30;
 
     // metric is an array with the values of the last time period
     // 1 = greater than, 2 = smaller than, 3 = equal
@@ -148,7 +149,7 @@ public class MapeUtils {
 		double currentTime = System.currentTimeMillis()/1000;
 		
 		// Retrieve information from sails at most once every 30 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
+		if (hosts == null || ((currentTime - lastGetHostInfo) > MIN_POLLING_INTERVAL)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
@@ -174,21 +175,45 @@ public class MapeUtils {
 		double currentTime = System.currentTimeMillis()/1000;
 		
 		// Retrieve information from sails at most once every 30 seconds
-		if (hosts == null || ((currentTime - lastGetHostInfo) > 30)) {
+		if (hosts == null || ((currentTime - lastGetHostInfo) > MIN_POLLING_INTERVAL)) {
 			SailsRetriever sa = new SailsRetriever();
 			hosts = sa.getHostInfo();
 			lastGetHostInfo = currentTime;
 		}
 		
 		for (Host host : hosts) {
-			if (isNewTierLower(currentTier, host.getLabels().getTier())){
+			if (isNewTierLower(currentTier, host.getLabels().getTier())) {
 				return host;
 			}
 		}
 		
 		return null;
 	}
-
+	
+	/**
+	 * Find a host in a specified region
+	 * @param region is the region that the host need to reside on
+	 * @return a Host object containing the information of the host
+	 */
+	public static Host findHostInRegion(String region) {
+		double currentTime = System.currentTimeMillis()/1000;
+		
+		// Retrieve information from sails at most once every 30 seconds
+		if (hosts == null || ((currentTime - lastGetHostInfo) > MIN_POLLING_INTERVAL)) {
+			SailsRetriever sa = new SailsRetriever();
+			hosts = sa.getHostInfo();
+			lastGetHostInfo = currentTime;
+		}
+		
+		for (Host host : hosts) {
+			if (host.getLabels().getRegion().equals(region) && host.getLabels().getProvider().equals(DO)) {
+				return host;
+			}
+		}
+		
+		System.out.println("MapeUtils: findHostInRegion(): cannot find any host in the specified region.");
+		return null;
+	}
 
 	/**
      * Compute the healthiness value for a given metric value.
@@ -359,7 +384,7 @@ public class MapeUtils {
 				System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 				
 				if (metricName.equals("cost")) {
-					float totalCost = 0;
+					double totalCost = 0;
 					
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
@@ -393,32 +418,32 @@ public class MapeUtils {
 						costViolation = false;
 					}
 				} else if (metricName.substring(0, 11).equals("click_count")) { // processing click count metric
-					Properties clickCountTestInput = new Properties();
-				    try {
-					    FileInputStream clickCountTestInputFile = new FileInputStream("clickCount.txt");
-					    clickCountTestInput.load(clickCountTestInputFile);
-					    clickCountTestInputFile.close();
-				    } catch (Exception e) {
-					    e.printStackTrace();
-				    }
+//					Properties clickCountTestInput = new Properties();
+//				    try {
+//					    FileInputStream clickCountTestInputFile = new FileInputStream("clickCount.txt");
+//					    clickCountTestInput.load(clickCountTestInputFile);
+//					    clickCountTestInputFile.close();
+//				    } catch (Exception e) {
+//					    e.printStackTrace();
+//				    }
 					
 					try {
-						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, step);
-						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, step);
+						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, 60);
+						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, 60);
 						
 						// Load the value from an input file for testing
-						if (clickCountTestInput.getProperty("clickCountUS") != null) {
-							clickCountUS = Integer.parseInt(clickCountTestInput.getProperty("clickCountUS"));
-						}
-						if (clickCountTestInput.getProperty("clickCountEU") != null) {
-							clickCountEU = Integer.parseInt(clickCountTestInput.getProperty("clickCountEU"));
-						}
+//						if (clickCountTestInput.getProperty("clickCountUS") != null) {
+//							clickCountUS = Integer.parseInt(clickCountTestInput.getProperty("clickCountUS"));
+//						}
+//						if (clickCountTestInput.getProperty("clickCountEU") != null) {
+//							clickCountEU = Integer.parseInt(clickCountTestInput.getProperty("clickCountEU"));
+//						}
 						
 						int numOfCellsUS = 0;
 						int numOfCellsEU = 0;
 						
 						for (String containerID : containerIDs) {
-							if (containerIDtoRegion.get(containerID).equals(NA)) {
+							if (containerIDtoRegion.get(containerID).equals(US)) {
 								numOfCellsUS++;
 							} else if (containerIDtoRegion.get(containerID).equals(EU)) {
 								numOfCellsEU++;
@@ -427,21 +452,40 @@ public class MapeUtils {
 						
 						double ratioUS = 0;
 						double ratioEU = 0;
-						if (numOfCellsUS > 0) {
+						
+						if (numOfCellsUS == 0 && clickCountUS > 0) {
+							// if there no cell in a region and there is more than 0 click, ratio is positive infinity (regarded as a violation)
+							ratioUS = Double.POSITIVE_INFINITY;
+						} else if (numOfCellsUS > 0) {
 							ratioUS = clickCountUS / numOfCellsUS;
 						}
-						if (numOfCellsEU > 0) {
+						if (numOfCellsEU == 0 && clickCountEU > 0) {
+							// if there no cell in a region and there is more than 0 click, ratio is positive infinity (regarded as a violation)
+							ratioEU = Double.POSITIVE_INFINITY;
+						} else if (numOfCellsEU > 0) {
 							ratioEU = clickCountEU / numOfCellsEU;
 						}
 						
-						System.out.println("US: " + clickCountUS + " / " + numOfCellsUS + ", ratio: " + ratioUS);
-						System.out.println("EU: " + clickCountEU + " / " + numOfCellsEU + ", ratio: " + ratioEU);
+						System.out.println("US: new clicks: " + clickCountUS + " / number of cells: " + numOfCellsUS + " = ratio: " + ratioUS);
+						System.out.println("EU: new clicks: " + clickCountEU + " / number of cells: " + numOfCellsEU + " = ratio: " + ratioEU);
 
-						if (ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
+						if (ratioUS == Double.POSITIVE_INFINITY) {
+							int i = 0;
+							while (ruleViolationList.isEmpty()) {
+								String containerID = containerIDs.get(i);
+								
+								if (containerIDtoRegion.get(containerID).equals(EU)) {
+									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
+											appId, rule.getId(), metricName, -1, ratioUS);
+									ruleViolationList.add(violation);
+								}
+								++i;
+							}
+						} else if ((ratioUS == 0 && numOfCellsUS > 0 && numOfCellsEU > 0) || ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
-								if (containerIDtoRegion.get(containerID).equals(NA)) {
+								if (containerIDtoRegion.get(containerID).equals(US)) {
 									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
 											appId, rule.getId(), metricName, -1, ratioUS);
 									ruleViolationList.add(violation);
@@ -449,7 +493,19 @@ public class MapeUtils {
 							}
 						}
 						
-						if (ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
+						if (ratioEU == Double.POSITIVE_INFINITY) {
+							int i = 0;
+							while (ruleViolationList.isEmpty()) {
+								String containerID = containerIDs.get(i);
+								
+								if (containerIDtoRegion.get(containerID).equals(US)) {
+									Violation violation = new Violation(containerIDtoCellID.get(containerID), containerID, containerIDtoOrganID.get(containerID), 
+											appId, rule.getId(), metricName, -1, ratioEU);
+									ruleViolationList.add(violation);
+								}
+								++i;
+							}
+						} else if ((ratioEU == 0 && numOfCellsUS > 0 && numOfCellsEU > 0) || ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
@@ -559,6 +615,14 @@ public class MapeUtils {
 			
 			return mdpTriggerObj;
 		} else {
+			// update: when deleting all rule in the voting app it should be checked in MainLoop
+			// line 88: if (sa.getRules(appId).isEmpty())
+			// it should not be able to reach this part
+			// in addition,
+			// Exception in thread "main" java.lang.NullPointerException
+			// at ch.uzh.glapp.mdp.MapeEnvironment.executeAction(MapeEnvironment.java:121)
+			// refers to the following line (master branch, commit 0937797): MapeUtils mapeUtils = new MapeUtils();
+			
 			// TODO: when deleting all rules in the voting app it enters in this else.
 			// This results in a NULL pointer exception:
 			// Exception in thread "main" java.lang.NullPointerException
@@ -663,7 +727,6 @@ public class MapeUtils {
 	
 	public static HashMap<String, Double> getAllCost() {
 		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
-//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
 		
 		HashMap<String, Double> costMap = new HashMap<String, Double>();
 		
@@ -672,8 +735,8 @@ public class MapeUtils {
 				for (String tier : TIER_LIST) {
 					String metricName = getPrometheusMetricName(provider, region, tier);
 					try {
-						float cost = prometheusRetriever.getCostMetric(metricName);
-						costMap.put(metricName, Double.parseDouble((Float.toString(cost))));
+						double cost = prometheusRetriever.getCostMetric(metricName);
+						costMap.put(metricName, cost);
 					} catch (MetricNotFoundException e) {
 						costMap.put(metricName, null);
 					}
@@ -690,30 +753,31 @@ public class MapeUtils {
 	
 	public static String findCheapestServer(String currentProvider, String currentRegion, String currentTier) {
 		PrometheusRetriever prometheusRetriever = new PrometheusRetriever(MainLoop.prometheusServerIP, MainLoop.prometheusServerPort);
-//		PrometheusRetriever prometheusRetriever = new PrometheusRetriever("146.185.131.129", 19090);
 		
 		HashMap<String, Double> costMap = new HashMap<String, Double>();
 		
 		String cheapestServer = null;
-		float cheapestCost = Float.POSITIVE_INFINITY;
 		
-		for (String provider : PROVIDER_LIST) {
-			for (String region : REGION_LIST) {
-				for (String tier : TIER_LIST) {
-					if (isHostAvailable(provider, region, tier) && (!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier))) {
-						String metricName = getPrometheusMetricName(provider, region, tier);
-						try {
-							float cost = prometheusRetriever.getCostMetric(metricName);
-
+		try {
+			// initialize the cheapest cost with current cost
+			double cheapestCost = prometheusRetriever.getCostMetric(getPrometheusMetricName(currentProvider, currentRegion, currentTier));
+			
+			for (String provider : PROVIDER_LIST) {
+				for (String region : REGION_LIST) {
+					for (String tier : TIER_LIST) {
+						if (isHostAvailable(provider, region, tier) && ((!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier)))) {
+							String metricName = getPrometheusMetricName(provider, region, tier);
+							double cost = prometheusRetriever.getCostMetric(metricName);
+	
 							if (cost < cheapestCost) {
 								cheapestCost = cost;
 								cheapestServer = metricName;
 							}
-						} catch (MetricNotFoundException e) {
 						}
 					}
 				}
 			}
+		} catch (MetricNotFoundException e) {
 		}
 	
 //		for (Entry<String, Double> entry : costMap.entrySet()) {
@@ -721,5 +785,24 @@ public class MapeUtils {
 //		}
 		
 		return cheapestServer;
+	}
+	
+	/**
+	 * Get the organ ID of a specified cell
+	 * @param cellID is the cell ID of the specified cell
+	 * @return organ ID of the specified cell
+	 */
+	public static String cellIDToOrganID(String cellID) {
+		SailsRetriever sa = new SailsRetriever();
+		List<Cell> cells = sa.getCellInfo();
+		
+		for (Cell cell : cells) {
+			if (cell.getId().equals(cellID)) {
+				return cell.getOrganId().getId();
+			}
+		}
+		
+		System.out.println("MapeUtils: cellIDToOrganID(): cannot find the specified cell.");
+		return null;
 	}
 }

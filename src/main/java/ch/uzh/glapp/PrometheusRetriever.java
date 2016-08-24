@@ -51,7 +51,7 @@ public class PrometheusRetriever {
 	/**
 	 * Calculates the per-second average rate of increase of the time series (i.e. a metric value) in the range vector.
 	 * Using Prometheus provided rate function {@link https://prometheus.io/docs/querying/functions/#rate()}.
-	 * @param containerID is the Docker container ID
+	 * @param containerID is the Docker container ID.
 	 * @param metricName is the name of the metric.
 	 * @param range is the range of time (in seconds) which data are averaged for each metric data point.
 	 * @param duration is the duration of time (in seconds) of the data points.
@@ -111,6 +111,15 @@ public class PrometheusRetriever {
         }
     }
     
+    /**
+     * Calculates the per-second average rate of increase of the click metric time series in the range vector.
+     * @param metricName is the name of the click metric.
+     * @param range is the range of time (in seconds) which data are averaged for each metric data point.
+     * @param duration is the duration of time (in seconds) of the data points.
+     * @param step is the time step in seconds that the duration will be broken down.
+     * @return average value of the data points in the specified duration.
+     * @throws MetricNotFoundException
+     */
     public float getCustomMetric(String metricName, int range, int duration, int step)
 		    throws MetricNotFoundException {
 
@@ -131,31 +140,23 @@ public class PrometheusRetriever {
         String jsonString = doQuery(paramPrometheus);
         PrometheusDataObject jobj;
 
-//        System.out.println("jsonString: "+jsonString);
         jobj = new Gson().fromJson(jsonString, PrometheusDataObject.class);
         
         List<Result> results = jobj.getData().getResult();
-//        System.out.println("Size of result: " + results.size());
         
         if (results.size() != 0) {
         	Result result = results.get(0); // TODO: handle multiple results for the specified container within the specified duration (e.g. different values for eth0, eth1)
             int listSize = result.getValues().size();
-//	        System.out.println("listSize: " + listSize);
 
 	        float sum_value = 0;
         	
             for (int i=0; i< listSize; i++) {
                 sum_value += Float.parseFloat(result.getValues().get(i).get(1));
-//                System.out.println("value: "+Float.parseFloat(result.getValues().get(i).get(1))+", sum_value : "+sum_value+", iteration: "+i);
             }
 
             float averge = sum_value/listSize;
-//            System.out.println("average: "+average);
 
             return averge;
-
-//            result = jobj.getData().getResult().get(0).getValues().get(listSize-1).get(1);
-//            return Float.parseFloat(result);
         } else {
 //        	System.out.println("Metric for cell (container ID: " + cellID + ") not found.");
         	
@@ -171,7 +172,7 @@ public class PrometheusRetriever {
 	 * @return cost metric specified.
 	 * @throws MetricNotFoundException if the metric is not available for the given container
 	 */
-    public float getCostMetric(String metricName) throws MetricNotFoundException {
+    public double getCostMetric(String metricName) throws MetricNotFoundException {
 
     	String paramPrometheus;
 //        long currTime = System.currentTimeMillis()/1000;
@@ -193,9 +194,9 @@ public class PrometheusRetriever {
 //            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 //            System.out.println(result.getValue().get(0) + ", " + formater.format(Math.round(Double.parseDouble(result.getValue().get(0))*1000)) + ", " + result.getValue().get(1));
             
-            System.out.println("Cost: " + Float.parseFloat(resultStr));
+            System.out.println("Cost: " + Double.parseDouble(resultStr));
             
-            return Float.parseFloat(resultStr);
+            return Double.parseDouble(resultStr);
         } else {
         	throw new MetricNotFoundException("Metric \"" + metricName + "\") not found.");
         }

@@ -93,7 +93,7 @@ public class MapeState implements MutableState {
 		}
 		else if(variableKey.equals(VAR_REGION)){
 //			return region;
-			if (provider.equals(MapeWorld.NA)) {
+			if (provider.equals(MapeWorld.US)) {
 				return 1;
 			} else if (provider.equals(MapeWorld.EU)) {
 				return 2;

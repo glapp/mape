@@ -18,10 +18,10 @@ public class MapeWorld implements DomainGenerator {
 	public static final String[] PROVIDER_LIST = {AWS, DO, AZURE, GOOGLE};
 
 	public static final String VAR_REGION = "region";
-	public static final String NA = "us"; // constants for simulated environment and generating actions in MapeActionMove and MapeActionCreate classes
+	public static final String US = "us"; // constants for simulated environment and generating actions in MapeActionMove and MapeActionCreate classes
 	public static final String EU = "eu"; // matching the name used in docker-machine driver
 	public static final String ASIA = "asia";
-	public static final String[] REGION_LIST = {NA, EU, ASIA};
+	public static final String[] REGION_LIST = {US, EU, ASIA};
 
 	public static final String VAR_TIER = "tier";
 	public static final String TIER1 = "1"; // constants for simulated environment and generating actions in MapeActionMove and MapeActionCreate classes
