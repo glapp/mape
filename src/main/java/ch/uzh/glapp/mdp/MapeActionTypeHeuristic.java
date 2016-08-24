@@ -144,9 +144,8 @@ public class MapeActionTypeHeuristic implements ActionType {
 						if (cheapestServer != null) {
 							String[] serverDetails = cheapestServer.split("_");
 							actionList.add(new MapeActionMove(cName, serverDetails[1], serverDetails[2], serverDetails[3].substring(4)));
+							actionFound = true;
 						}
-						
-						actionFound = actionList.size() > 0 ? true: false;
 					}
 				}
 			} else if (violatedMetric.equals("click_count")) {

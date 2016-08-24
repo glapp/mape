@@ -359,7 +359,7 @@ public class MapeUtils {
 				System.out.println("Rule: Metric: "+ metricName + ", Function: " + function + " (1 = greater than, 2 = smaller than, 3 = equal), Threshold: " + thresholdValue + ", Weight: " + weight + ", Total weight: " + totalWeight);
 				
 				if (metricName.equals("cost")) {
-					float totalCost = 0;
+					double totalCost = 0;
 					
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
@@ -676,8 +676,9 @@ public class MapeUtils {
 				for (String tier : TIER_LIST) {
 					String metricName = getPrometheusMetricName(provider, region, tier);
 					try {
-						float cost = prometheusRetriever.getCostMetric(metricName);
-						costMap.put(metricName, Double.parseDouble((Float.toString(cost))));
+						double cost = prometheusRetriever.getCostMetric(metricName);
+						costMap.put(metricName, cost);
+//						costMap.put(metricName, Double.parseDouble((Float.toString(cost))));
 					} catch (MetricNotFoundException e) {
 						costMap.put(metricName, null);
 					}
@@ -699,25 +700,27 @@ public class MapeUtils {
 		HashMap<String, Double> costMap = new HashMap<String, Double>();
 		
 		String cheapestServer = null;
-		float cheapestCost = Float.POSITIVE_INFINITY;
 		
-		for (String provider : PROVIDER_LIST) {
-			for (String region : REGION_LIST) {
-				for (String tier : TIER_LIST) {
-					if (isHostAvailable(provider, region, tier) && (!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier))) {
-						String metricName = getPrometheusMetricName(provider, region, tier);
-						try {
-							float cost = prometheusRetriever.getCostMetric(metricName);
-
+		try {
+			// initialize the cheapest cost with current cost
+			double cheapestCost = prometheusRetriever.getCostMetric(getPrometheusMetricName(currentProvider, currentRegion, currentTier));
+			
+			for (String provider : PROVIDER_LIST) {
+				for (String region : REGION_LIST) {
+					for (String tier : TIER_LIST) {
+						if (isHostAvailable(provider, region, tier) && ((!provider.equals(currentProvider) || !region.equals(currentRegion) || !tier.equals(currentTier)))) {
+							String metricName = getPrometheusMetricName(provider, region, tier);
+							double cost = prometheusRetriever.getCostMetric(metricName);
+	
 							if (cost < cheapestCost) {
 								cheapestCost = cost;
 								cheapestServer = metricName;
 							}
-						} catch (MetricNotFoundException e) {
 						}
 					}
 				}
 			}
+		} catch (MetricNotFoundException e) {
 		}
 	
 //		for (Entry<String, Double> entry : costMap.entrySet()) {

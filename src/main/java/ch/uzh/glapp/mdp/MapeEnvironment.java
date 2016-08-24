@@ -91,9 +91,10 @@ public class MapeEnvironment implements Environment {
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Move action (cell ID: " + cellName + ", options: " + options + ")");
+				System.out.println("Move action (cell ID: " + cellName + ", container ID: " + sailsRetriever.getSpecificCellInfo(cellName).getContainerId() +  ", options: " + options + ")");
 			} else {
-				sailsRetriever.postMove(cellId, options);
+				// MAPE sending request to Sails based on the action object instead of objectForMpd
+				sailsRetriever.postMove(cellName, options);
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionCreate".equals(action.getClass().getName())) {
 			provider = ((MapeActionCreate) action).getProvider();
@@ -107,11 +108,13 @@ public class MapeEnvironment implements Environment {
 				sailsRetriever.postCreate(organId, options);
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
+			String cellName = ((MapeActionRemove) action).getCellName();
 			if (MainLoop.suppressActionToSails) {
-				String cellName = ((MapeActionRemove) action).getCellName();
 				System.out.println("Remove action (cell ID: " + cellName + ")");
 			} else {
-				sailsRetriever.postRemove(organId, cellId);
+				// MAPE sending request to Sails based on the action object instead of objectForMpd
+				// TODO: may need to get the organ ID based on the cell name of the action object
+				sailsRetriever.postRemove(organId, cellName);
 			}
 		} else {
 			System.err.println("action name is wrong!");

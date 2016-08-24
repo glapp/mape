@@ -190,15 +190,36 @@ public class SailsRetriever {
 //		System.out.println(jsonString);
 		jobj = new Gson().fromJson(jsonString, CellDataObject.class);
 
-		int sizeCells = jobj.getCells().size();
+//		int sizeCells = jobj.getCells().size();
 //		System.out.println(sizeCells);
-		for (int i = 0; i<sizeCells; i++) {
-			cellList = jobj.getCells();
+//		for (int i = 0; i<sizeCells; i++) {
+//			cellList = jobj.getCells();
 
 //			MapeCellObject cellObject = new MapeCellObject(provider, region, tier, cells);
-		}
+//		}
 
-		return cellList;
+//		return cellList;
+		
+		return jobj.getCells();
 	}
+	
+	public Cell getSpecificCellInfo(String cellID) {
+		String paramSails = "/application/getCellInfo";
+		List<Cell> cellList = new ArrayList<>();
+		String str = callSailsGET(paramSails);
 
+		String jsonString;
+		CellDataObject jobj;
+
+		jsonString = str;
+		jobj = new Gson().fromJson(jsonString, CellDataObject.class);
+
+		cellList = jobj.getCells();
+		for (int i = 0; i < cellList.size(); i++) {
+			if (cellList.get(i).getId().equals(cellID)) {
+				return cellList.get(i);
+			}
+		}
+		return null;
+	}
 }
