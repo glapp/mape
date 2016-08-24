@@ -104,7 +104,7 @@ public class MapeEnvironment implements Environment {
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 			
 //			System.out.println(options);
-			String cellName = ((MapeActionMove) action).getCellName();
+			String cellName = ((MapeActionCreate) action).getCellName();
 			String organID = MapeUtils.cellIDToOrganID(cellName);
 			if (MainLoop.suppressActionToSails) {
 				System.out.println("Create action (organ ID: " + organID + ", options: " + options + ")");
