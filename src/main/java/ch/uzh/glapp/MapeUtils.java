@@ -427,10 +427,17 @@ public class MapeUtils {
 						
 						double ratioUS = 0;
 						double ratioEU = 0;
-						if (numOfCellsUS > 0) {
+						
+						if (numOfCellsUS == 0 && clickCountUS > 0) {
+							// if there no cell in a region and there is more than 0 click, ratio is positive infinity (regarded as a violation)
+							ratioUS = Double.POSITIVE_INFINITY;
+						} else if (numOfCellsUS > 0) {
 							ratioUS = clickCountUS / numOfCellsUS;
 						}
-						if (numOfCellsEU > 0) {
+						if (numOfCellsEU == 0 && clickCountEU > 0) {
+							// if there no cell in a region and there is more than 0 click, ratio is positive infinity (regarded as a violation)
+							ratioEU = Double.POSITIVE_INFINITY;
+						} else if (numOfCellsEU > 0) {
 							ratioEU = clickCountEU / numOfCellsEU;
 						}
 						
