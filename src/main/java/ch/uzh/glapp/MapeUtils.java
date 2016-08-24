@@ -428,8 +428,8 @@ public class MapeUtils {
 				    }
 					
 					try {
-						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, step);
-						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, step);
+						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, 60);
+						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, 60);
 						
 						// Load the value from an input file for testing
 						if (clickCountTestInput.getProperty("clickCountUS") != null) {

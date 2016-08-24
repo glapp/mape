@@ -58,7 +58,7 @@ public class SailsRetriever {
 	private String callSailsGET(String paramSails) {
 		String str = null;
 		try {
-			System.out.println(urlSails + "" + paramSails);
+//			System.out.println(urlSails + "" + paramSails);
 			str = con.GETConnection(urlSails, paramSails);
 		} catch (IOException e) {
 			e.printStackTrace();

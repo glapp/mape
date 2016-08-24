@@ -78,7 +78,7 @@ public class MainLoop {
 			    }
 
 		    }
-		    System.out.println();
+//		    System.out.println();
 
 		    // Start processing the applications one by one
 		    for (int i = 0; i < appList.size(); ++i) {
@@ -98,7 +98,7 @@ public class MainLoop {
 				    // get the application healthiness value
 				    // for metric data, range=10 and duration=180 means
 				    // get a per-second average metric value from a 10-second range in the 3 minutes (180 seconds)
-				    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 10, 180, 60, false);
+				    MdpTriggerObject mdpTriggerObject = MapeUtils.healthiness(appId, 10, 10, 10, false);
 	
 				    // Stage 2: MDP
 				    // if any rule is violated, perform MDP to find an adaptation action
@@ -152,6 +152,7 @@ public class MainLoop {
 		    // sleep some time.
 		    try {
 			    System.out.println("####### Wait 5 secs before starting next MAPE loop.");
+			    System.out.println();
 			    TimeUnit.SECONDS.sleep(5);
 		    } catch (InterruptedException e) {
 			    e.printStackTrace();

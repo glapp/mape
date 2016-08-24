@@ -17,7 +17,7 @@ public class HttpRequest {
 
 	    try {
 		    HttpURLConnection httpConnection = (HttpURLConnection) new URL(address + parameter).openConnection();
-		    System.out.println("URL: "+httpConnection.getURL());
+//		    System.out.println("URL: "+httpConnection.getURL());
 		    BufferedReader in = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
 
 		    while ((inputLine = in.readLine()) != null) {
