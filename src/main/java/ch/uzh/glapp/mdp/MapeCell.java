@@ -58,7 +58,7 @@ public class MapeCell implements ObjectInstance, MutableState {
 		}
 		else if(variableKey.equals(VAR_REGION)){
 //			return region;
-			if (region.equals(MapeWorld.NA)) {
+			if (region.equals(MapeWorld.US)) {
 				return 1;
 			} else if (region.equals(MapeWorld.EU)) {
 				return 2;

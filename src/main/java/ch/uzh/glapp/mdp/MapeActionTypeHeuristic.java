@@ -149,7 +149,15 @@ public class MapeActionTypeHeuristic implements ActionType {
 					}
 				}
 			} else if (violatedMetric.equals("click_count")) {
-				if (worstViolation.getAdditionalValue() > 500) {
+				if (worstViolation.getAdditionalValue() == Double.POSITIVE_INFINITY) {
+					Host targetHost = null;
+					if (currentRegion.equals(US)) {
+						targetHost = MapeUtils.findHostInRegion(EU);
+					} else if (currentRegion.equals(EU)) {
+						targetHost = MapeUtils.findHostInRegion(US);
+					}
+					actionList.add(new MapeActionCreate(cellName, targetHost.getLabels().getProvider(), targetHost.getLabels().getRegion(), targetHost.getLabels().getTier()));
+				} else if (worstViolation.getAdditionalValue() > 500) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
 				} else if (worstViolation.getAdditionalValue() < 100 && currentNumOfCells > 1) {
 					actionList.add(new MapeActionRemove(cellName));

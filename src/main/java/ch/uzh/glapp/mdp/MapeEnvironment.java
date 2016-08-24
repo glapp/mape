@@ -87,9 +87,10 @@ public class MapeEnvironment implements Environment {
 			provider = ((MapeActionMove) action).getProvider();
 			region = ((MapeActionMove) action).getRegion();
 			tier = ((MapeActionMove) action).getTier();
-			String cellName = ((MapeActionMove) action).getCellName();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
 //			System.out.println(options);
+			
+			String cellName = ((MapeActionMove) action).getCellName();
 			if (MainLoop.suppressActionToSails) {
 				System.out.println("Move action (cell ID: " + cellName + ", container ID: " + sailsRetriever.getSpecificCellInfo(cellName).getContainerId() +  ", options: " + options + ")");
 			} else {
@@ -101,20 +102,24 @@ public class MapeEnvironment implements Environment {
 			region = ((MapeActionCreate) action).getRegion();
 			tier = ((MapeActionCreate) action).getTier();
 			options = "{\"provider\":\"" + provider + "\",\"region\":\"" + region + "\",\"tier\":\"" + tier +"\"}";
+			
 //			System.out.println(options);
+			String cellName = ((MapeActionMove) action).getCellName();
+			String organID = MapeUtils.cellIDToOrganID(cellName);
 			if (MainLoop.suppressActionToSails) {
-				System.out.println("Create action (organ ID: " + organId + ", options: " + options + ")");
+				System.out.println("Create action (organ ID: " + organID + ", options: " + options + ")");
 			} else {
-				sailsRetriever.postCreate(organId, options);
+				sailsRetriever.postCreate(organID, options);
 			}
 		} else if ("ch.uzh.glapp.mdp.MapeActionRemove".equals(action.getClass().getName())) {
 			String cellName = ((MapeActionRemove) action).getCellName();
+			String organID = MapeUtils.cellIDToOrganID(cellName);
 			if (MainLoop.suppressActionToSails) {
 				System.out.println("Remove action (cell ID: " + cellName + ")");
 			} else {
 				// MAPE sending request to Sails based on the action object instead of objectForMpd
 				// TODO: may need to get the organ ID based on the cell name of the action object
-				sailsRetriever.postRemove(organId, cellName);
+				sailsRetriever.postRemove(organID, cellName);
 			}
 		} else {
 			System.err.println("action name is wrong!");
