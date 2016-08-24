@@ -481,7 +481,7 @@ public class MapeUtils {
 								}
 								++i;
 							}
-						} else if (ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
+						} else if ((ratioUS == 0 && numOfCellsUS > 0 && numOfCellsEU > 0) || ratioUS > 500 || (ratioUS < 100 && numOfCellsUS > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
@@ -505,7 +505,7 @@ public class MapeUtils {
 								}
 								++i;
 							}
-						} else if (ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
+						} else if ((ratioEU == 0 && numOfCellsUS > 0 && numOfCellsEU > 0) || ratioEU > 500 || (ratioEU < 100 && numOfCellsEU > 1)) {
 							for (int j = 0; j < containerIDs.size(); ++j) {
 								String containerID = containerIDs.get(j);
 								
