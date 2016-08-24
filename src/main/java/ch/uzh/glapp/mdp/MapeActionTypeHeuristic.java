@@ -60,25 +60,45 @@ public class MapeActionTypeHeuristic implements ActionType {
 			String currentTier = ((MapeCell)cell).getTier();
 			int currentNumOfCells = ((MapeCell)cell).getCells();
 			
-			// default action: create another cell on the machine with same specification (provider, region, tier)
+			boolean actionFound = false;
+			
+			// if the current cell is already at highest tier (tier 3), create another cell on the same machine
+			// else, create another cell on any higher tier machine (different provider, region possible)
 			if (violatedMetric.equals("container_cpu_usage_seconds_total")) { // if CPU violation => move to bigger machine (higher tier)
-				if (currentTier.equals(TIER1)) {
-					if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
-						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
-					} else if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
-						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
-					} else {
-						actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
-					}
-				} else if (currentTier.equals(TIER2)) {
-					if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
-						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
-					} else {
-						actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
-					}
-				} else if (currentTier.equals(TIER3)) {
+				
+				if (currentTier.equals(TIER3)) {
 					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+					actionFound = true;
+				} else {
+					for (String newProvider : PROVIDER_LIST) {
+						for (String newRegion : REGION_LIST) {
+							for (String newTier : TIER_LIST) {
+								if (!actionFound && MapeUtils.isNewTierHigher(currentTier, newTier) && MapeUtils.isHostAvailable(newProvider, newRegion, newTier)) {
+									actionList.add(new MapeActionMove(cellName, newProvider, newRegion, newTier));
+									actionFound = true;
+								}
+							}
+						}
+					}
 				}
+				
+//				if (currentTier.equals(TIER1)) {
+//					if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
+//						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER2));
+//					} else if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+//						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+//					} else {
+//						actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+//					}
+//				} else if (currentTier.equals(TIER2)) {
+//					if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER3)) {
+//						actionList.add(new MapeActionMove(cellName, currentProvider, currentRegion, TIER3));
+//					} else {
+//						actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+//					}
+//				} else if (currentTier.equals(TIER3)) {
+//					actionList.add(new MapeActionCreate(cellName, currentProvider, currentRegion, currentTier));
+//				}
 			} else if (violatedMetric.equals("memory_utilization")) { // if memory violation => move to bigger machine, other checking to decide if to create another cell
 				if (currentTier.equals(TIER1)) {
 					if (MapeUtils.isHostAvailable(currentProvider, currentRegion, TIER2)) {
@@ -107,7 +127,6 @@ public class MapeActionTypeHeuristic implements ActionType {
 				
 				// remove any cost violation when the corresponding cell has another violation 
 				// go through cost violations 1 by 1 until an action is found
-				boolean actionFound = false;
 				for (Violation v : tempViolations) {
 					System.out.println("MapeActionTypeHeuristic: violation at cell (container ID: " + v.getContainerId() + "), metric: " + v.getMetric() + ", healthiness: " + v.getWeightedHealthiness());
 					
@@ -118,18 +137,6 @@ public class MapeActionTypeHeuristic implements ActionType {
 						String cRegion = ((MapeCell)c).getRegion();
 						String cTier = ((MapeCell)c).getTier();
 						int cNumOfCells = ((MapeCell)c).getCells();
-						
-						// if there is cost violation:
-						// => if it is possible to move to a smaller machine (lower tier), move to a smaller machine
-						// => else if there are more than 2 cells, remove 1 cell
-						
-//						Host h = MapeUtils.findLowerTierServer(cTier);
-//						if (h != null) {
-//							Labels l = h.getLabels();
-//							actionList.add(new MapeActionMove(cName, l.getProvider(), l.getRegion(), l.getTier()));
-//						} else if (cNumOfCells > 1) {
-//							actionList.add(new MapeActionRemove(cName));
-//						}
 						
 						// if there is cost violation:
 						// find the server with lower cost and move there
