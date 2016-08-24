@@ -206,7 +206,7 @@ public class MapeUtils {
 		}
 		
 		for (Host host : hosts) {
-			if (host.getLabels().getRegion().equals(region)) {
+			if (host.getLabels().getRegion().equals(region) && host.getLabels().getProvider().equals(DO)) {
 				return host;
 			}
 		}
