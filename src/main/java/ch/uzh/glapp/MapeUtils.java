@@ -418,26 +418,26 @@ public class MapeUtils {
 						costViolation = false;
 					}
 				} else if (metricName.substring(0, 11).equals("click_count")) { // processing click count metric
-					Properties clickCountTestInput = new Properties();
-				    try {
-					    FileInputStream clickCountTestInputFile = new FileInputStream("clickCount.txt");
-					    clickCountTestInput.load(clickCountTestInputFile);
-					    clickCountTestInputFile.close();
-				    } catch (Exception e) {
-					    e.printStackTrace();
-				    }
+//					Properties clickCountTestInput = new Properties();
+//				    try {
+//					    FileInputStream clickCountTestInputFile = new FileInputStream("clickCount.txt");
+//					    clickCountTestInput.load(clickCountTestInputFile);
+//					    clickCountTestInputFile.close();
+//				    } catch (Exception e) {
+//					    e.printStackTrace();
+//				    }
 					
 					try {
 						float clickCountUS = prometheusRetriever.getCustomMetric(metricName.concat("_us"), 60, 60, 60);
 						float clickCountEU = prometheusRetriever.getCustomMetric(metricName.concat("_eu"), 60, 60, 60);
 						
 						// Load the value from an input file for testing
-						if (clickCountTestInput.getProperty("clickCountUS") != null) {
-							clickCountUS = Integer.parseInt(clickCountTestInput.getProperty("clickCountUS"));
-						}
-						if (clickCountTestInput.getProperty("clickCountEU") != null) {
-							clickCountEU = Integer.parseInt(clickCountTestInput.getProperty("clickCountEU"));
-						}
+//						if (clickCountTestInput.getProperty("clickCountUS") != null) {
+//							clickCountUS = Integer.parseInt(clickCountTestInput.getProperty("clickCountUS"));
+//						}
+//						if (clickCountTestInput.getProperty("clickCountEU") != null) {
+//							clickCountEU = Integer.parseInt(clickCountTestInput.getProperty("clickCountEU"));
+//						}
 						
 						int numOfCellsUS = 0;
 						int numOfCellsEU = 0;
