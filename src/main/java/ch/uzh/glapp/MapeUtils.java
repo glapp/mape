@@ -356,7 +356,7 @@ public class MapeUtils {
 				// get the organ that current rule is applicable to
 				List<Organ> organs = rule.getOrgans();
 	    		for (Organ organ : organs) {
-	    			System.out.println("Applicable organ(s) (Organ ID: " + organ.getId() + ")");
+//	    			System.out.println("Applicable organ(s) (Organ ID: " + organ.getId() + ")");
 	    			
 	    			// get the ID of corresponding container that belongs to an organ specified by organ ID.
 	    			// Each GLA cell is a Docker container.
@@ -370,11 +370,11 @@ public class MapeUtils {
 //	    			System.out.println("MapeUtils.healthiness(): number of cells in rule is 0.");
 //	    		}
 	    		
-	    		System.out.println("Applicable cell(s) and corresponding container ID(s):");
-				for (String containerID : containerIDs) {
-					System.out.println(containerID);
-				}
-				System.out.println();
+//	    		System.out.println("Applicable cell(s) and corresponding container ID(s):");
+//				for (String containerID : containerIDs) {
+//					System.out.println(containerID);
+//				}
+//				System.out.println();
 
 				double thresholdValue = Double.parseDouble(rule.getValue());
 				int function = Integer.parseInt(rule.getOperator()); // 1 = greater than, 2 = smaller than, 3 = equal
@@ -389,7 +389,7 @@ public class MapeUtils {
 					for (int j = 0; j < containerIDs.size(); ++j) {
 						String containerID = containerIDs.get(j);
 						
-						System.out.println("Querying cost metric for cell (container ID: " + containerID + ")");
+//						System.out.println("Querying cost metric for cell (container ID: " + containerID + ")");
 						
 						try {
 							totalCost += prometheusRetriever.getCostMetric(getPrometheusMetricName(containerIDtoProvider.get(containerID), containerIDtoRegion.get(containerID), containerIDtoTier.get(containerID)));
@@ -519,7 +519,7 @@ public class MapeUtils {
 						
 						overallViolationList.addAll(ruleViolationList);
 						
-						printViolation(overallViolationList);
+//						printViolation(overallViolationList);
 						
 					} catch (MetricNotFoundException e) {
 						e.printStackTrace();
@@ -541,7 +541,7 @@ public class MapeUtils {
 							} else { // for other metrics
 								metricValue = prometheusRetriever.getMetric(containerID, metricName, range, duration, step);
 							}
-							System.out.println("Query result (cell metric value): " + metricValue);
+//							System.out.println("Query result (cell metric value): " + metricValue);
 							
 							// For "container_cpu_usage_seconds_total" metric, the threshold is converted from percentage representation to a number in [0,1]
 //							if (metricName.equals("container_cpu_usage_seconds_total")) {

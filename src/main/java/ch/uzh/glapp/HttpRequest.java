@@ -55,8 +55,8 @@ public class HttpRequest {
 		httpConnection.setDoOutput(true);
 		httpConnection.setRequestProperty("Content-Type", "text/plain");
 
-		System.out.println("Address: "+address);
-		System.out.println("Parameter: "+parameter);
+//		System.out.println("Address: "+address);
+//		System.out.println("Parameter: "+parameter);
 
 		OutputStreamWriter out = new OutputStreamWriter(httpConnection.getOutputStream());
 		out.write(parameter);

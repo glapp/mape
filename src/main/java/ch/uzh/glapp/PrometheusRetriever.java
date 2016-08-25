@@ -36,7 +36,7 @@ public class PrometheusRetriever {
       String urlPrometheus = "http://" + prometheusServerIP + ":" + prometheusServerPort;
       String response = "";
       
-      System.out.println("Prometheus query: " + urlPrometheus + paramPrometheus);
+//      System.out.println("Prometheus query: " + urlPrometheus + paramPrometheus);
       
       try {
     	  response = con.GETConnection(urlPrometheus, paramPrometheus);
@@ -194,7 +194,7 @@ public class PrometheusRetriever {
 //            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 //            System.out.println(result.getValue().get(0) + ", " + formater.format(Math.round(Double.parseDouble(result.getValue().get(0))*1000)) + ", " + result.getValue().get(1));
             
-            System.out.println("Cost: " + Double.parseDouble(resultStr));
+//            System.out.println("Cost: " + Double.parseDouble(resultStr));
             
             return Double.parseDouble(resultStr);
         } else {

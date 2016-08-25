@@ -35,12 +35,12 @@ public class MapeEnvironment implements Environment {
 	public DeepOOState currentObservation() {
 		curState = new DeepOOState();
 		List<Cell> cells = new SailsRetriever().getCellInfo();
-		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
+//		System.out.println("getCurrentObservation - Size of cells list (all cells in app): "+cells.size());
 
 		MdpUtils mdpUtils = new MdpUtils();
 		HashMap numOfCellsList = mdpUtils.countCellsInAllOrgans(cells);
 
-		System.out.println("MapeEnvironment.currentObservication(): objectForMpd.getMetric(): " + objectForMpd.getMetric());
+//		System.out.println("MapeEnvironment.currentObservication(): objectForMpd.getMetric(): " + objectForMpd.getMetric());
 
 		for (Cell cell : cells) {
 
@@ -63,7 +63,7 @@ public class MapeEnvironment implements Environment {
 				Object tRegion = curState.get(new OOVariableKey(cell.getId(), VAR_REGION));
 				Object tTier = curState.get(new OOVariableKey(cell.getId(), VAR_TIER));
 				Object tCells = curState.get(new OOVariableKey(cell.getId(), VAR_CELLS));
-				System.out.println("Provider: " + tProvider + ", Region: " + tRegion + ", Tier: " + tTier + ", Number of cells: " + tCells + ", Organ: " + cell.getOrganId().getName());
+//				System.out.println("Provider: " + tProvider + ", Region: " + tRegion + ", Tier: " + tTier + ", Number of cells: " + tCells + ", Organ: " + cell.getOrganId().getName());
 			}
 		}
 		return curState;

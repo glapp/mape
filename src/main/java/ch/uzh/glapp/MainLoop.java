@@ -107,7 +107,7 @@ public class MainLoop {
 					    ObjectForMdp objectForMdp;
 	
 					    if (mdpTriggerObject.isRuleViolated()) {
-						    System.out.println("Take real ObjectForMdp");
+//						    System.out.println("Take real ObjectForMdp");
 						    objectForMdp = new ObjectForMdp(
 								    mdpTriggerObject.getViolationList().get(0).getMetric(),
 								    mdpTriggerObject.getViolationList().get(0).getCellId(),
@@ -117,7 +117,7 @@ public class MainLoop {
 						    );
 					    } else {
 						    // Simulate a violated rule
-						    System.out.println("Simulate a violated rule");
+//						    System.out.println("Simulate a violated rule");
 						    List<Violation> dummyViolationList = null;
 	
 						    Violation violation = new Violation(config.getProperty("violatedCellId"), "0", config.getProperty("violatedOrganId"), 
